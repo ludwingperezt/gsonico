@@ -8,34 +8,50 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/play_pause"
-        android:layout_width="wrap_content"
+    <SeekBar
+        android:id="@+id/SBTrayecto"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="19dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/play_pause" />
-
-    <Button
-        android:id="@+id/next"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/play_pause"
-        android:layout_below="@+id/play_pause"
-        android:layout_marginTop="30dp"
-        android:text="@string/next" />
+        android:layout_above="@+id/play_pause"
+        android:layout_centerHorizontal="true"
+        android:max="100" />
 
     <Button
         android:id="@+id/stop"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/next"
-        android:layout_below="@+id/next"
-        android:layout_marginTop="22dp"
+        android:layout_alignLeft="@+id/play_pause"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/play_pause"
+        android:layout_marginBottom="182dp"
         android:text="@string/stop" />
+
+    <Button
+        android:id="@+id/next"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/stop"
+        android:layout_alignLeft="@+id/stop"
+        android:layout_alignRight="@+id/play_pause"
+        android:text="@string/next" />
+
+    <Chronometer
+        android:id="@+id/tiempo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/SBTrayecto"
+        android:layout_alignParentRight="true"
+        android:text="Chronometer" />
+
+    <Button
+        android:id="@+id/play_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/next"
+        android:layout_alignLeft="@+id/SBTrayecto"
+        android:layout_marginLeft="62dp"
+        android:text="@string/play_pause" />
 
 </RelativeLayout>
