@@ -9,17 +9,30 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer.OnChronometerTickListener;
+import android.widget.SeekBar;
+import android.widget.Toast;
 //import android.os.Bundle;
 //import android.content.res.AssetFileDescriptor;
 //import android.content.res.AssetManager;
+import android.widget.Chronometer;
+import android.os.*;
 
-@SuppressLint("SdCardPath")
+
+@SuppressLint({ "SdCardPath", "ShowToast" })
 public class MainActivity extends Activity implements OnCompletionListener{
 	MediaPlayer player;
+	Chronometer tiempo;
+	SeekBar barraCronometro;
+	long elapsed=0;
 	int estado=0;
 	int num_track=0;
 	final String[] listado = ListadoArchivos.devolverListadoArchivosDirectorios("/mnt/sdcard/music/");
-	
+	private void inicializarCronometro()
+	{
+		elapsed=0;
+		tiempo.setBase(SystemClock.elapsedRealtime());
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,32 +42,34 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		Button siguiente = (Button) findViewById(R.id.next);
 		Button detener = (Button) findViewById(R.id.stop);
 		
+		barraCronometro=(SeekBar)findViewById(R.id.SBTrayecto);
+		
+		
+		//configurando cronometro...
+		tiempo=(Chronometer)findViewById(R.id.tiempo);
+		
+		inicializarCronometro();
+		
+		
 		pausa.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (player.isPlaying()) {
 					if (estado == 1) {
 						player.start();
+						tiempo.setBase(SystemClock.elapsedRealtime()-elapsed);
+						tiempo.start();
+						
+						elapsed=0;
 						estado = 0;
 					}
 					else{ 
 						player.pause();
 						estado = 1;
-					};
-				}
-				else
-				{
-					player.reset();
-					num_track=0;
-					try{					
-						player.setDataSource("/mnt/sdcard/music/" + listado[num_track]);
-						player.prepare();
-						player.start();
-					}catch(Exception e){	
+						tiempo.stop();
+						elapsed=SystemClock.elapsedRealtime()-tiempo.getBase();
 					}
-				};
 			}
 		});
 		
@@ -69,6 +84,9 @@ public class MainActivity extends Activity implements OnCompletionListener{
 					player.setDataSource("/mnt/sdcard/music/" + listado[num_track]);
 					player.prepare();
 					player.start();
+					Toast.makeText(getApplicationContext(),"Duracion: "+ player.getDuration(), Toast.LENGTH_LONG).show();
+					inicializarCronometro();
+					tiempo.start();
 				}catch(Exception e){	
 				}
 			}
@@ -80,6 +98,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				player.stop();
+				inicializarCronometro();
 			}
 		});
 		
@@ -89,10 +108,23 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		try{
 			player.setDataSource("/mnt/sdcard/music/" + listado[num_track]);
 			player.prepare();
-			player.start();
+			inicializarCronometro();
+			//player.start();
 			player.setOnCompletionListener(this);
 		}catch(Exception e){	
 		}
+		
+		tiempo.setOnChronometerTickListener(new OnChronometerTickListener() {
+			
+			@Override
+			public void onChronometerTick(Chronometer arg0) {
+				// TODO Auto-generated method stub
+				float actual=SystemClock.elapsedRealtime()-tiempo.getBase();
+				float duracion=player.getDuration();
+				float p=(actual/duracion)*100;				
+				barraCronometro.setProgress((int) (p));
+			}
+		});
 	}
 
 	@Override
