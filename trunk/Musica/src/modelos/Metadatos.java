@@ -19,10 +19,12 @@ public class Metadatos {
     private String comentario = "";
     private String genero = "";
     private String year = "";
-    private String numeroPista = "";
-
+    private int numeroPista = 0;
     
-    
+    /**
+     * Funcion para leer las etiquetas ID3 de metadatos para MP3
+     * @param direccion: ruta del archivo que se va a leer
+     */
     public void leerEtiquetas(String direccion){
         try {            
             this.setDireccion(direccion);
@@ -43,6 +45,27 @@ public class Metadatos {
         } catch (ID3Exception ex) {
             
         }
+    }
+    
+    /**
+     * Funcion para leer las etiquetas ID3 de metadatos para MP3, que devuelve un objeto Cancion
+     * @param direccion: ruta del archivo que se va a leer
+     * @return Cancion, objeto que representa una entidad cancion
+     */
+    public Cancion leerEtiquetasCancion(String direccion){
+    	this.leerEtiquetas(direccion);
+    	
+    	Cancion cancion = new Cancion();
+    	
+    	cancion.setAlbum(this.getAlbum());
+    	cancion.setArchivoAudio(this.getDireccion());
+    	cancion.setArtista(this.getArtista());
+    	cancion.setGenero(this.getGenero());
+    	cancion.setNumeroPista(Integer.toString(this.getNumeroPista()));
+    	cancion.setTitulo(this.getTitulo());
+    	cancion.setYear(this.getYear());
+    	
+    	return cancion;
     }
     
     private void leerEtiquetas_ID3_v2_3(ID3Tag t){
@@ -66,16 +89,16 @@ public class Metadatos {
         
         try {
             int tn = etiqueta.getTrackNumber();
-            this.setNumeroPista(Integer.toString(tn));
+            this.setNumeroPista(tn);
         } catch (ID3Exception ex1) {
-            System.out.println("No es track number");                
+                      
         }
         
         try {
             int  yy = etiqueta.getYear();
             this.setYear(Integer.toString(yy));
         } catch (ID3Exception ex) {
-            System.out.println("No es año");
+            
             
         }
     }
@@ -116,7 +139,7 @@ public class Metadatos {
         if (etiqueta.getYear()!=null){
             this.setYear(etiqueta.getYear());
         }
-        this.setNumeroPista(Integer.toString(etiqueta.getAlbumTrack()));
+        this.setNumeroPista(etiqueta.getAlbumTrack());
     }
     
     public String getAlbum() {
@@ -175,11 +198,17 @@ public class Metadatos {
         this.year = year;
     }
     
-    public String getNumeroPista() {
+    public int getNumeroPista() {
         return numeroPista;
     }
 
-    public void setNumeroPista(String numeroPista) {
+    public void setNumeroPista(int numeroPista) {
         this.numeroPista = numeroPista;
     }
+    
+    public String toString(){
+    	String total = this.getTitulo()+" "+this.getArtista()+" "+this.getAlbum();
+    	return total;
+    }
+    
 }

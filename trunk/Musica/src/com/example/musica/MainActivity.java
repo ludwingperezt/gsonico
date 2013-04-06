@@ -1,7 +1,11 @@
 package com.example.musica;
 
+import modelos.BaseDatosHelper;
+import modelos.Cancion;
+import modelos.Metadatos;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -28,6 +32,8 @@ public class MainActivity extends Activity implements OnCompletionListener{
 	int estado=0;
 	int num_track=0;
 	final String[] listado = ListadoArchivos.devolverListadoArchivosDirectorios("/mnt/sdcard/music/");
+	private BaseDatosHelper conexionBaseDatos;
+	
 	private void inicializarCronometro()
 	{
 		elapsed=0;
@@ -41,6 +47,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		Button pausa = (Button) findViewById(R.id.play_pause);
 		Button siguiente = (Button) findViewById(R.id.next);
 		Button detener = (Button) findViewById(R.id.stop);
+		Button buscar = (Button) findViewById(R.id.botonBuscar);
 		
 		barraCronometro=(SeekBar)findViewById(R.id.SBTrayecto);
 		
@@ -85,6 +92,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 					player.prepare();
 					player.start();
 					Toast.makeText(getApplicationContext(),"Duracion: "+ player.getDuration(), Toast.LENGTH_LONG).show();
+					insertarCancion("/mnt/sdcard/music/" + listado[num_track]); //inserta la cancion a la base de datos
 					inicializarCronometro();
 					tiempo.start();
 				}catch(Exception e){	
@@ -101,6 +109,17 @@ public class MainActivity extends Activity implements OnCompletionListener{
 				inicializarCronometro();
 			}
 		});
+		
+		
+		buscar.setOnClickListener(new View.OnClickListener() {			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent nuevaActividad = new Intent(arg0.getContext(),BusquedaCancionActivity.class);
+				startActivityForResult(nuevaActividad, 0);
+			}
+		});
+		
 		
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		player = new MediaPlayer();
@@ -142,6 +161,18 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			player.stop();
 		else
 			sig.performClick();
+	}
+	
+	private void insertarCancion(String direccion){
+		this.crearConexionBaseDatos();
+		Metadatos mMeta = new Metadatos();
+		Cancion mCancion = mMeta.leerEtiquetasCancion(direccion);
+		this.conexionBaseDatos.insertarCancion(mCancion);
+	}
+	
+	private void crearConexionBaseDatos(){
+		if (this.conexionBaseDatos==null)
+			conexionBaseDatos = new BaseDatosHelper(this);
 	}
 
 }
