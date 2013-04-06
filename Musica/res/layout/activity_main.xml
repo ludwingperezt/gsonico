@@ -54,4 +54,15 @@
         android:layout_marginLeft="62dp"
         android:text="@string/play_pause" />
 
+    <Button
+        android:id="@+id/botonBuscar"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/stop"
+        android:layout_alignRight="@+id/stop"
+        android:layout_alignTop="@+id/stop"
+        android:layout_marginTop="50dp"
+        android:text="@string/activityBusqueda" />
+
 </RelativeLayout>
