@@ -68,21 +68,6 @@ public class BusquedaCancionActivity extends Activity{
 				b.putParcelable("seleccionado", seleccionado);
 				i.putExtras(b);
 				setResult(RESULT_OK,i);
-				try {
-					MainActivity.cargarCancion(seleccionado.getArchivoAudio());
-				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SecurityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalStateException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				finish();
 			}
 			
