@@ -30,10 +30,10 @@ import android.os.*;
 
 @SuppressLint({ "SdCardPath", "ShowToast" })
 public class MainActivity extends Activity implements OnCompletionListener{
-	public static MediaPlayer player;
-	static Chronometer tiempo;
+	MediaPlayer player;
+	Chronometer tiempo;
 	SeekBar barraCronometro;
-	static long elapsed=0;
+	long elapsed=0;
 	int estado=0;
 	int num_track=0;
 	public static final String directorioMusica = "/mnt/sdcard/music/";
@@ -41,7 +41,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 	
 	private BaseDatosHelper conexionBaseDatos;
 	
-	public static void inicializarCronometro()
+	public void inicializarCronometro()
 	{
 		elapsed=0;
 		tiempo.setBase(SystemClock.elapsedRealtime());
@@ -135,8 +135,13 @@ public class MainActivity extends Activity implements OnCompletionListener{
 				player.reset();
 				num_track=num_track+1;
 				try{					
-					cargarCancion("/mnt/sdcard/music/" + listado[num_track]);
-					
+					player.setDataSource("/mnt/sdcard/music/" + listado[num_track]);
+					player.prepare();
+					player.start();
+					Toast.makeText(getApplicationContext(),"Duracion: "+ player.getDuration(), Toast.LENGTH_LONG).show();
+					insertarCancion("/mnt/sdcard/music/" + listado[num_track]); //inserta la cancion a la base de datos
+					inicializarCronometro();
+					tiempo.start();
 					//insertarCancion("/mnt/sdcard/music/" + listado[num_track]); //inserta la cancion a la base de datos
 				}catch(Exception e){	
 				}
@@ -225,16 +230,6 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		return ret;
 	}
 	
-	public static void cargarCancion(String path) throws IllegalArgumentException, SecurityException, IllegalStateException, IOException
-	{
-		player.stop();
-		player.setDataSource(path);
-		player.prepare();
-		player.start();
-		inicializarCronometro();
-		tiempo.start();
-		Toast.makeText(null,"Duracion: "+ aMinutos(player.getDuration()), Toast.LENGTH_LONG).show();
-	}
 	
 	public void llenarBaseDatos(String directorio){
 		File f = new File(directorio);
