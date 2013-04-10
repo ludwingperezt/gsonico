@@ -1,68 +1,121 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
+    android:orientation="vertical" >
 
-    <SeekBar
-        android:id="@+id/SBTrayecto"
+    <TabHost
+        android:id="@android:id/tabhost"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/play_pause"
-        android:layout_centerHorizontal="true"
-        android:max="100" />
+        android:layout_height="match_parent" >
 
-    <Button
-        android:id="@+id/stop"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/play_pause"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/play_pause"
-        android:layout_marginBottom="182dp"
-        android:text="@string/stop" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/next"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/stop"
-        android:layout_alignLeft="@+id/stop"
-        android:layout_alignRight="@+id/play_pause"
-        android:text="@string/next" />
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    <Chronometer
-        android:id="@+id/tiempo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/SBTrayecto"
-        android:layout_alignParentRight="true"
-        android:text="Chronometer" />
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
 
-    <Button
-        android:id="@+id/play_pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/next"
-        android:layout_alignLeft="@+id/SBTrayecto"
-        android:layout_marginLeft="62dp"
-        android:text="@string/play_pause" />
+                <RelativeLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/botonBuscar"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/stop"
-        android:layout_alignRight="@+id/stop"
-        android:layout_alignTop="@+id/stop"
-        android:layout_marginTop="50dp"
-        android:text="@string/activityBusqueda" />
+                    <SeekBar
+				        android:id="@+id/SBTrayecto"
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content"
+				        android:layout_above="@+id/play_pause"
+				        android:layout_centerHorizontal="true"
+				        android:max="100" />
+				
+				    <Button
+				        android:id="@+id/next"
+				        style="?android:attr/buttonStyleSmall"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_above="@+id/stop"
+				        android:layout_alignLeft="@+id/play_pause"
+				        android:layout_alignRight="@+id/play_pause"
+				        android:text="@string/next" />
+				
+				    <Chronometer
+				        android:id="@+id/tiempo"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_above="@+id/SBTrayecto"
+				        android:layout_alignParentRight="true"
+				        android:text="Chronometer" />
 
-</RelativeLayout>
+				    <Button
+				        android:id="@+id/botonBuscar"
+				        style="?android:attr/buttonStyleSmall"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignLeft="@+id/stop"
+				        android:layout_alignParentBottom="true"
+				        android:layout_alignRight="@+id/stop"
+				        android:layout_marginBottom="22dp"
+				        android:text="@string/activityBusqueda" />
+
+				    <Button
+				        android:id="@+id/stop"
+				        style="?android:attr/buttonStyleSmall"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_above="@+id/botonBuscar"
+				        android:layout_alignLeft="@+id/next"
+				        android:layout_alignRight="@+id/next"
+				        android:text="@string/stop" />
+
+				    <Button
+				        android:id="@+id/play_pause"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_above="@+id/next"
+				        android:layout_centerHorizontal="true"
+				        android:text="@string/play_pause" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:id="@+id/tab3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:id="@+id/tab4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:id="@+id/tab5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+				</LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+</LinearLayout>

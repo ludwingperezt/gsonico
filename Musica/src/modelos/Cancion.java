@@ -1,6 +1,9 @@
 package modelos;
 
-public class Cancion {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Cancion implements Parcelable {
 	
 	private int _id;
 	private String titulo;
@@ -70,4 +73,14 @@ public class Cancion {
     	String total = this.getTitulo()+" "+this.getArtista()+" "+this.getAlbum();
     	return total;
     }
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		// TODO Auto-generated method stub
+		
+	}
 }

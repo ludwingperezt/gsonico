@@ -1,11 +1,14 @@
 package com.example.musica;
 
+import java.io.IOException;
+
 import modelos.BaseDatosHelper;
 import modelos.Cancion;
 import modelos.Metadatos;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -15,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer.OnChronometerTickListener;
 import android.widget.SeekBar;
+import android.widget.TabHost;
 import android.widget.Toast;
 //import android.os.Bundle;
 //import android.content.res.AssetFileDescriptor;
@@ -25,16 +29,16 @@ import android.os.*;
 
 @SuppressLint({ "SdCardPath", "ShowToast" })
 public class MainActivity extends Activity implements OnCompletionListener{
-	MediaPlayer player;
-	Chronometer tiempo;
+	public static MediaPlayer player;
+	static Chronometer tiempo;
 	SeekBar barraCronometro;
-	long elapsed=0;
+	static long elapsed=0;
 	int estado=0;
 	int num_track=0;
 	final String[] listado = ListadoArchivos.devolverListadoArchivosDirectorios("/mnt/sdcard/music/");
 	private BaseDatosHelper conexionBaseDatos;
 	
-	private void inicializarCronometro()
+	public static void inicializarCronometro()
 	{
 		elapsed=0;
 		tiempo.setBase(SystemClock.elapsedRealtime());
@@ -43,6 +47,45 @@ public class MainActivity extends Activity implements OnCompletionListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		//Control de los TABS
+		Resources res = getResources();
+		 
+		TabHost tabs=(TabHost)findViewById(android.R.id.tabhost);
+		tabs.setup();
+		 
+		TabHost.TabSpec spec=tabs.newTabSpec("mitab1");
+		spec.setContent(R.id.tab1);
+		spec.setIndicator("Escuchando...",
+		    res.getDrawable(android.R.drawable.ic_btn_speak_now));
+		tabs.addTab(spec);
+		 
+		spec=tabs.newTabSpec("mitab2");
+		spec.setContent(R.id.tab2);
+		spec.setIndicator("Letra",
+		    res.getDrawable(android.R.drawable.ic_menu_info_details));
+		tabs.addTab(spec);
+		 
+		spec=tabs.newTabSpec("mitab3");
+		spec.setContent(R.id.tab2);
+		spec.setIndicator("Artistas",
+		    res.getDrawable(android.R.drawable.ic_popup_disk_full));
+		tabs.addTab(spec);
+		
+		spec=tabs.newTabSpec("mitab4");
+		spec.setContent(R.id.tab2);
+		spec.setIndicator("Canciones",
+		    res.getDrawable(android.R.drawable.ic_dialog_map));
+		tabs.addTab(spec);
+		
+		spec=tabs.newTabSpec("mitab5");
+		spec.setContent(R.id.tab2);
+		spec.setIndicator("Listas",
+		    res.getDrawable(android.R.drawable.ic_dialog_map));
+		tabs.addTab(spec);
+		
+		tabs.setCurrentTab(0);
+		
+		//
 		
 		Button pausa = (Button) findViewById(R.id.play_pause);
 		Button siguiente = (Button) findViewById(R.id.next);
@@ -88,13 +131,9 @@ public class MainActivity extends Activity implements OnCompletionListener{
 				player.reset();
 				num_track=num_track+1;
 				try{					
-					player.setDataSource("/mnt/sdcard/music/" + listado[num_track]);
-					player.prepare();
-					player.start();
-					Toast.makeText(getApplicationContext(),"Duracion: "+ player.getDuration(), Toast.LENGTH_LONG).show();
+					cargarCancion("/mnt/sdcard/music/" + listado[num_track]);
+					
 					insertarCancion("/mnt/sdcard/music/" + listado[num_track]); //inserta la cancion a la base de datos
-					inicializarCronometro();
-					tiempo.start();
 				}catch(Exception e){	
 				}
 			}
@@ -116,7 +155,8 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				Intent nuevaActividad = new Intent(arg0.getContext(),BusquedaCancionActivity.class);
-				startActivityForResult(nuevaActividad, 0);
+				startActivityForResult(nuevaActividad, 0);		
+				
 			}
 		});
 		
@@ -174,5 +214,21 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		if (this.conexionBaseDatos==null)
 			conexionBaseDatos = new BaseDatosHelper(this);
 	}
-
+	
+	private static float aMinutos(long milli)
+	{
+		float ret=(float) (milli*1.666666666666666666666666667*Math.pow(10,-5));
+		return ret;
+	}
+	
+	public static void cargarCancion(String path) throws IllegalArgumentException, SecurityException, IllegalStateException, IOException
+	{
+		player.stop();
+		player.setDataSource(path);
+		player.prepare();
+		player.start();
+		inicializarCronometro();
+		tiempo.start();
+		Toast.makeText(null,"Duracion: "+ aMinutos(player.getDuration()), Toast.LENGTH_LONG).show();
+	}
 }

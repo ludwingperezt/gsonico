@@ -1,5 +1,6 @@
 package com.example.musica;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import modelos.BaseDatosHelper;
@@ -64,10 +65,24 @@ public class BusquedaCancionActivity extends Activity{
 				//mostrar(Integer.toString(seleccionado.get_id())+" "+seleccionado.getAutor()+" "+seleccionado.getTitulo());
 				Intent i = new Intent();
 				Bundle b = new Bundle();
-				b.putString("seleccionado", seleccionado.getTitulo());
+				b.putParcelable("seleccionado", seleccionado);
 				i.putExtras(b);
 				setResult(RESULT_OK,i);
-				
+				try {
+					MainActivity.cargarCancion(seleccionado.getArchivoAudio());
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				finish();
 			}
 			
