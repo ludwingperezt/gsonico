@@ -69,6 +69,26 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		}		
 	}
 	
+	public void insertarCancionDirecto(Cancion mCancion){
+		//inserta la cancion solamente si no existe en la db
+		
+			SQLiteDatabase baseDatos = this.getWritableDatabase();
+			
+			ContentValues parametros = new ContentValues();
+			parametros.put("Titulo", mCancion.getTitulo());
+			parametros.put("Artista", mCancion.getArtista());
+			parametros.put("Album", mCancion.getAlbum());
+			parametros.put("Genero", mCancion.getGenero());
+			parametros.put("Year", mCancion.getYear());
+			parametros.put("NumeroPista", mCancion.getNumeroPista());
+			parametros.put("ArchivoAudio", mCancion.getArchivoAudio());
+			parametros.put("ArchivoLetra", mCancion.getArchivoLetra());
+			baseDatos.insert(BaseDatosHelper.TABLA_CANCION, null, parametros);
+			
+			baseDatos.close();
+				
+	}
+	
 	/**
 	 * Modifica los datos de una canción, dentro de la db
 	 * @param mCancion
@@ -190,6 +210,29 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 	  	c.close();
 	  	baseDatos.close();
 		return items;
+	}
+	
+	/**
+	 * Método que verifica si hay canciones en la base de datos, si no hay se asume que debe recorrer el directorio de música
+	 * e insertar las canciones a la base de datos.
+	 * @return
+	 */
+	public boolean existenCanciones(){
+		boolean valor = true;
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		String consulta = "SELECT count(*) as 'conteo' FROM "+BaseDatosHelper.TABLA_CANCION;
+		int conteo = 0;
+		Cursor c = db.rawQuery(consulta,null);	  	
+	  	c.moveToFirst();	  	
+	  	conteo = c.getInt(0);
+	  	
+	  	if (conteo==0){
+	  		valor = false;
+	  	}
+		db.close();
+		
+		return valor;
 	}
 
 }
