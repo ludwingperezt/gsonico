@@ -1,5 +1,6 @@
 package com.example.musica;
 
+import java.io.File;
 import java.io.IOException;
 
 import modelos.BaseDatosHelper;
@@ -35,7 +36,9 @@ public class MainActivity extends Activity implements OnCompletionListener{
 	static long elapsed=0;
 	int estado=0;
 	int num_track=0;
-	final String[] listado = ListadoArchivos.devolverListadoArchivosDirectorios("/mnt/sdcard/music/");
+	public static final String directorioMusica = "/mnt/sdcard/music/";
+	final String[] listado = ListadoArchivos.devolverListadoArchivosDirectorios(MainActivity.directorioMusica);
+	
 	private BaseDatosHelper conexionBaseDatos;
 	
 	public static void inicializarCronometro()
@@ -85,7 +88,8 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		
 		tabs.setCurrentTab(0);
 		
-		//
+		//verifica que no se hayan insertado canciones a la db para llenarla
+		this.llenarBaseDatos(MainActivity.directorioMusica);
 		
 		Button pausa = (Button) findViewById(R.id.play_pause);
 		Button siguiente = (Button) findViewById(R.id.next);
@@ -133,7 +137,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 				try{					
 					cargarCancion("/mnt/sdcard/music/" + listado[num_track]);
 					
-					insertarCancion("/mnt/sdcard/music/" + listado[num_track]); //inserta la cancion a la base de datos
+					//insertarCancion("/mnt/sdcard/music/" + listado[num_track]); //inserta la cancion a la base de datos
 				}catch(Exception e){	
 				}
 			}
@@ -230,5 +234,15 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		inicializarCronometro();
 		tiempo.start();
 		Toast.makeText(null,"Duracion: "+ aMinutos(player.getDuration()), Toast.LENGTH_LONG).show();
+	}
+	
+	public void llenarBaseDatos(String directorio){
+		File f = new File(directorio);
+		if (f.exists()){
+			this.crearConexionBaseDatos();
+			if (this.conexionBaseDatos.existenCanciones()==false){ //si no hay canciones, que insterte todo en la base de datos
+				ListadoArchivos.recorrerDirectorios(directorio,this);
+			}
+		}
 	}
 }
