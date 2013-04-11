@@ -71,8 +71,8 @@ public class ItemCancionAdapter extends BaseAdapter {
 	    txtGenero.setText(item.getGenero());
 	    
 	    TextView txtYear = (TextView) vi.findViewById(R.id.year);
-	    txtYear.setText(item.getYear());
-	 
+	    //txtYear.setText(item.getYear());
+	    txtYear.setText(Integer.toString(item.get_id()));
 	    return vi;
 	}
 
