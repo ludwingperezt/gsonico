@@ -305,5 +305,23 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 	  	baseDatos.close();
 		return items;
 	}
+	
+	public boolean ultimoId(int id){
+		boolean valor = true;
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		String consulta = "SELECT max(_id) as 'ultimo' FROM "+BaseDatosHelper.TABLA_CANCION;
+		int conteo = 0;
+		Cursor c = db.rawQuery(consulta,null);	  	
+	  	c.moveToFirst();	  	
+	  	conteo = c.getInt(0);
+	  	
+	  	if (id<conteo){
+	  		valor = false;
+	  	}
+		db.close();
+		
+		return valor;
+	}
 
 }

@@ -222,7 +222,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		Button sig = (Button) findViewById(R.id.next);
 		//if (num_track==listado.length-1)
 		//this.crearConexionBaseDatos();
-		if (conexionBaseDatos.obtenerCancion(actual.get_id())==null)
+		if (conexionBaseDatos.ultimoId(actual.get_id())==true)
 			player.stop();
 		else
 			sig.performClick();
