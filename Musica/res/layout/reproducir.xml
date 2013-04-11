@@ -1,0 +1,109 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <RelativeLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+
+                    <SeekBar
+				        android:id="@+id/SBTrayecto"
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content"
+				        android:layout_above="@+id/play_pause"
+				        android:layout_centerHorizontal="true"
+				        android:max="100" />
+				
+				    <Button
+				        android:id="@+id/next"
+				        style="?android:attr/buttonStyleSmall"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_above="@+id/stop"
+				        android:layout_alignLeft="@+id/play_pause"
+				        android:layout_alignRight="@+id/play_pause"
+				        android:text="@string/next" />
+				
+				    <Chronometer
+				        android:id="@+id/tiempo"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_above="@+id/SBTrayecto"
+				        android:layout_alignParentRight="true"
+				        android:text="@string/chronometer" />
+
+				    <Button
+				        android:id="@+id/botonBuscar"
+				        style="?android:attr/buttonStyleSmall"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignLeft="@+id/stop"
+				        android:layout_alignParentBottom="true"
+				        android:layout_alignRight="@+id/stop"
+				        android:layout_marginBottom="22dp"
+				        android:text="@string/activityBusqueda" />
+
+				    <Button
+				        android:id="@+id/stop"
+				        style="?android:attr/buttonStyleSmall"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_above="@+id/botonBuscar"
+				        android:layout_alignLeft="@+id/next"
+				        android:layout_alignRight="@+id/next"
+				        android:text="@string/stop" />
+
+				    <Button
+				        android:id="@+id/play_pause"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_above="@+id/next"
+				        android:layout_centerHorizontal="true"
+				        android:text="@string/play_pause" />
+
+				    <Button
+				        android:id="@+id/cerrar"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_above="@+id/tiempo"
+				        android:layout_alignLeft="@+id/play_pause"
+				        android:layout_alignRight="@+id/play_pause"
+				        android:layout_marginBottom="42dp"
+				        android:text="@string/cerrar" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+</LinearLayout>
