@@ -47,6 +47,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		crearConexionBaseDatos();
 		//verifica que no se hayan insertado canciones a la db para llenarla
 		this.llenarBaseDatos(Reproductor.directorioMusica);
 		/*
@@ -98,6 +99,9 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		tabs.addTab(spec);
 		
 		tabs.setCurrentTab(0);
+		
+		//listar todas las canciones
+		listarCanciones();
 		
 		Button boton = (Button)findViewById(R.id.regresar);		
 		boton.setOnClickListener(new View.OnClickListener() {
@@ -168,6 +172,13 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		crearConexionBaseDatos();
         // Obtenemos la lista de canciones
         ArrayList<Cancion> canciones = baseDatos.buscarCanciones(texto.getText().toString());				
+        ListView lv = (ListView)findViewById(R.id.lista);		             
+        ItemCancionAdapter adapter = new ItemCancionAdapter(getActivity(), canciones);		             
+        lv.setAdapter(adapter);	
+	}
+	
+	public void listarCanciones(){
+		ArrayList<Cancion> canciones = baseDatos.obtenerCanciones();				
         ListView lv = (ListView)findViewById(R.id.lista);		             
         ItemCancionAdapter adapter = new ItemCancionAdapter(getActivity(), canciones);		             
         lv.setAdapter(adapter);	

@@ -135,7 +135,8 @@ public class Reproductor extends Activity implements OnCompletionListener {
 							player.setDataSource(actual.getArchivoAudio());
 							player.prepare();
 							player.start();
-							Toast.makeText(getApplicationContext(),"Duracion: "+ player.getDuration(), Toast.LENGTH_LONG).show();
+							//Toast.makeText(getApplicationContext(),"Duracion: "+ player.getDuration(), Toast.LENGTH_LONG).show();
+							Toast.makeText(getApplicationContext(),"ID: "+ Integer.toString(actual.get_id()), Toast.LENGTH_LONG).show();
 							inicializarCronometro();
 							tiempo.start();	
 						}
@@ -180,6 +181,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 					player.prepare();
 					inicializarCronometro();
 					//player.start();
+					Toast.makeText(getApplicationContext(),"ID: "+ Integer.toString(actual.get_id()), Toast.LENGTH_LONG).show();
 					player.setOnCompletionListener(this);
 				}				
 			}			

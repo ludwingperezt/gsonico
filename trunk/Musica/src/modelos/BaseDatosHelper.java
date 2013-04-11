@@ -274,5 +274,36 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public ArrayList<Cancion> obtenerCanciones() {
+		// TODO Auto-generated method stub
+		SQLiteDatabase baseDatos = this.getReadableDatabase();
+		ArrayList<Cancion> items = new ArrayList<Cancion>();
+		// Titulo TEXT, Artista TEXT, Album TEXT, Genero TEXT, Year TEXT, NumeroPista TEXT
+		String consulta = "SELECT * FROM "+BaseDatosHelper.TABLA_CANCION;
+		Cursor c = baseDatos.rawQuery(consulta,null);
+	  	
+	  	c.moveToFirst();
+	  	while (c.isAfterLast()==false){
+	  		Cancion temporal = new Cancion();
+	  		//_id Titulo TEXT, Artista TEXT, Album TEXT, Genero TEXT, Year TEXT, 
+	  		//NumeroPista TEXT, ArchivoAudio TEXT, ArchivoLetra TEXT)";
+	  		temporal.set_id(c.getInt(0));
+	  		temporal.setTitulo(c.getString(1));
+	  		temporal.setArtista(c.getString(2));
+	  		temporal.setAlbum(c.getString(3));
+	  		temporal.setGenero(c.getString(4));
+	  		temporal.setYear(c.getString(5));
+	  		temporal.setNumeroPista(c.getString(6));
+	  		temporal.setArchivoAudio(c.getString(7));
+	  		temporal.setArchivoLetra(c.getString(8));
+	  		items.add(temporal);
+	  		c.moveToNext();
+	  	}
+	  	  
+	  	c.close();
+	  	baseDatos.close();
+		return items;
+	}
 
 }
