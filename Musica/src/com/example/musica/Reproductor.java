@@ -21,6 +21,7 @@ import android.widget.Chronometer;
 import android.widget.Chronometer.OnChronometerTickListener;
 import android.widget.SeekBar;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint("SdCardPath")
@@ -40,7 +41,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 	private Playlist lista;
 	private BaseDatosHelper conexionBaseDatos;
 	private Bundle parametros;
-	
+	private TextView Meta;
 	public void inicializarCronometro()
 	{
 		elapsed=0;
@@ -62,7 +63,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		TabHost.TabSpec spec=tabs.newTabSpec("mitab1");
 		spec.setContent(R.id.tab1);
 		spec.setIndicator("Escuchando...",
-		    res.getDrawable(android.R.drawable.ic_btn_speak_now));
+		    res.getDrawable(android.R.drawable.ic_media_play));
 		tabs.addTab(spec);
 		 
 		spec=tabs.newTabSpec("mitab2");
@@ -73,7 +74,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		 
 		
 		tabs.setCurrentTab(0);
-		
+		Meta=(TextView)findViewById(R.id.txtInfo);
 		this.parametros = getIntent().getExtras();
 		if (this.parametros!=null){
 			this.seleccionada = conexionBaseDatos.obtenerCancion(this.parametros.getInt(MainActivity.KEY_CANCION_SELECCIONADA));
@@ -83,7 +84,6 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		Button pausa = (Button) findViewById(R.id.play_pause);
 		Button siguiente = (Button) findViewById(R.id.next);
 		Button detener = (Button) findViewById(R.id.stop);
-		Button buscar = (Button) findViewById(R.id.botonBuscar);
 		Button cerrar = (Button) findViewById(R.id.cerrar);
 		
 		barraCronometro=(SeekBar)findViewById(R.id.SBTrayecto);
@@ -136,7 +136,9 @@ public class Reproductor extends Activity implements OnCompletionListener {
 							player.prepare();
 							player.start();
 							//Toast.makeText(getApplicationContext(),"Duracion: "+ player.getDuration(), Toast.LENGTH_LONG).show();
-							Toast.makeText(getApplicationContext(),"ID: "+ Integer.toString(actual.get_id()), Toast.LENGTH_LONG).show();
+							//Toast.makeText(getApplicationContext(),"ID: "+ Integer.toString(actual.get_id()), Toast.LENGTH_LONG).show();
+							Toast.makeText(getApplicationContext(),"Duracion: "+ aMinutos(player.getDuration())+ " Minutos", Toast.LENGTH_LONG).show();
+							Meta.setText(actual.getTitulo()+" - "+ actual.getArtista());
 							inicializarCronometro();
 							tiempo.start();	
 						}
@@ -181,7 +183,10 @@ public class Reproductor extends Activity implements OnCompletionListener {
 					player.prepare();
 					inicializarCronometro();
 					player.start();
-					Toast.makeText(getApplicationContext(),"ID: "+ Integer.toString(actual.get_id()), Toast.LENGTH_LONG).show();
+					tiempo.start();
+					//Toast.makeText(getApplicationContext(),"ID: "+ Integer.toString(actual.get_id()), Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(),"Duracion: "+ aMinutos(player.getDuration())+ " Minutos", Toast.LENGTH_LONG).show();
+					Meta.setText(actual.getTitulo()+" - "+ actual.getArtista());
 					player.setOnCompletionListener(this);
 				}				
 			}			
@@ -205,6 +210,8 @@ public class Reproductor extends Activity implements OnCompletionListener {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				player.stop();
+				inicializarCronometro();
 				finish();
 			}
 		});

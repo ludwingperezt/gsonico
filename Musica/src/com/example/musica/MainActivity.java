@@ -70,26 +70,26 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		 
 		TabHost.TabSpec spec=tabs.newTabSpec("mitab1");
 		spec.setContent(R.id.tab1);
-		spec.setIndicator("Escuchando...",
+		spec.setIndicator("GSonic",
 		    res.getDrawable(android.R.drawable.ic_btn_speak_now));
 		tabs.addTab(spec);
 		 
 		spec=tabs.newTabSpec("mitab2");
 		spec.setContent(R.id.tab2);
-		spec.setIndicator("Letra",
+		spec.setIndicator("Artistas",
 		    res.getDrawable(android.R.drawable.ic_menu_info_details));
 		tabs.addTab(spec);
 		 
 		spec=tabs.newTabSpec("mitab3");
 		spec.setContent(R.id.tab3);
-		spec.setIndicator("Artistas",
+		spec.setIndicator("Canciones",
 		    res.getDrawable(android.R.drawable.ic_popup_disk_full));
 		tabs.addTab(spec);
 		
 		spec=tabs.newTabSpec("mitab4");
 		spec.setContent(R.id.tab4);
-		spec.setIndicator("Canciones",
-		    res.getDrawable(android.R.drawable.ic_dialog_map));
+		spec.setIndicator("Busqueda",
+		    res.getDrawable(android.R.drawable.ic_menu_search));
 		tabs.addTab(spec);
 		
 		spec=tabs.newTabSpec("mitab5");
