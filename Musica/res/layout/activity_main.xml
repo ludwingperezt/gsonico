@@ -45,6 +45,7 @@
 				        android:layout_above="@+id/stop"
 				        android:layout_alignLeft="@+id/play_pause"
 				        android:layout_alignRight="@+id/play_pause"
+				        android:enabled="false"
 				        android:text="@string/next" />
 				
 				    <Chronometer
@@ -53,7 +54,7 @@
 				        android:layout_height="wrap_content"
 				        android:layout_above="@+id/SBTrayecto"
 				        android:layout_alignParentRight="true"
-				        android:text="Chronometer" />
+				        android:text="@string/chronometer" />
 
 				    <Button
 				        android:id="@+id/botonBuscar"
@@ -64,6 +65,7 @@
 				        android:layout_alignParentBottom="true"
 				        android:layout_alignRight="@+id/stop"
 				        android:layout_marginBottom="22dp"
+				        android:enabled="false"
 				        android:text="@string/activityBusqueda" />
 
 				    <Button
@@ -74,6 +76,7 @@
 				        android:layout_above="@+id/botonBuscar"
 				        android:layout_alignLeft="@+id/next"
 				        android:layout_alignRight="@+id/next"
+				        android:enabled="false"
 				        android:text="@string/stop" />
 
 				    <Button
@@ -82,7 +85,17 @@
 				        android:layout_height="wrap_content"
 				        android:layout_above="@+id/next"
 				        android:layout_centerHorizontal="true"
+				        android:enabled="false"
 				        android:text="@string/play_pause" />
+
+				    <Button
+				        android:id="@+id/cerrar"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentTop="true"
+				        android:layout_centerHorizontal="true"
+				        android:layout_marginTop="42dp"
+				        android:text="@string/reproductor" />
 
                 </RelativeLayout>
 

@@ -1,8 +1,6 @@
 package com.example.musica;
 
 import java.io.File;
-import java.io.IOException;
-
 import modelos.BaseDatosHelper;
 import modelos.Cancion;
 import modelos.Metadatos;
@@ -14,9 +12,11 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.Chronometer.OnChronometerTickListener;
 import android.widget.SeekBar;
 import android.widget.TabHost;
@@ -24,12 +24,12 @@ import android.widget.Toast;
 //import android.os.Bundle;
 //import android.content.res.AssetFileDescriptor;
 //import android.content.res.AssetManager;
-import android.widget.Chronometer;
-import android.os.*;
 
 
+@SuppressWarnings("unused")
 @SuppressLint({ "SdCardPath", "ShowToast" })
 public class MainActivity extends Activity implements OnCompletionListener{
+/*
 	MediaPlayer player;
 	Chronometer tiempo;
 	SeekBar barraCronometro;
@@ -46,10 +46,23 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		elapsed=0;
 		tiempo.setBase(SystemClock.elapsedRealtime());
 	}
+*/
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		Button player = (Button) findViewById(R.id.cerrar);
+		player.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent nuevoPlayer = new Intent(v.getContext(),Reproductor.class);
+				startActivityForResult(nuevoPlayer, 0);	
+			}
+		});
+		
 		//Control de los TABS
 		Resources res = getResources();
 		 
@@ -87,7 +100,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		tabs.addTab(spec);
 		
 		tabs.setCurrentTab(0);
-		
+/*
 		//verifica que no se hayan insertado canciones a la db para llenarla
 		this.llenarBaseDatos(MainActivity.directorioMusica);
 		
@@ -239,5 +252,12 @@ public class MainActivity extends Activity implements OnCompletionListener{
 				ListadoArchivos.recorrerDirectorios(directorio,this);
 			}
 		}
+		*/
 	}
+
+@Override
+public void onCompletion(MediaPlayer arg0) {
+	// TODO Auto-generated method stub
+}
+	
 }

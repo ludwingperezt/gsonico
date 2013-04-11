@@ -26,32 +26,34 @@ public final class R {
     }
     public static final class id {
         public static final int SBTrayecto=0x7f080001;
-        public static final int action_settings=0x7f080014;
-        public static final int album=0x7f080011;
-        public static final int artista=0x7f080010;
+        public static final int action_settings=0x7f080015;
+        public static final int album=0x7f080012;
+        public static final int artista=0x7f080011;
         public static final int botonBuscar=0x7f080006;
-        public static final int botonBusqueda=0x7f08000c;
-        public static final int genero=0x7f080012;
-        public static final int icono=0x7f08000e;
-        public static final int lista=0x7f08000d;
-        public static final int menuSincronizar=0x7f080015;
+        public static final int cerrar=0x7f080007;
+        public static final int genero=0x7f080013;
+        public static final int icono=0x7f08000f;
+        public static final int lista=0x7f08000e;
+        public static final int menuSincronizar=0x7f080016;
         public static final int next=0x7f080003;
         public static final int play_pause=0x7f080002;
+        public static final int regresar=0x7f08000d;
         public static final int stop=0x7f080004;
         public static final int tab1=0x7f080000;
-        public static final int tab2=0x7f080007;
-        public static final int tab3=0x7f080008;
-        public static final int tab4=0x7f080009;
-        public static final int tab5=0x7f08000a;
+        public static final int tab2=0x7f080008;
+        public static final int tab3=0x7f080009;
+        public static final int tab4=0x7f08000a;
+        public static final int tab5=0x7f08000b;
         public static final int tiempo=0x7f080005;
-        public static final int titulo=0x7f08000f;
-        public static final int txtBusqueda=0x7f08000b;
-        public static final int year=0x7f080013;
+        public static final int titulo=0x7f080010;
+        public static final int txtBusqueda=0x7f08000c;
+        public static final int year=0x7f080014;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int busquedacancion=0x7f030001;
         public static final int lista_item=0x7f030002;
+        public static final int reproducir=0x7f030003;
     }
     public static final class menu {
         public static final int main=0x7f070000;
@@ -61,11 +63,17 @@ public final class R {
         public static final int action_settings=0x7f050001;
         public static final int activityBusqueda=0x7f050008;
         public static final int app_name=0x7f050000;
+        public static final int buscar=0x7f05000d;
+        public static final int cerrar=0x7f05000b;
+        public static final int chronometer=0x7f05000a;
         public static final int hello_world=0x7f050002;
         public static final int next=0x7f050006;
         public static final int play_pause=0x7f050005;
+        public static final int reproductor=0x7f050009;
         public static final int stop=0x7f050007;
+        public static final int todo=0x7f05000e;
         public static final int unused=0x7f050004;
+        public static final int volver_a_reproductor=0x7f05000c;
     }
     public static final class style {
         /** 
