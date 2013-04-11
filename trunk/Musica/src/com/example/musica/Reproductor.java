@@ -180,7 +180,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 					player.setDataSource(this.seleccionada.getArchivoAudio());
 					player.prepare();
 					inicializarCronometro();
-					//player.start();
+					player.start();
 					Toast.makeText(getApplicationContext(),"ID: "+ Integer.toString(actual.get_id()), Toast.LENGTH_LONG).show();
 					player.setOnCompletionListener(this);
 				}				
@@ -226,6 +226,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 			player.stop();
 		else
 			sig.performClick();
+			
 	}
 	
 	private void crearConexionBaseDatos(){
