@@ -9,7 +9,7 @@
         android:layout_height="wrap_content" >
 
         <EditText
-            android:id="@+id/txtBusqueda"
+            android:id="@+id/txtBusqueda2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -19,7 +19,7 @@
         </EditText>
 
         <Button
-            android:id="@+id/regresar"
+            android:id="@+id/regresar2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -28,7 +28,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/lista"
+        android:id="@+id/lista2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </ListView>
