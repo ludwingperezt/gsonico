@@ -137,7 +137,8 @@ public class MainActivity extends Activity implements OnCompletionListener{
 				Cancion seleccionado = (Cancion)lista.getItemAtPosition(position);				
 				Intent nuevaActividad = new Intent(arg0.getContext(),Reproductor.class);
 				Bundle b = new Bundle();
-				b.putParcelable(MainActivity.KEY_CANCION_SELECCIONADA, seleccionado);
+				//b.putParcelable(MainActivity.KEY_CANCION_SELECCIONADA, seleccionado);
+				b.putInt(MainActivity.KEY_CANCION_SELECCIONADA, seleccionado.get_id());
 				nuevaActividad.putExtras(b);
 				startActivity(nuevaActividad);
 			}

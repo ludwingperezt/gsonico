@@ -270,4 +270,9 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		baseDatos.close();
 	}
 
+	public Playlist obtenerLista(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
