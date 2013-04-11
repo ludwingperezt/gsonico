@@ -234,5 +234,40 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		
 		return valor;
 	}
+	/**
+	 * Funcion para obtener una cancion específica
+	 * @param id
+	 * @return
+	 */
+	public Cancion obtenerCancion(int id){
+		Cancion temporal=null;
+		SQLiteDatabase baseDatos = this.getReadableDatabase();
+		String consulta = "SELECT * FROM "+BaseDatosHelper.TABLA_CANCION+" WHERE _id = "+Integer.toString(id);
+		Cursor c = baseDatos.rawQuery(consulta,null);	
+		if (c.getCount()!=0){
+			c.moveToFirst();
+			temporal = new Cancion();
+			temporal.set_id(c.getInt(0));
+	  		temporal.setTitulo(c.getString(1));
+	  		temporal.setArtista(c.getString(2));
+	  		temporal.setAlbum(c.getString(3));
+	  		temporal.setGenero(c.getString(4));
+	  		temporal.setYear(c.getString(5));
+	  		temporal.setNumeroPista(c.getString(6));
+	  		temporal.setArchivoAudio(c.getString(7));
+	  		temporal.setArchivoLetra(c.getString(8)); 
+		}
+		baseDatos.close();
+		return temporal;
+	}
+	/**
+	 * Usar esta funcion cuando se encuentre una cancion que ya no exista en el sistema de archivos
+	 * @param c
+	 */
+	public void eliminarCancion(Cancion c){
+		SQLiteDatabase baseDatos = this.getReadableDatabase();
+		
+		baseDatos.close();
+	}
 
 }

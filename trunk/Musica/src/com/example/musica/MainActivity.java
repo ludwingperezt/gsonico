@@ -1,6 +1,8 @@
 package com.example.musica;
 
 import java.io.File;
+import java.util.ArrayList;
+
 import modelos.BaseDatosHelper;
 import modelos.Cancion;
 import modelos.Metadatos;
@@ -13,11 +15,15 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.Chronometer.OnChronometerTickListener;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TabHost;
 import android.widget.Toast;
@@ -29,29 +35,21 @@ import android.widget.Toast;
 @SuppressWarnings("unused")
 @SuppressLint({ "SdCardPath", "ShowToast" })
 public class MainActivity extends Activity implements OnCompletionListener{
-/*
-	MediaPlayer player;
-	Chronometer tiempo;
-	SeekBar barraCronometro;
-	long elapsed=0;
-	int estado=0;
-	int num_track=0;
-	public static final String directorioMusica = "/mnt/sdcard/music/";
-	final String[] listado = ListadoArchivos.devolverListadoArchivosDirectorios(MainActivity.directorioMusica);
-	
-	private BaseDatosHelper conexionBaseDatos;
-	
-	public void inicializarCronometro()
-	{
-		elapsed=0;
-		tiempo.setBase(SystemClock.elapsedRealtime());
-	}
-*/
+
+	private BaseDatosHelper baseDatos;
+	private EditText texto;
+	private ListView lista;
+	public static final String KEY_CANCION_SELECCIONADA = "seleccionada";
+	public static final String KEY_PLAYLIST_SELECCIONADA = "playlistseleccionado";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		//verifica que no se hayan insertado canciones a la db para llenarla
+		this.llenarBaseDatos(Reproductor.directorioMusica);
+		/*
 		Button player = (Button) findViewById(R.id.cerrar);
 		player.setOnClickListener(new View.OnClickListener() {
 			
@@ -61,7 +59,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 				Intent nuevoPlayer = new Intent(v.getContext(),Reproductor.class);
 				startActivityForResult(nuevoPlayer, 0);	
 			}
-		});
+		});*/
 		
 		//Control de los TABS
 		Resources res = getResources();
@@ -82,182 +80,101 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		tabs.addTab(spec);
 		 
 		spec=tabs.newTabSpec("mitab3");
-		spec.setContent(R.id.tab2);
+		spec.setContent(R.id.tab3);
 		spec.setIndicator("Artistas",
 		    res.getDrawable(android.R.drawable.ic_popup_disk_full));
 		tabs.addTab(spec);
 		
 		spec=tabs.newTabSpec("mitab4");
-		spec.setContent(R.id.tab2);
+		spec.setContent(R.id.tab4);
 		spec.setIndicator("Canciones",
 		    res.getDrawable(android.R.drawable.ic_dialog_map));
 		tabs.addTab(spec);
 		
 		spec=tabs.newTabSpec("mitab5");
-		spec.setContent(R.id.tab2);
+		spec.setContent(R.id.tab5);
 		spec.setIndicator("Listas",
 		    res.getDrawable(android.R.drawable.ic_dialog_map));
 		tabs.addTab(spec);
 		
 		tabs.setCurrentTab(0);
-/*
-		//verifica que no se hayan insertado canciones a la db para llenarla
-		this.llenarBaseDatos(MainActivity.directorioMusica);
 		
-		Button pausa = (Button) findViewById(R.id.play_pause);
-		Button siguiente = (Button) findViewById(R.id.next);
-		Button detener = (Button) findViewById(R.id.stop);
-		Button buscar = (Button) findViewById(R.id.botonBuscar);
-		
-		barraCronometro=(SeekBar)findViewById(R.id.SBTrayecto);
-		
-		
-		//configurando cronometro...
-		tiempo=(Chronometer)findViewById(R.id.tiempo);
-		
-		inicializarCronometro();
-		
-		
-		pausa.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-					if (estado == 1) {
-						player.start();
-						tiempo.setBase(SystemClock.elapsedRealtime()-elapsed);
-						tiempo.start();
-						
-						elapsed=0;
-						estado = 0;
-					}
-					else{ 
-						player.pause();
-						estado = 1;
-						tiempo.stop();
-						elapsed=SystemClock.elapsedRealtime()-tiempo.getBase();
-					}
-			}
-		});
-		
-		siguiente.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				player.reset();
-				num_track=num_track+1;
-				try{					
-					player.setDataSource("/mnt/sdcard/music/" + listado[num_track]);
-					player.prepare();
-					player.start();
-					Toast.makeText(getApplicationContext(),"Duracion: "+ player.getDuration(), Toast.LENGTH_LONG).show();
-					insertarCancion("/mnt/sdcard/music/" + listado[num_track]); //inserta la cancion a la base de datos
-					inicializarCronometro();
-					tiempo.start();
-					//insertarCancion("/mnt/sdcard/music/" + listado[num_track]); //inserta la cancion a la base de datos
-				}catch(Exception e){	
-				}
-			}
-		});
-		
-		detener.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				player.stop();
-				inicializarCronometro();
-			}
-		});
-		
-		
-		buscar.setOnClickListener(new View.OnClickListener() {			
+		Button boton = (Button)findViewById(R.id.regresar);		
+		boton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				Intent nuevaActividad = new Intent(arg0.getContext(),BusquedaCancionActivity.class);
-				startActivityForResult(nuevaActividad, 0);		
 				
-			}
+				texto = (EditText)findViewById(R.id.txtBusqueda);				
+				crearConexionBaseDatos();
+		        ArrayList<Cancion> canciones = baseDatos.buscarCanciones(texto.getText().toString());				
+		        ListView lv = (ListView)findViewById(R.id.lista);		             
+		        ItemCancionAdapter adapter = new ItemCancionAdapter(getActivity(), canciones);		             
+		        lv.setAdapter(adapter);		        
+				//String value = verificar(texto.getText().toString());
+				//mostrar(value);				
+				
+				busqueda();
+			}			
 		});
 		
-		
-		setVolumeControlStream(AudioManager.STREAM_MUSIC);
-		player = new MediaPlayer();
-		
-		try{
-			player.setDataSource("/mnt/sdcard/music/" + listado[num_track]);
-			player.prepare();
-			inicializarCronometro();
-			//player.start();
-			player.setOnCompletionListener(this);
-		}catch(Exception e){	
-		}
-		
-		tiempo.setOnChronometerTickListener(new OnChronometerTickListener() {
-			
+		texto = (EditText) findViewById(R.id.txtBusqueda);
+		texto.setOnKeyListener(new View.OnKeyListener() {
 			@Override
-			public void onChronometerTick(Chronometer arg0) {
-				// TODO Auto-generated method stub
-				float actual=SystemClock.elapsedRealtime()-tiempo.getBase();
-				float duracion=player.getDuration();
-				float p=(actual/duracion)*100;				
-				barraCronometro.setProgress((int) (p));
+			public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
+				// TODO Auto-generated method stub	
+				busqueda();			
+				return false;
 			}
 		});
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
 		
-	}
+		lista = (ListView)findViewById(R.id.lista);
+		lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				// TODO Auto-generated method stub
+				Cancion seleccionado = (Cancion)lista.getItemAtPosition(position);				
+				Intent nuevaActividad = new Intent(arg0.getContext(),Reproductor.class);
+				Bundle b = new Bundle();
+				b.putParcelable(MainActivity.KEY_CANCION_SELECCIONADA, seleccionado);
+				nuevaActividad.putExtras(b);
+				startActivity(nuevaActividad);
+			}
+			
+		});
 
-	@Override
-	public void onCompletion(MediaPlayer arg0) {
-		Button sig = (Button) findViewById(R.id.next);
-		if (num_track==listado.length-1)
-			player.stop();
-		else
-			sig.performClick();
-	}
-	
-	private void insertarCancion(String direccion){
-		this.crearConexionBaseDatos();
-		Metadatos mMeta = new Metadatos();
-		Cancion mCancion = mMeta.leerEtiquetasCancion(direccion);
-		this.conexionBaseDatos.insertarCancion(mCancion);
 	}
 	
 	private void crearConexionBaseDatos(){
-		if (this.conexionBaseDatos==null)
-			conexionBaseDatos = new BaseDatosHelper(this);
+		if (this.baseDatos==null)
+			baseDatos = new BaseDatosHelper(this);
 	}
-	
-	private static float aMinutos(long milli)
-	{
-		float ret=(float) (milli*1.666666666666666666666666667*Math.pow(10,-5));
-		return ret;
-	}
-	
-	
 	public void llenarBaseDatos(String directorio){
 		File f = new File(directorio);
 		if (f.exists()){
 			this.crearConexionBaseDatos();
-			if (this.conexionBaseDatos.existenCanciones()==false){ //si no hay canciones, que insterte todo en la base de datos
+			if (this.baseDatos.existenCanciones()==false){ //si no hay canciones, que insterte todo en la base de datos
 				ListadoArchivos.recorrerDirectorios(directorio,this);
 			}
 		}
-		*/
+	}
+	private Activity getActivity(){
+		return this;
+	}
+	private void busqueda(){
+		texto = (EditText)findViewById(R.id.txtBusqueda);
+		crearConexionBaseDatos();
+        // Obtenemos la lista de canciones
+        ArrayList<Cancion> canciones = baseDatos.buscarCanciones(texto.getText().toString());				
+        ListView lv = (ListView)findViewById(R.id.lista);		             
+        ItemCancionAdapter adapter = new ItemCancionAdapter(getActivity(), canciones);		             
+        lv.setAdapter(adapter);	
 	}
 
-@Override
-public void onCompletion(MediaPlayer arg0) {
-	// TODO Auto-generated method stub
-}
-	
+	@Override
+	public void onCompletion(MediaPlayer arg0) {
+		// TODO Auto-generated method stub
+	}
+		
 }

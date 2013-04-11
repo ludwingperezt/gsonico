@@ -4,6 +4,7 @@ import java.io.File;
 import modelos.BaseDatosHelper;
 import modelos.Cancion;
 import modelos.Metadatos;
+import modelos.Playlist;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -31,9 +32,14 @@ public class Reproductor extends Activity implements OnCompletionListener {
 	int estado=0;
 	int num_track=0;
 	public static final String directorioMusica = "/mnt/sdcard/music/";
-	final String[] listado = ListadoArchivos.devolverListadoArchivosDirectorios(Reproductor.directorioMusica);
-	
+	//final String[] listado = ListadoArchivos.devolverListadoArchivosDirectorios(Reproductor.directorioMusica);
+	private Cancion seleccionada;
+	private Cancion anterior;
+	private Cancion actual;
+	private Cancion siguiente;
+	private Playlist lista;
 	private BaseDatosHelper conexionBaseDatos;
+	private Bundle parametros;
 	
 	public void inicializarCronometro()
 	{
@@ -46,6 +52,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.reproducir);
+		this.crearConexionBaseDatos();
 		//Control de los TABS
 		Resources res = getResources();
 		 
@@ -67,8 +74,11 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		
 		tabs.setCurrentTab(0);
 		
-		//verifica que no se hayan insertado canciones a la db para llenarla
-		this.llenarBaseDatos(Reproductor.directorioMusica);
+		this.parametros = getIntent().getExtras();
+		if (this.parametros!=null){
+			this.seleccionada = this.parametros.getParcelable(MainActivity.KEY_CANCION_SELECCIONADA);
+			this.lista = this.parametros.getParcelable(MainActivity.KEY_PLAYLIST_SELECCIONADA);
+		}
 		
 		Button pausa = (Button) findViewById(R.id.play_pause);
 		Button siguiente = (Button) findViewById(R.id.next);
@@ -115,14 +125,21 @@ public class Reproductor extends Activity implements OnCompletionListener {
 				player.reset();
 				num_track=num_track+1;
 				try{					
-					player.setDataSource("/mnt/sdcard/music/" + listado[num_track]);
-					player.prepare();
-					player.start();
-					Toast.makeText(getApplicationContext(),"Duracion: "+ player.getDuration(), Toast.LENGTH_LONG).show();
-					insertarCancion("/mnt/sdcard/music/" + listado[num_track]); //inserta la cancion a la base de datos
-					inicializarCronometro();
-					tiempo.start();
-					//insertarCancion("/mnt/sdcard/music/" + listado[num_track]); //inserta la cancion a la base de datos
+					//player.setDataSource("/mnt/sdcard/music/" + listado[num_track]);
+					if (actual!=null){
+						//crearConexionBaseDatos();
+						Cancion tmp = conexionBaseDatos.obtenerCancion(actual.get_id()+1);
+						if (tmp!=null){
+							anterior = actual;
+							actual = tmp;
+							player.setDataSource(actual.getArchivoAudio());
+							player.prepare();
+							player.start();
+							Toast.makeText(getApplicationContext(),"Duracion: "+ player.getDuration(), Toast.LENGTH_LONG).show();
+							inicializarCronometro();
+							tiempo.start();	
+						}
+					}					
 				}catch(Exception e){	
 				}
 			}
@@ -138,7 +155,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 			}
 		});
 		
-		
+		/*
 		buscar.setOnClickListener(new View.OnClickListener() {			
 			@Override
 			public void onClick(View arg0) {
@@ -148,17 +165,24 @@ public class Reproductor extends Activity implements OnCompletionListener {
 				
 			}
 		});
-		
+		*/
 		
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		player = new MediaPlayer();
 		
 		try{
-			player.setDataSource("/mnt/sdcard/music/" + listado[num_track]);
-			player.prepare();
-			inicializarCronometro();
-			//player.start();
-			player.setOnCompletionListener(this);
+			//player.setDataSource("/mnt/sdcard/music/" + listado[num_track]);
+			if (this.seleccionada!=null){
+				File f = new File(this.seleccionada.getArchivoAudio());
+				if (f.exists()){
+					this.actual = seleccionada;
+					player.setDataSource(this.seleccionada.getArchivoAudio());
+					player.prepare();
+					inicializarCronometro();
+					//player.start();
+					player.setOnCompletionListener(this);
+				}				
+			}			
 		}catch(Exception e){	
 		}
 		
@@ -194,17 +218,12 @@ public class Reproductor extends Activity implements OnCompletionListener {
 
 	public void onCompletion(MediaPlayer arg0) {
 		Button sig = (Button) findViewById(R.id.next);
-		if (num_track==listado.length-1)
+		//if (num_track==listado.length-1)
+		//this.crearConexionBaseDatos();
+		if (conexionBaseDatos.obtenerCancion(actual.get_id()+1)==null)
 			player.stop();
 		else
 			sig.performClick();
-	}
-	
-	private void insertarCancion(String direccion){
-		this.crearConexionBaseDatos();
-		Metadatos mMeta = new Metadatos();
-		Cancion mCancion = mMeta.leerEtiquetasCancion(direccion);
-		this.conexionBaseDatos.insertarCancion(mCancion);
 	}
 	
 	private void crearConexionBaseDatos(){
@@ -219,7 +238,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		return ret;
 	}
 	
-	
+	/*
 	public void llenarBaseDatos(String directorio){
 		File f = new File(directorio);
 		if (f.exists()){
@@ -228,5 +247,5 @@ public class Reproductor extends Activity implements OnCompletionListener {
 				ListadoArchivos.recorrerDirectorios(directorio,this);
 			}
 		}
-	}
+	}*/
 }
