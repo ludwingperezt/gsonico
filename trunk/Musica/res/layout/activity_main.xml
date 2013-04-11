@@ -29,73 +29,21 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical" >
 
-                    <SeekBar
-				        android:id="@+id/SBTrayecto"
-				        android:layout_width="match_parent"
-				        android:layout_height="wrap_content"
-				        android:layout_above="@+id/play_pause"
-				        android:layout_centerHorizontal="true"
-				        android:max="100" />
-				
-				    <Button
-				        android:id="@+id/next"
-				        style="?android:attr/buttonStyleSmall"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_above="@+id/stop"
-				        android:layout_alignLeft="@+id/play_pause"
-				        android:layout_alignRight="@+id/play_pause"
-				        android:enabled="false"
-				        android:text="@string/next" />
-				
-				    <Chronometer
-				        android:id="@+id/tiempo"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_above="@+id/SBTrayecto"
-				        android:layout_alignParentRight="true"
-				        android:text="@string/chronometer" />
-
-				    <Button
-				        android:id="@+id/botonBuscar"
-				        style="?android:attr/buttonStyleSmall"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_alignLeft="@+id/stop"
-				        android:layout_alignParentBottom="true"
-				        android:layout_alignRight="@+id/stop"
-				        android:layout_marginBottom="22dp"
-				        android:enabled="false"
-				        android:text="@string/activityBusqueda" />
-
-				    <Button
-				        android:id="@+id/stop"
-				        style="?android:attr/buttonStyleSmall"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_above="@+id/botonBuscar"
-				        android:layout_alignLeft="@+id/next"
-				        android:layout_alignRight="@+id/next"
-				        android:enabled="false"
-				        android:text="@string/stop" />
-
-				    <Button
-				        android:id="@+id/play_pause"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_above="@+id/next"
-				        android:layout_centerHorizontal="true"
-				        android:enabled="false"
-				        android:text="@string/play_pause" />
-
-				    <Button
-				        android:id="@+id/cerrar"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_alignParentTop="true"
-				        android:layout_centerHorizontal="true"
-				        android:layout_marginTop="42dp"
-				        android:text="@string/reproductor" />
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="112dp"
+                        android:text="GSonico"
+                        android:shadowRadius="1.5"
+                        android:shadowDx="1"
+                        android:shadowDy="2"
+                        android:shadowColor="#A4C639"
+                        
+                        
+                        android:textSize="75sp" />
 
                 </RelativeLayout>
 
