@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".BusquedaCancionActivity"></activity>
+        <activity android:name="Reproductor"></activity>
     </application>
 
 </manifest>

@@ -13,17 +13,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:ems="10" >
+            android:ems="10" android:inputType="none">
 
             <requestFocus />
         </EditText>
 
         <Button
-            android:id="@+id/botonBusqueda"
+            android:id="@+id/regresar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Buscar" />
+            android:text="@string/buscar" />
 
     </LinearLayout>
 

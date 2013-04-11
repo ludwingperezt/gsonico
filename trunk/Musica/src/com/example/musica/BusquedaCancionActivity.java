@@ -2,7 +2,6 @@ package com.example.musica;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import modelos.BaseDatosHelper;
 import modelos.Cancion;
 import android.app.Activity;
@@ -15,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+@SuppressWarnings("unused")
 public class BusquedaCancionActivity extends Activity{
 	
 	private BaseDatosHelper baseDatos;
@@ -26,7 +26,7 @@ public class BusquedaCancionActivity extends Activity{
 		setContentView(R.layout.busquedacancion);
 		
 		crearConexion();
-		Button boton = (Button)findViewById(R.id.botonBusqueda);		
+		Button boton = (Button)findViewById(R.id.regresar);		
 		boton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {

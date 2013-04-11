@@ -10,5 +10,11 @@
     <string name="next">Next</string>
     <string name="stop">Stop</string>
     <string name="activityBusqueda">Buscar</string>
+    <string name="reproductor">Reproductor</string>
+    <string name="chronometer">Chronometer</string>
+    <string name="cerrar">Cerrar</string>
+    <string name="volver_a_reproductor">Volver a Reproductor</string>
+    <string name="buscar">Buscar</string>
+    <string name="todo">TODO</string>
 
 </resources>
