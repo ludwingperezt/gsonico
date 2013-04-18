@@ -38,7 +38,11 @@ public class MainActivity extends Activity implements OnCompletionListener{
 
 	private BaseDatosHelper baseDatos;
 	private EditText texto;
+	private EditText textoArtista;
+	private EditText textoAlbum;
 	private ListView lista;
+	private ListView listaArtista;
+	private ListView listaAlbum;
 	public static final String KEY_CANCION_SELECCIONADA = "seleccionada";
 	public static final String KEY_PLAYLIST_SELECCIONADA = "playlistseleccionado";
 
@@ -82,7 +86,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		 
 		spec=tabs.newTabSpec("mitab3");
 		spec.setContent(R.id.tab3);
-		spec.setIndicator("Canciones",
+		spec.setIndicator("Album",
 		    res.getDrawable(android.R.drawable.ic_popup_disk_full));
 		tabs.addTab(spec);
 		
@@ -100,6 +104,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		
 		tabs.setCurrentTab(0);
 		
+		//PESTAÑA DE CANCIONES Y BUSQUEDA
 		//listar todas las canciones
 		listarCanciones();
 		
@@ -148,9 +153,84 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			}
 			
 		});
+		
+		//MANEJO DE LA PESTAÑA DE ARTISTA
+		//listar
+		listarArtistas();
+		
+		Button botonBusquedaArtista = (Button)findViewById(R.id.botonBusquedaArtista);
+		botonBusquedaArtista.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		textoArtista = (EditText)findViewById(R.id.textArtista);
+		textoArtista.setOnKeyListener(new View.OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
+		
+		listaArtista = (ListView) findViewById(R.id.listaArtistas);
+		listaArtista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				// TODO Auto-generated method stub
+			}
+		});
+		
+		//MANEJO DE LA PESTAÑA DE ALBUM
+		listarAlbums();
+		
+		Button botonBusquedaAlbum = (Button)findViewById(R.id.botonBusquedaAlbum);
+		botonBusquedaAlbum.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		textoAlbum = (EditText)findViewById(R.id.textAlbum);
+		textoAlbum.setOnKeyListener(new View.OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
+		
+		listaAlbum = (ListView) findViewById(R.id.listaAlbum);
+		listaAlbum.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				// TODO Auto-generated method stub
+			}
+		});
 
+		
+		//MANEJO DE PLAYLIST
 	}
 	
+	private void listarAlbums() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void listarArtistas() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void crearConexionBaseDatos(){
 		if (this.baseDatos==null)
 			baseDatos = new BaseDatosHelper(this);
@@ -164,9 +244,11 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			}
 		}
 	}
+	
 	private Activity getActivity(){
 		return this;
 	}
+	
 	private void busqueda(){
 		texto = (EditText)findViewById(R.id.txtBusqueda);
 		crearConexionBaseDatos();

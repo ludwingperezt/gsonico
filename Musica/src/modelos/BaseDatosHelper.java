@@ -16,6 +16,9 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 	public static String TABLA_CANCION = "cancion";
 	public static String TABLA_PLAYLIST = "playlist";
 	public static String TABLA_PLAYLIST_CANCION = "playlistcancion";
+	public static String COLUMNA_ARTISTA = "Artista";
+	public static String COLUMNA_ALBUM = "Album";
+	public static String COLUMNA_GENERO = "Genero";
 	
 	private String tablaCancion = "CREATE  TABLE cancion (_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , Titulo TEXT, Artista TEXT, Album TEXT, Genero TEXT, Year TEXT, NumeroPista TEXT, ArchivoAudio TEXT, ArchivoLetra TEXT)";
 	private String tablaPlaylist = "CREATE  TABLE playlistcancion (_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , idCancion INTEGER, idPlaylist INTEGER, idCancionActual INTEGER, idPlaylistActual INTEGER,FOREIGN KEY(idCancion) REFERENCES cancion(_id), FOREIGN KEY(idPlaylist) REFERENCES playlist(_id))";
@@ -260,6 +263,7 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		baseDatos.close();
 		return temporal;
 	}
+	
 	/**
 	 * Usar esta funcion cuando se encuentre una cancion que ya no exista en el sistema de archivos
 	 * @param c
@@ -323,5 +327,89 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		
 		return valor;
 	}
-
+	
+	/**
+	 * Función para obtener una lista de items, que pueden ser artista, album o genero.
+	 * @param columna: lista con los items pertenecientes a la columna enviada como parametro
+	 * @return: lista de items de la columna
+	 */
+	public ArrayList<String> obtenerPor(String columna) {
+		// TODO Auto-generated method stub
+		SQLiteDatabase baseDatos = this.getReadableDatabase();
+		ArrayList<String> items = new ArrayList<String>();
+		String consulta = "SELECT "+columna+" FROM "+BaseDatosHelper.TABLA_CANCION+" GROUP BY "+columna;
+		Cursor c = baseDatos.rawQuery(consulta,null);
+	  	
+	  	c.moveToFirst();
+	  	while (c.isAfterLast()==false){
+	  		String tmpArtist = c.getString(0);
+	  		items.add(tmpArtist);
+	  		c.moveToNext();
+	  	}
+	  	  
+	  	c.close();
+	  	baseDatos.close();
+		return items;
+	}
+	
+	/**
+	 * Funcion que busca un item dentro de una columna, que puede ser artista, genero o album
+	 * @param columna dentro de la que se busca el item
+	 * @param parametro: item buscado
+	 * @return: lista de items encontrados
+	 */
+	public ArrayList<String> buscarPorColumna(String columna, String parametro) {
+		// TODO Auto-generated method stub
+		SQLiteDatabase baseDatos = this.getReadableDatabase();
+		ArrayList<String> items = new ArrayList<String>();
+		String consulta = "SELECT "+columna+" FROM "+BaseDatosHelper.TABLA_CANCION+" WHERE "+columna+" like '%"+ parametro +"%' GROUP BY "+columna;
+		Cursor c = baseDatos.rawQuery(consulta,null);
+	  	
+	  	c.moveToFirst();
+	  	while (c.isAfterLast()==false){
+	  		String tmpArtist = c.getString(0);
+	  		items.add(tmpArtist);
+	  		c.moveToNext();
+	  	}
+	  	  
+	  	c.close();
+	  	baseDatos.close();
+		return items;
+	}
+	
+	/**
+	 * Funcion que busca todas las canciones definidas por un parámetro de busqueda dentro de una columna específica
+	 * puede ser artista, album o género. 
+	 * @param columna: aquella que define la búsqueda
+	 * @param parametro: el parámetro buscado
+	 * @return Lista de canciones encontradas
+	 */
+	public ArrayList<Cancion> buscarCancionesPor(String columna, String parametro) {
+		// TODO Auto-generated method stub
+		SQLiteDatabase baseDatos = this.getReadableDatabase();
+		ArrayList<Cancion> items = new ArrayList<Cancion>();
+		
+		String consulta = "SELECT * FROM "+BaseDatosHelper.TABLA_CANCION+" WHERE "+columna+" = '"+parametro+"'";
+		Cursor c = baseDatos.rawQuery(consulta,null);
+	  	
+	  	c.moveToFirst();
+	  	while (c.isAfterLast()==false){
+	  		Cancion temporal = new Cancion();
+	  		temporal.set_id(c.getInt(0));
+	  		temporal.setTitulo(c.getString(1));
+	  		temporal.setArtista(c.getString(2));
+	  		temporal.setAlbum(c.getString(3));
+	  		temporal.setGenero(c.getString(4));
+	  		temporal.setYear(c.getString(5));
+	  		temporal.setNumeroPista(c.getString(6));
+	  		temporal.setArchivoAudio(c.getString(7));
+	  		temporal.setArchivoLetra(c.getString(8));
+	  		items.add(temporal);
+	  		c.moveToNext();
+	  	}
+	  	  
+	  	c.close();
+	  	baseDatos.close();
+		return items;
+	}
 }
