@@ -52,6 +52,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical" >
+                    
+                    <LinearLayout
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content" >
+				
+				        <EditText
+				            android:id="@+id/textArtista"
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:layout_weight="1"
+				            android:ems="10" >
+				
+				            <requestFocus />
+				        </EditText>
+				
+				        <Button
+				            android:id="@+id/botonBusquedaArtista"
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:layout_weight="1"
+				            android:text="Buscar" />
+				
+				    </LinearLayout>
+				
+				    <ListView
+				        android:id="@+id/listaArtistas"
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content" >
+				    </ListView>
 
                 </LinearLayout>
                 
@@ -60,6 +89,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical" >
+                    
+                    <LinearLayout
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content" >
+				
+				        <EditText
+				            android:id="@+id/textAlbum"
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:layout_weight="1"
+				            android:ems="10" >
+				
+				            <requestFocus />
+				        </EditText>
+				
+				        <Button
+				            android:id="@+id/botonBusquedaAlbum"
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:layout_weight="1"
+				            android:text="Buscar" />
+				
+				    </LinearLayout>
+				
+				    <ListView
+				        android:id="@+id/listaAlbum"
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content" >
+				    </ListView>
                     
                 </LinearLayout>
                 
