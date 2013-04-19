@@ -1,6 +1,13 @@
 package com.example.musica;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import javax.xml.transform.stream.StreamResult;
+
 import modelos.BaseDatosHelper;
 import modelos.Cancion;
 import modelos.Metadatos;
@@ -38,10 +45,12 @@ public class Reproductor extends Activity implements OnCompletionListener {
 	private Cancion anterior;
 	private Cancion actual;
 	private Cancion siguiente;
+	private String letraActual;
 	private Playlist lista;
 	private BaseDatosHelper conexionBaseDatos;
 	private Bundle parametros;
 	private TextView Meta;
+	private TextView mostrarLetra;
 	public void inicializarCronometro()
 	{
 		elapsed=0;
@@ -75,6 +84,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		
 		tabs.setCurrentTab(0);
 		Meta=(TextView)findViewById(R.id.txtInfo);
+		mostrarLetra=(TextView)findViewById(R.id.letra);
 		this.parametros = getIntent().getExtras();
 		if (this.parametros!=null){
 			this.seleccionada = conexionBaseDatos.obtenerCancion(this.parametros.getInt(MainActivity.KEY_CANCION_SELECCIONADA));
@@ -125,7 +135,6 @@ public class Reproductor extends Activity implements OnCompletionListener {
 				player.reset();
 				num_track=num_track+1;
 				try{					
-					//player.setDataSource("/mnt/sdcard/music/" + listado[num_track]);
 					if (actual!=null){
 						//crearConexionBaseDatos();
 						Cancion tmp = conexionBaseDatos.obtenerCancion(actual.get_id()+1);
@@ -174,7 +183,6 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		player = new MediaPlayer();
 		
 		try{
-			//player.setDataSource("/mnt/sdcard/music/" + listado[num_track]);
 			if (this.seleccionada!=null){
 				File f = new File(this.seleccionada.getArchivoAudio());
 				if (f.exists()){
@@ -241,11 +249,18 @@ public class Reproductor extends Activity implements OnCompletionListener {
 			conexionBaseDatos = new BaseDatosHelper(this);
 	}
 	
-	@SuppressWarnings("unused")
 	private static float aMinutos(long milli)
 	{
 		float ret=(float) (milli*1.666666666666666666666666667*Math.pow(10,-5));
 		return ret;
+	}
+	
+	private void cargarLetra() throws IOException{
+		if (letraActual!=actual.getArchivoLetra()){
+			letraActual=actual.getArchivoLetra();
+			BufferedReader br = new BufferedReader(new InputStreamReader(openFileInput(letraActual)));
+			mostrarLetra.setText(br.readLine());			
+		}
 	}
 	
 	/*
