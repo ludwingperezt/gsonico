@@ -71,7 +71,7 @@
 				        android:layout_above="@+id/cerrar"
 				        android:layout_centerHorizontal="true"
 				        android:layout_marginBottom="36dp"
-				        android:drawableRight="@drawable/Stop32" />
+				        android:drawableRight="@drawable/stop32" />
 
 				    <Button
 				        android:id="@+id/next"
@@ -79,9 +79,8 @@
 				        android:layout_height="wrap_content"
 				        android:layout_above="@+id/stop"
 				        android:layout_below="@+id/SBTrayecto"
-				        android:layout_toLeftOf="@+id/tiempo"
 				        android:layout_toRightOf="@+id/play_pause"
-				        android:drawableRight="@drawable/Skip-forward32" />
+				        android:drawableRight="@drawable/skip_forward32" />
 
 				    <Button
 				        android:id="@+id/play_pause"
@@ -89,7 +88,7 @@
 				        android:layout_height="wrap_content"
 				        android:layout_above="@+id/stop"
 				        android:layout_alignLeft="@+id/stop"
-				        android:drawableRight="@drawable/Play48" />
+				        android:drawableRight="@drawable/play48" />
 
                 </RelativeLayout>
 

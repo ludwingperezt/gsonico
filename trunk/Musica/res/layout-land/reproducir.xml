@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="landscape" >
+    android:orientation="horizontal" >
 
     <TabHost
         android:id="@android:id/tabhost"
@@ -42,8 +42,7 @@
 				        android:layout_width="wrap_content"
 				        android:layout_height="wrap_content"
 				        android:layout_above="@+id/SBTrayecto"
-				        android:layout_alignParentRight="true"
-				        android:text="@string/chronometer" />
+				        android:layout_alignParentRight="true"/>
 
 				    <Button
 				        android:id="@+id/next"
@@ -52,7 +51,7 @@
 				        android:layout_above="@+id/stop"
 				        android:layout_below="@+id/SBTrayecto"
 				        android:layout_toRightOf="@+id/play_pause"
-				        android:drawableRight="@drawable/Skip-forward32" />
+				        android:drawableRight="@drawable/skip_forward32" />
 
 				    <Button
 				        android:id="@+id/play_pause"
@@ -60,7 +59,7 @@
 				        android:layout_height="wrap_content"
 				        android:layout_above="@+id/stop"
 				        android:layout_alignLeft="@+id/stop"
-				        android:drawableRight="@drawable/Play48" />
+				        android:drawableRight="@drawable/play48" />
 
 				    <TextView
 				        android:id="@+id/txtInfo"
@@ -77,8 +76,7 @@
 				        android:layout_height="wrap_content"
 				        android:layout_alignLeft="@+id/next"
 				        android:layout_alignParentBottom="true"
-				        android:layout_below="@+id/next"
-				        android:text="@string/cerrar" />
+				        android:layout_below="@+id/next" />
 
 				    <Button
 				        android:id="@+id/stop"
@@ -87,7 +85,7 @@
 				        android:layout_height="wrap_content"
 				        android:layout_alignParentBottom="true"
 				        android:layout_centerHorizontal="true"
-				        android:drawableRight="@drawable/Stop32" />
+				        android:drawableRight="@drawable/stop32" />
 
                 </RelativeLayout>
 

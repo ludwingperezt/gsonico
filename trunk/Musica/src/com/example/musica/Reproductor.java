@@ -31,7 +31,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-@SuppressLint("SdCardPath")
+@SuppressLint({ "SdCardPath", "ShowToast" })
 public class Reproductor extends Activity implements OnCompletionListener {
 	MediaPlayer player;
 	Chronometer tiempo;
@@ -53,6 +53,13 @@ public class Reproductor extends Activity implements OnCompletionListener {
 	private TextView mostrarLetra;
 	public void inicializarCronometro()
 	{
+		try {
+			cargarLetra();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Toast.makeText(getApplicationContext(), "No se encontro el archivo de letra especificado.", Toast.LENGTH_LONG).show();
+		}		
 		elapsed=0;
 		tiempo.setBase(SystemClock.elapsedRealtime());
 	}
@@ -84,7 +91,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		
 		tabs.setCurrentTab(0);
 		Meta=(TextView)findViewById(R.id.txtInfo);
-		mostrarLetra=(TextView)findViewById(R.id.letra);
+		//mostrarLetra=(TextView)findViewById(R.id.letra);
 		this.parametros = getIntent().getExtras();
 		if (this.parametros!=null){
 			this.seleccionada = conexionBaseDatos.obtenerCancion(this.parametros.getInt(MainActivity.KEY_CANCION_SELECCIONADA));
@@ -256,11 +263,12 @@ public class Reproductor extends Activity implements OnCompletionListener {
 	}
 	
 	private void cargarLetra() throws IOException{
-		if (letraActual!=actual.getArchivoLetra()){
-			letraActual=actual.getArchivoLetra();
-			BufferedReader br = new BufferedReader(new InputStreamReader(openFileInput(letraActual)));
-			mostrarLetra.setText(br.readLine());			
-		}
+		if (actual.getArchivoLetra()!="")
+			if (letraActual!=actual.getArchivoLetra()){
+				letraActual=actual.getArchivoLetra();
+				BufferedReader br = new BufferedReader(new InputStreamReader(openFileInput(letraActual)));
+				mostrarLetra.setText(br.readLine());		
+			}
 	}
 	
 	/*
