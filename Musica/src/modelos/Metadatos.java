@@ -57,13 +57,13 @@ public class Metadatos {
     	
     	Cancion cancion = new Cancion();
     	
-    	cancion.setAlbum(this.getAlbum());
+    	cancion.setAlbum(this.getAlbum().replaceAll("'", ""));
     	cancion.setArchivoAudio(this.getDireccion());
-    	cancion.setArtista(this.getArtista());
-    	cancion.setGenero(this.getGenero());
+    	cancion.setArtista(this.getArtista().replaceAll("'", ""));
+    	cancion.setGenero(this.getGenero().replaceAll("'", ""));
     	cancion.setNumeroPista(Integer.toString(this.getNumeroPista()));
-    	cancion.setTitulo(this.getTitulo());
-    	cancion.setYear(this.getYear());
+    	cancion.setTitulo(this.getTitulo().replaceAll("'", ""));
+    	cancion.setYear(this.getYear().replaceAll("'", ""));
     	
     	return cancion;
     }

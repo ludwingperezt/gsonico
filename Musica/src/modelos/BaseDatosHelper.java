@@ -1,5 +1,6 @@
 package modelos;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.content.ContentValues;
@@ -91,6 +92,18 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 			baseDatos.close();
 				
 	}
+	
+	public void verificarItems(){
+		ArrayList<Cancion> lista = this.obtenerCanciones();
+		for (Cancion c:lista){
+			File f = new File(c.getArchivoAudio());
+			if (f.exists()==false){
+				this.eliminarCancion(c);
+			}
+		}
+		//verificar playlists tambien
+	}
+	
 	
 	/**
 	 * Modifica los datos de una canción, dentro de la db
@@ -270,6 +283,12 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 	 */
 	public void eliminarCancion(Cancion c){
 		SQLiteDatabase baseDatos = this.getReadableDatabase();
+		
+		String consulta1 = "DELETE FROM "+BaseDatosHelper.TABLA_PLAYLIST_CANCION+" WHERE idCancion = "+Integer.toString(c.get_id());
+		String consulta = "DELETE FROM "+BaseDatosHelper.TABLA_CANCION+" WHERE _id = "+Integer.toString(c.get_id());
+		
+		baseDatos.execSQL(consulta1);
+		baseDatos.execSQL(consulta);
 		
 		baseDatos.close();
 	}

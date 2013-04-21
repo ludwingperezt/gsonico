@@ -47,8 +47,11 @@ public class ListadoArchivos {
             	//insertar a la db
             	BaseDatosHelper db = new BaseDatosHelper(contexto);
             	Metadatos mMeta = new Metadatos();
-        		Cancion mCancion = mMeta.leerEtiquetasCancion(f.getAbsolutePath());
-        		db.insertarCancionDirecto(mCancion);
+            	String direccion = f.getAbsolutePath();
+            	Cancion mCancion = mMeta.leerEtiquetasCancion(direccion);
+            	if (direccion.contains("'")==false){
+            		db.insertarCancion(mCancion);
+            	}
             }
         }
         

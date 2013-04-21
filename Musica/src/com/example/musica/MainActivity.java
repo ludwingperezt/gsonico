@@ -282,9 +282,11 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		File f = new File(directorio);
 		if (f.exists()){
 			this.crearConexionBaseDatos();
-			if (this.baseDatos.existenCanciones()==false){ //si no hay canciones, que insterte todo en la base de datos
+			//if (this.baseDatos.existenCanciones()==false){ //si no hay canciones, que insterte todo en la base de datos
 				ListadoArchivos.recorrerDirectorios(directorio,this);
-			}
+			//}
+			//verificar integridad de la base de datos
+				baseDatos.verificarItems();
 		}
 	}
 	
