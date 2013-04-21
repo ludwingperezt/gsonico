@@ -1,0 +1,90 @@
+package com.example.musica;
+
+import java.io.File;
+import java.util.ArrayList;
+
+import modelos.BaseDatosHelper;
+import modelos.Cancion;
+
+import android.app.Activity;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
+
+public class ItemAlbumAdapter extends BaseAdapter {
+	
+	protected Activity activity;
+	protected ArrayList<String> items;
+	protected Context contexto;
+	
+	/*
+	public ItemAlbumAdapter(Activity activity, ArrayList<String> items){
+		this.activity = activity;
+	    this.items = items;
+	}*/
+	
+	public ItemAlbumAdapter(Activity activity, ArrayList<String> items, Context contexto){
+		this.activity = activity;
+	    this.items = items;
+	    this.contexto = contexto;
+	}
+	
+	public void setContext(Context context){
+		this.contexto = context;
+	}
+
+	@Override
+	public int getCount() {
+		// TODO Auto-generated method stub
+		return items.size();
+	}
+
+	@Override
+	public Object getItem(int position) {
+		// TODO Auto-generated method stub
+		return this.items.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		// TODO Auto-generated method stub
+		return -1;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		// TODO Auto-generated method stub
+		
+		View vi=convertView;
+        
+	    if(convertView == null) {
+	      LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	      vi = inflater.inflate(R.layout.lista_album_item, null);
+	    }
+	             
+	    String item = items.get(position);
+	    
+	    TextView txtTitulo = (TextView) vi.findViewById(R.id.albumTitulo);
+	    txtTitulo.setText(item);	
+	    
+	    BaseDatosHelper db = new BaseDatosHelper(this.contexto);
+	    
+	  //HABRÁ PROBLEMAS CUANDO EXISTAN DOS ALBUMS CON EL MISMO NOMBRE, PORQUE LA IMAGEN Y EL ARTISTA SE OBTIENE DE LA PRIMERA CANCION
+	    ArrayList<Cancion> canciones = db.buscarCancionesPor(BaseDatosHelper.COLUMNA_ALBUM, item);
+	    File f = new File(canciones.get(0).getArchivoAudio());	    
+	    String carpetaAlbum = f.getParent();
+	    /*ImageView image = (ImageView) vi.findViewById(R.id.imagen);
+	    int imageResource = activity.getResources().getIdentifier(item.getRutaImagen(), null, activity.getPackageName());
+	    image.setImageDrawable(activity.getResources().getDrawable(imageResource));*/
+	    
+	    TextView txtArtista = (TextView) vi.findViewById(R.id.albumArtista);
+	    txtArtista.setText(canciones.get(0).getArtista());	
+	    
+		
+		return null;
+	}
+
+}
