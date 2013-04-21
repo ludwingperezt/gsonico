@@ -190,6 +190,8 @@ public class MainActivity extends Activity implements OnCompletionListener{
 				String seleccion = (String)listaArtista.getItemAtPosition(position);
 				Playlist mPlaylist = new Playlist();
 				mPlaylist.setNombre(seleccion);
+				mostrarTexto(seleccion);
+				/*
 				mPlaylist.setListaCanciones(baseDatos.buscarCancionesPor(BaseDatosHelper.COLUMNA_ARTISTA, seleccion));
 				Intent reproductorActivity = new Intent(arg0.getContext(),Reproductor.class);
 				Bundle parametros = new Bundle();
@@ -197,6 +199,8 @@ public class MainActivity extends Activity implements OnCompletionListener{
 				//b.put
 				reproductorActivity.putExtras(parametros);
 				//startActivity(reproductorActivity);
+
+				 */
 			}
 		});
 		
@@ -232,6 +236,8 @@ public class MainActivity extends Activity implements OnCompletionListener{
 				String seleccion = (String)listaAlbum.getItemAtPosition(position);
 				Playlist mPlaylist = new Playlist();
 				mPlaylist.setNombre(seleccion);
+				mostrarTexto(seleccion);
+				/*
 				mPlaylist.setListaCanciones(baseDatos.buscarCancionesPor(BaseDatosHelper.COLUMNA_ALBUM, seleccion));
 				Intent reproductorActivity = new Intent(arg0.getContext(),Reproductor.class);
 				Bundle parametros = new Bundle();
@@ -239,11 +245,17 @@ public class MainActivity extends Activity implements OnCompletionListener{
 				//b.put
 				reproductorActivity.putExtras(parametros);
 				//startActivity(reproductorActivity);
+				 * 
+				 */
 			}
 		});
 
 		
 		//MANEJO DE PLAYLIST
+	}
+	
+	private void mostrarTexto(String tx){
+		Toast.makeText(this, tx, Toast.LENGTH_SHORT).show();
 	}
 	
 	private void listarAlbums() {

@@ -49,10 +49,14 @@ public class ItemArtistaAdapter extends BaseAdapter{
 	    }
 	             
 	    String item = items.get(position);
-	         
+	    
 	    TextView txtTitulo = (TextView) vi.findViewById(R.id.artistaNombre);
-	    txtTitulo.setText(item);	         
-	   
+	    if ((item.equals(""))||(item==null)){
+	    	txtTitulo.setText("Artista desconocido");	         
+	    }
+	    else{
+	    	txtTitulo.setText(item);	         
+	    }
 	    return vi;
 	}
 
