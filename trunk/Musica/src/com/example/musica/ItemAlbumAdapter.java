@@ -67,24 +67,38 @@ public class ItemAlbumAdapter extends BaseAdapter {
 	             
 	    String item = items.get(position);
 	    
-	    TextView txtTitulo = (TextView) vi.findViewById(R.id.albumTitulo);
-	    txtTitulo.setText(item);	
-	    
-	    BaseDatosHelper db = new BaseDatosHelper(this.contexto);
-	    
-	  //HABRÁ PROBLEMAS CUANDO EXISTAN DOS ALBUMS CON EL MISMO NOMBRE, PORQUE LA IMAGEN Y EL ARTISTA SE OBTIENE DE LA PRIMERA CANCION
-	    ArrayList<Cancion> canciones = db.buscarCancionesPor(BaseDatosHelper.COLUMNA_ALBUM, item);
-	    File f = new File(canciones.get(0).getArchivoAudio());	    
-	    String carpetaAlbum = f.getParent();
-	    /*ImageView image = (ImageView) vi.findViewById(R.id.imagen);
-	    int imageResource = activity.getResources().getIdentifier(item.getRutaImagen(), null, activity.getPackageName());
-	    image.setImageDrawable(activity.getResources().getDrawable(imageResource));*/
-	    
-	    TextView txtArtista = (TextView) vi.findViewById(R.id.albumArtista);
-	    txtArtista.setText(canciones.get(0).getArtista());	
-	    
-		
-		return null;
+	    if ((item.equals(""))||(item==null)){
+	    	TextView txtTitulo = (TextView) vi.findViewById(R.id.albumTitulo);
+		    txtTitulo.setText("Album desconocido");
+		    
+		    TextView txtArtista = (TextView) vi.findViewById(R.id.albumArtista);
+		    txtArtista.setText("Artista desconocido");
+	    }
+	    else{
+	    	TextView txtTitulo = (TextView) vi.findViewById(R.id.albumTitulo);
+		    txtTitulo.setText(item);	
+		    
+		    BaseDatosHelper db = new BaseDatosHelper(this.contexto);
+		    
+		  //HABRÁ PROBLEMAS CUANDO EXISTAN DOS ALBUMS CON EL MISMO NOMBRE, PORQUE LA IMAGEN Y EL ARTISTA SE OBTIENE DE LA PRIMERA CANCION
+		    ArrayList<Cancion> canciones = db.buscarCancionesPor(BaseDatosHelper.COLUMNA_ALBUM, item);
+		    Cancion tmp = canciones.get(0);
+		    if (tmp!=null){
+		    	File f = new File(tmp.getArchivoAudio());	    
+			    String carpetaAlbum = f.getParent();
+			    /*ImageView image = (ImageView) vi.findViewById(R.id.imagen);
+			    int imageResource = activity.getResources().getIdentifier(item.getRutaImagen(), null, activity.getPackageName());
+			    image.setImageDrawable(activity.getResources().getDrawable(imageResource));*/
+			    
+			    TextView txtArtista = (TextView) vi.findViewById(R.id.albumArtista);
+			    txtArtista.setText(tmp.getArtista());
+		    }
+		    else{
+		    	TextView txtArtista = (TextView) vi.findViewById(R.id.albumArtista);
+			    txtArtista.setText("Artista desconocido");
+		    }		    	
+	    }
+		return vi;
 	}
 
 }
