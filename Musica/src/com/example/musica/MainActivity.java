@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import modelos.BaseDatosHelper;
 import modelos.Cancion;
 import modelos.Metadatos;
+import modelos.Playlist;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -113,13 +114,13 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				
+				/*
 				texto = (EditText)findViewById(R.id.txtBusqueda);				
 				crearConexionBaseDatos();
 		        ArrayList<Cancion> canciones = baseDatos.buscarCanciones(texto.getText().toString());				
 		        ListView lv = (ListView)findViewById(R.id.lista);		             
 		        ItemCancionAdapter adapter = new ItemCancionAdapter(getActivity(), canciones);		             
-		        lv.setAdapter(adapter);		        
+		        lv.setAdapter(adapter);		     */   
 				//String value = verificar(texto.getText().toString());
 				//mostrar(value);				
 				
@@ -164,6 +165,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
+				busquedaArtista();
 				
 			}
 		});
@@ -174,6 +176,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				// TODO Auto-generated method stub
+				busquedaArtista();
 				return false;
 			}
 		});
@@ -183,6 +186,17 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
 				// TODO Auto-generated method stub
+				
+				String seleccion = (String)listaArtista.getItemAtPosition(position);
+				Playlist mPlaylist = new Playlist();
+				mPlaylist.setNombre(seleccion);
+				mPlaylist.setListaCanciones(baseDatos.buscarCancionesPor(BaseDatosHelper.COLUMNA_ARTISTA, seleccion));
+				Intent reproductorActivity = new Intent(arg0.getContext(),Reproductor.class);
+				Bundle parametros = new Bundle();
+				//PASAR EL PLAYLIST AL REPRODUCTOR
+				//b.put
+				reproductorActivity.putExtras(parametros);
+				//startActivity(reproductorActivity);
 			}
 		});
 		
@@ -195,7 +209,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
+				busquedaAlbum();
 			}
 		});
 		
@@ -205,6 +219,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			@Override
 			public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
 				// TODO Auto-generated method stub
+				busquedaAlbum();
 				return false;
 			}
 		});
@@ -214,6 +229,16 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
 				// TODO Auto-generated method stub
+				String seleccion = (String)listaAlbum.getItemAtPosition(position);
+				Playlist mPlaylist = new Playlist();
+				mPlaylist.setNombre(seleccion);
+				mPlaylist.setListaCanciones(baseDatos.buscarCancionesPor(BaseDatosHelper.COLUMNA_ALBUM, seleccion));
+				Intent reproductorActivity = new Intent(arg0.getContext(),Reproductor.class);
+				Bundle parametros = new Bundle();
+				//PASAR EL PLAYLIST AL REPRODUCTOR
+				//b.put
+				reproductorActivity.putExtras(parametros);
+				//startActivity(reproductorActivity);
 			}
 		});
 
@@ -223,12 +248,18 @@ public class MainActivity extends Activity implements OnCompletionListener{
 	
 	private void listarAlbums() {
 		// TODO Auto-generated method stub
-		
+		ArrayList<String> albums = baseDatos.obtenerPor(BaseDatosHelper.COLUMNA_ALBUM);
+		ListView lv = (ListView)findViewById(R.id.listaAlbum);
+		ItemAlbumAdapter adapter = new ItemAlbumAdapter(getActivity(),albums,this);
+		lv.setAdapter(adapter);
 	}
 
 	private void listarArtistas() {
 		// TODO Auto-generated method stub
-		
+		ArrayList<String> artistas = baseDatos.obtenerPor(BaseDatosHelper.COLUMNA_ARTISTA);
+		ListView lv = (ListView)findViewById(R.id.listaArtistas);
+		ItemArtistaAdapter adapter = new ItemArtistaAdapter(getActivity(),artistas);
+		lv.setAdapter(adapter);
 	}
 
 	private void crearConexionBaseDatos(){
@@ -264,6 +295,24 @@ public class MainActivity extends Activity implements OnCompletionListener{
         ListView lv = (ListView)findViewById(R.id.lista);		             
         ItemCancionAdapter adapter = new ItemCancionAdapter(getActivity(), canciones);		             
         lv.setAdapter(adapter);	
+	}
+	
+	private void busquedaArtista(){
+		textoArtista = (EditText)findViewById(R.id.textArtista);				
+		crearConexionBaseDatos();
+        ArrayList<String> artistas = baseDatos.buscarPorColumna(BaseDatosHelper.COLUMNA_ARTISTA, textoArtista.getText().toString());
+        ListView lv = (ListView)findViewById(R.id.listaArtistas);
+        ItemArtistaAdapter adapter = new ItemArtistaAdapter(getActivity(), artistas);
+        lv.setAdapter(adapter);
+	}
+	
+	private void busquedaAlbum(){
+		textoAlbum = (EditText)findViewById(R.id.textAlbum);
+		crearConexionBaseDatos();
+		ArrayList<String> albums = baseDatos.buscarPorColumna(BaseDatosHelper.COLUMNA_ALBUM, textoAlbum.getText().toString());
+		ListView lv = (ListView)findViewById(R.id.listaAlbum);
+		ItemAlbumAdapter adapter = new ItemAlbumAdapter(getActivity(), albums,this);
+		lv.setAdapter(adapter);
 	}
 
 	@Override
