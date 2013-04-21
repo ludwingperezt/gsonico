@@ -1,10 +1,18 @@
 package modelos;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-public class Playlist {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Playlist implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9154774227059738784L;
 	private int _id;
 	private String nombre;
 	private GregorianCalendar fechaCreacion;
@@ -47,5 +55,6 @@ public class Playlist {
 	public void setListaCanciones(ArrayList<Cancion> listaCanciones) {
 		this.listaCanciones = listaCanciones;
 	}
+
 
 }
