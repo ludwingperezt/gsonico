@@ -144,10 +144,16 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
 				// TODO Auto-generated method stub
-				Cancion seleccionado = (Cancion)lista.getItemAtPosition(position);				
+				Cancion seleccionado = (Cancion)lista.getItemAtPosition(position);
 				Intent nuevaActividad = new Intent(arg0.getContext(),Reproductor.class);
 				Bundle b = new Bundle();
-				//b.putParcelable(MainActivity.KEY_CANCION_SELECCIONADA, seleccionado);
+				//////////////////////////////////////////////////////////////////////
+				Playlist resultado = new Playlist();
+				resultado.setNombre("Playlist");
+				ItemCancionAdapter adaptador = (ItemCancionAdapter)lista.getAdapter();
+				resultado.setListaCanciones(adaptador.getItems());
+				//b.putSerializable(MainActivity.KEY_PLAYLIST_SELECCIONADA, resultado);
+				/////////////////////////////////////////////////////////////////////				
 				b.putInt(MainActivity.KEY_CANCION_SELECCIONADA, seleccionado.get_id());
 				nuevaActividad.putExtras(b);
 				startActivity(nuevaActividad);
@@ -190,17 +196,14 @@ public class MainActivity extends Activity implements OnCompletionListener{
 				String seleccion = (String)listaArtista.getItemAtPosition(position);
 				Playlist mPlaylist = new Playlist();
 				mPlaylist.setNombre(seleccion);
-				mostrarTexto(seleccion);
-				/*
+				//mostrarTexto(seleccion);
 				mPlaylist.setListaCanciones(baseDatos.buscarCancionesPor(BaseDatosHelper.COLUMNA_ARTISTA, seleccion));
 				Intent reproductorActivity = new Intent(arg0.getContext(),Reproductor.class);
 				Bundle parametros = new Bundle();
 				//PASAR EL PLAYLIST AL REPRODUCTOR
-				//b.put
+				parametros.putSerializable(MainActivity.KEY_PLAYLIST_SELECCIONADA, mPlaylist);
 				reproductorActivity.putExtras(parametros);
 				//startActivity(reproductorActivity);
-
-				 */
 			}
 		});
 		
@@ -236,17 +239,15 @@ public class MainActivity extends Activity implements OnCompletionListener{
 				String seleccion = (String)listaAlbum.getItemAtPosition(position);
 				Playlist mPlaylist = new Playlist();
 				mPlaylist.setNombre(seleccion);
-				mostrarTexto(seleccion);
-				/*
+				//mostrarTexto(seleccion);				
 				mPlaylist.setListaCanciones(baseDatos.buscarCancionesPor(BaseDatosHelper.COLUMNA_ALBUM, seleccion));
 				Intent reproductorActivity = new Intent(arg0.getContext(),Reproductor.class);
 				Bundle parametros = new Bundle();
 				//PASAR EL PLAYLIST AL REPRODUCTOR
-				//b.put
+				parametros.putSerializable(MainActivity.KEY_PLAYLIST_SELECCIONADA, mPlaylist);
 				reproductorActivity.putExtras(parametros);
 				//startActivity(reproductorActivity);
-				 * 
-				 */
+
 			}
 		});
 

@@ -1,10 +1,13 @@
 package modelos;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.Serializable;
 
-public class Cancion implements Parcelable {
+public class Cancion implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7625267288948834062L;
 	private int _id;
 	private String titulo;
 	private String artista; 
@@ -14,6 +17,10 @@ public class Cancion implements Parcelable {
 	private String numeroPista;
 	private String archivoAudio;
 	private String archivoLetra;
+	
+	public Cancion(){
+		
+	}
 	
 	public int get_id() {
 		return _id;
@@ -73,14 +80,4 @@ public class Cancion implements Parcelable {
     	String total = this.getTitulo()+" "+this.getArtista()+" "+this.getAlbum();
     	return total;
     }
-	@Override
-	public int describeContents() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		// TODO Auto-generated method stub
-		
-	}
 }

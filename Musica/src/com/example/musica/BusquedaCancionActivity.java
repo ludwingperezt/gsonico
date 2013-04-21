@@ -65,7 +65,7 @@ public class BusquedaCancionActivity extends Activity{
 				//mostrar(Integer.toString(seleccionado.get_id())+" "+seleccionado.getAutor()+" "+seleccionado.getTitulo());
 				Intent i = new Intent();
 				Bundle b = new Bundle();
-				b.putParcelable("seleccionado", seleccionado);
+				b.putSerializable("seleccionado", seleccionado);
 				i.putExtras(b);
 				setResult(RESULT_OK,i);
 				finish();

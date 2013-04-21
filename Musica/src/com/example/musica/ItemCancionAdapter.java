@@ -23,6 +23,10 @@ public class ItemCancionAdapter extends BaseAdapter {
 	    this.items = items;
 	}
 
+	public ArrayList<Cancion> getItems(){
+		return this.items;
+	}
+	
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
