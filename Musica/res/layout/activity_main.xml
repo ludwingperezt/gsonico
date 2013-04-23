@@ -35,15 +35,41 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
-                        android:layout_marginTop="112dp"
-                        android:text="GSonico"
-                        android:shadowRadius="1.5"
+                        android:layout_marginTop="57dp"
+                        android:shadowColor="#A4C639"
                         android:shadowDx="1"
                         android:shadowDy="2"
-                        android:shadowColor="#A4C639"
-                        
-                        
+                        android:shadowRadius="1.5"
+                        android:text="GSonico"
                         android:textSize="75sp" />
+
+                    <EditText
+                        android:id="@+id/txtRuta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/btnUpdate"
+                        android:layout_alignParentLeft="true"
+                        android:ems="10"
+                        android:text="Music"
+                        android:textSize="22sp" />
+
+                    <Button
+                        android:id="@+id/btnUpdate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/txtRuta"
+                        android:drawableRight="@drawable/counterclockwise_arrow32" 
+                         />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar1"
+                        style="?android:attr/progressBarStyleLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="63dp" />
 
                 </RelativeLayout>
 
