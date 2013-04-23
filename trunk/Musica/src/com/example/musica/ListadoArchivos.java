@@ -50,7 +50,7 @@ public class ListadoArchivos {
             	String direccion = f.getAbsolutePath();
             	Cancion mCancion = mMeta.leerEtiquetasCancion(direccion);
             	if (direccion.contains("'")==false){
-            		db.insertarCancionDirecto(mCancion);
+            		db.insertarCancion(mCancion);
             	}
             }
         }

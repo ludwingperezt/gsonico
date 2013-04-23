@@ -1,12 +1,14 @@
 package modelos;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.annotation.SuppressLint;
 
+@SuppressLint("SimpleDateFormat")
 public class Playlist implements Serializable {
 	
 	/**
@@ -16,8 +18,8 @@ public class Playlist implements Serializable {
 	private int _id;
 	private String nombre;
 	private GregorianCalendar fechaCreacion;
-	private boolean aleatoria;
-	private boolean repetir;
+	private boolean aleatoria = false;
+	private boolean repetir = true;
 	
 	private ArrayList<Cancion> listaCanciones;
 	
@@ -55,6 +57,19 @@ public class Playlist implements Serializable {
 	public void setListaCanciones(ArrayList<Cancion> listaCanciones) {
 		this.listaCanciones = listaCanciones;
 	}
+	public GregorianCalendar getFechaCreacion(){
+		return this.fechaCreacion;
+	}
+	public void setFechaCreacion(String fecha){
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+			this.fechaCreacion = new GregorianCalendar();
+			this.fechaCreacion.setTime(sdf.parse(fecha));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+		}
+	}
+	
 
 
 }
