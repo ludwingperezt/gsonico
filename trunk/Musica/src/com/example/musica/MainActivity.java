@@ -54,7 +54,8 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		
 		crearConexionBaseDatos();
 		//verifica que no se hayan insertado canciones a la db para llenarla
-		this.llenarBaseDatos(Reproductor.directorioMusica);
+		
+		//this.llenarBaseDatos(Reproductor.directorioMusica);
 		/*
 		Button player = (Button) findViewById(R.id.cerrar);
 		player.setOnClickListener(new View.OnClickListener() {
@@ -253,6 +254,35 @@ public class MainActivity extends Activity implements OnCompletionListener{
 
 		
 		//MANEJO DE PLAYLIST
+		
+		//
+		
+		Button botonActualizarDB = (Button)findViewById(R.id.btnUpdate);
+		botonActualizarDB.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				EditText et = (EditText)findViewById(R.id.txtRuta);
+				String direccion = et.getText().toString();
+				llenarBaseDatos(direccion);
+				listarAlbums();
+				listarArtistas();
+				listarCanciones();
+			}
+		});
+		
+		Button cerrar = (Button)findViewById(R.id.botonSalir);
+		cerrar.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				//finish();
+				System.exit(0);
+				
+			}
+		});
 	}
 	
 	private void mostrarTexto(String tx){
