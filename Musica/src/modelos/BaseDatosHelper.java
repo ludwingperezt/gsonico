@@ -55,7 +55,7 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 	 */
 	public void insertarCancion(Cancion mCancion){
 		//inserta la cancion solamente si no existe en la db
-		if (this.exsiteCancion(mCancion.getArchivoAudio())==false){
+		if (this.existeCancion(mCancion.getArchivoAudio())==false){
 			SQLiteDatabase baseDatos = this.getWritableDatabase();
 			
 			ContentValues parametros = new ContentValues();
@@ -127,10 +127,12 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 	}
 	
 	/**
-	 * Funcion para insertar un nuevo Playlist a la base de datos. Solamente inserta si el playlist con el nombre especificado no existe en la db
-	 * @param mPlaylist
+	 * Funcion para insertar un nuevo Playlist a la base de datos. 
+	 * Solamente inserta si el playlist con el nombre especificado no existe en la db, retorna el ID del playlist insertado,
+	 * si la lista ya existe o si no se pudo insertar, retorna -1
+	 * @param mPlaylist: objeto con los datos del playlist
 	 */
-	public void insertarPlaylist(Playlist mPlaylist){
+	public int insertarPlaylist(Playlist mPlaylist){
 		if (this.exsitePlaylist(mPlaylist.getNombre())==false){
 			SQLiteDatabase baseDatos = this.getWritableDatabase();
 			
@@ -139,9 +141,12 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 			parametros.put("Nombre", mPlaylist.getNombre());
 			parametros.put("Aleatoria", mPlaylist.isAleatoria());
 			parametros.put("Repetir", mPlaylist.isRepetir());
-			baseDatos.insert(BaseDatosHelper.TABLA_PLAYLIST, null, parametros);
+			int param = (int)(baseDatos.insert(BaseDatosHelper.TABLA_PLAYLIST, null, parametros));
 			baseDatos.close();
+			return param;
 		}
+		else
+			return -1;
 	}
 	
 	/**
@@ -161,8 +166,233 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 	}
 	
 	//
-	public void insertarCancionEnPlaylist(PlaylistCancion mPlaylistCancion){
+	/**
+	 * Función que inserta una sola cancion, en una lista de reproducción
+	 * @param lista: la lista de reproducción existente a la cual se va a agregar la canción
+	 * @param cancion: la canción que se desea agregar
+	 */
+	public void insertarCancionEnPlaylist(Playlist lista, Cancion cancion){
+		SQLiteDatabase baseDatos = this.getWritableDatabase();
+		//_id INTEGER 
+		//idCancion INTEGER, 
+		//idPlaylist INTEGER, 
+		//idCancionActual INTEGER, 
+		//idPlaylistActual INTEGER
+		ContentValues parametros = new ContentValues();
+		parametros.put("idCancion", cancion.get_id());
+		parametros.put("idPlaylist", lista.get_id());
+		parametros.put("idCancionActual", cancion.get_id());
+		parametros.put("idPlaylistActual", lista.get_id());
+		int param = (int)(baseDatos.insert(BaseDatosHelper.TABLA_PLAYLIST_CANCION, null, parametros));
+		baseDatos.close();
+	}
+	
+	/**
+	 * Función que inserta una lista de canciones en una lista de reproducción
+	 * @param lista: La lista de reproducción existente a la cual se le quieren asignar canciones
+	 * @param canciones: La lista de canciones a agregar
+	 */
+	public void insertarListaCancionesEnPlaylist(Playlist lista, ArrayList<Cancion> canciones){
+		if (canciones!=null){
+			SQLiteDatabase baseDatos = this.getWritableDatabase();
+			for (Cancion c:canciones){
+				ContentValues parametros = new ContentValues();
+				parametros.put("idCancion", c.get_id());
+				parametros.put("idPlaylist", lista.get_id());
+				parametros.put("idCancionActual", c.get_id());
+				parametros.put("idPlaylistActual", lista.get_id());
+				baseDatos.insert(BaseDatosHelper.TABLA_PLAYLIST_CANCION, null, parametros);
+			}
+			baseDatos.close();
+		}
+	}
+	
+	/**
+	 * Obtiene un Playlist por su ID
+	 * @param id: Id del playlist buscado
+	 * @return: Playlist encontrado. Null si no se encontraron resultados
+	 */
+	public Playlist obtenerPlaylistPorID(int id) {
+		// TODO Auto-generated method stub
+		SQLiteDatabase baseDatos = this.getReadableDatabase();
+		Playlist lista = null;
+		String consulta = "SELECT * FROM "+BaseDatosHelper.TABLA_PLAYLIST+" WHERE _id = "+Integer.toString(id);
 		
+		Cursor c = baseDatos.rawQuery(consulta,null);	
+		if (c.getCount()!=0){
+			c.moveToFirst();
+			lista = new Playlist();
+			lista.set_id(c.getInt(0));
+			lista.setNombre(c.getString(1));
+			lista.setFechaCreacion(c.getString(2));
+			if (c.getInt(3)==1)
+				lista.setAleatoria(true);
+			else
+				lista.setAleatoria(false);
+			if (c.getInt(4)==1)
+				lista.setRepetir(true);
+			else
+				lista.setRepetir(false);
+			//SELECT c.* FROM cancion c INNER JOIN playlistcancion lc ON (lc.idCancion = c._id) WHERE lc.idPlaylist = ?
+			String consulta2 = "SELECT c.* FROM "+BaseDatosHelper.TABLA_CANCION+" c INNER JOIN "+BaseDatosHelper.TABLA_PLAYLIST_CANCION+" lc ON (lc.idCancion = c._id) WHERE lc.idPlaylist = "+Integer.toString(lista.get_id());
+			Cursor c2 = baseDatos.rawQuery(consulta2, null);
+			ArrayList<Cancion> lstCanciones = new ArrayList<Cancion>();
+			c2.moveToFirst();
+		  	while (c2.isAfterLast()==false){
+		  		Cancion temporal = new Cancion();
+				temporal.set_id(c2.getInt(0));
+		  		temporal.setTitulo(c2.getString(1));
+		  		temporal.setArtista(c2.getString(2));
+		  		temporal.setAlbum(c2.getString(3));
+		  		temporal.setGenero(c2.getString(4));
+		  		temporal.setYear(c2.getString(5));
+		  		temporal.setNumeroPista(c2.getString(6));
+		  		temporal.setArchivoAudio(c2.getString(7));
+		  		temporal.setArchivoLetra(c2.getString(8)); 
+		  		lstCanciones.add(temporal);
+		  	}
+			c2.close();
+			c.close();
+			lista.setListaCanciones(lstCanciones);
+		}
+		
+		baseDatos.close();
+		return lista;
+		
+	}
+	
+	/**
+	 * Elimina una canción de una lista de reproducción
+	 * @param cancion
+	 */
+	public void eliminarCancionDePlaylist(Cancion cancion){
+		SQLiteDatabase baseDatos = this.getWritableDatabase();
+		String consulta = "DELETE FROM "+BaseDatosHelper.TABLA_PLAYLIST_CANCION+" WHERE idCancion = "+Integer.toString(cancion.get_id());
+		baseDatos.execSQL(consulta);
+		
+		baseDatos.close();
+	}
+	
+	/**
+	 * Elimina una lista de reproducción de la base de datos.
+	 * @param lista
+	 */
+	public void eliminarPlaylist(Playlist lista){
+		SQLiteDatabase baseDatos = this.getWritableDatabase();
+		
+		String consulta1 = "DELETE FROM "+BaseDatosHelper.TABLA_PLAYLIST_CANCION+" WHERE idPlaylist = "+Integer.toString(lista.get_id());
+		String consulta = "DELETE FROM "+BaseDatosHelper.TABLA_PLAYLIST+" WHERE _id = "+Integer.toString(lista.get_id());
+		
+		baseDatos.execSQL(consulta1);
+		baseDatos.execSQL(consulta);
+
+		baseDatos.close();
+	}
+	
+	/**
+	 * Obtiene la lista de todos los playlists en la base de datos
+	 * @return
+	 */
+	public ArrayList<Playlist> obtenerTodosPlaylist(){
+		ArrayList<Playlist> listas = new ArrayList<Playlist>();
+		SQLiteDatabase baseDatos = this.getReadableDatabase();
+		
+		String consulta = "SELECT * FROM "+BaseDatosHelper.TABLA_PLAYLIST;		
+		Cursor c = baseDatos.rawQuery(consulta,null);
+		
+		listas = this.llenarLista(c);
+		
+		baseDatos.close();
+		return listas;
+	}
+	
+	/**
+	 * Función que verifica si ya existe un playlist en la base de datos, en base al nombre del playlist
+	 * @param nombre
+	 * @return
+	 */
+	public boolean existePlaylist(String nombre){
+		boolean confirmacion = false;
+		SQLiteDatabase baseDatos = this.getReadableDatabase();
+		String consulta = "SELECT * FROM "+BaseDatosHelper.TABLA_PLAYLIST+" WHERE Nombre = '"+nombre+"'";
+		Cursor c = baseDatos.rawQuery(consulta,null);	
+		if (c.getCount()!=0)
+			confirmacion = true;
+		baseDatos.close();
+		return confirmacion;
+	}
+	
+	/**
+	 * Función de búsqueda de playlists.
+	 * Funciona de forma similar a la busqueda de canciones
+	 * @param nombre: el nombre del playlist a buscar
+	 * @return: Set de resultados de la búsqueda
+	 */
+	public ArrayList<Playlist> busquedaPlaylist(String nombre){
+		
+		SQLiteDatabase baseDatos = this.getReadableDatabase();
+		ArrayList<Playlist> items = new ArrayList<Playlist>();
+		// Titulo TEXT, Artista TEXT, Album TEXT, Genero TEXT, Year TEXT, NumeroPista TEXT
+		String consulta = "SELECT * FROM "+BaseDatosHelper.TABLA_PLAYLIST+" WHERE Nombre LIKE '%"+nombre+"%'";
+		Cursor c = baseDatos.rawQuery(consulta,null);
+	  	
+	  	c.moveToFirst();
+	  	
+	  	items = llenarLista(c);
+	  	  
+	  	c.close();
+	  	baseDatos.close();
+		return items;
+		
+	}
+	
+	private ArrayList<Cancion> obtenerListaDeCancionesPlaylist(Playlist lista){
+		SQLiteDatabase baseDatos = this.getReadableDatabase();
+		String consulta2 = "SELECT c.* FROM "+BaseDatosHelper.TABLA_CANCION+" c INNER JOIN "+BaseDatosHelper.TABLA_PLAYLIST_CANCION+" lc ON (lc.idCancion = c._id) WHERE lc.idPlaylist = "+Integer.toString(lista.get_id());
+		Cursor c2 = baseDatos.rawQuery(consulta2, null);
+		ArrayList<Cancion> lstCanciones = new ArrayList<Cancion>();
+		c2.moveToFirst();
+		
+		while (c2.isAfterLast()==false){
+		 	Cancion temporal = new Cancion();
+			temporal.set_id(c2.getInt(0));
+		  	temporal.setTitulo(c2.getString(1));
+		  	temporal.setArtista(c2.getString(2));
+		  	temporal.setAlbum(c2.getString(3));
+		  	temporal.setGenero(c2.getString(4));
+		  	temporal.setYear(c2.getString(5));
+		  	temporal.setNumeroPista(c2.getString(6));
+		  	temporal.setArchivoAudio(c2.getString(7));
+		  	temporal.setArchivoLetra(c2.getString(8)); 
+		  	lstCanciones.add(temporal);
+		}  	
+		c2.close();
+		return lstCanciones;
+		
+	}
+	
+	private ArrayList<Playlist> llenarLista(Cursor c){
+		ArrayList<Playlist> listas = new ArrayList<Playlist>();
+		c.moveToFirst();		
+		while (c.isAfterLast()==false){
+			Playlist lista = new Playlist();
+			lista.set_id(c.getInt(0));
+			lista.setNombre(c.getString(1));
+			lista.setFechaCreacion(c.getString(2));
+			if (c.getInt(3)==1)
+				lista.setAleatoria(true);
+			else
+				lista.setAleatoria(false);
+			if (c.getInt(4)==1)
+				lista.setRepetir(true);
+			else
+				lista.setRepetir(false);
+			//decidir si la siguiente lista se incluye o se llama en el momento de comenzar a reproducir el playlist
+			//lista.setListaCanciones(this.obtenerListaDeCancionesPlaylist(lista));
+			
+			listas.add(lista);
+		}
+		return listas;
 	}
 	
 	/**
@@ -170,7 +400,7 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 	 * @param direccion
 	 * @return
 	 */
-	public boolean exsiteCancion (String direccion){
+	public boolean existeCancion (String direccion){
 		boolean confirmacion = false;
 		SQLiteDatabase baseDatos = this.getReadableDatabase();
 		String consulta = "SELECT * FROM "+BaseDatosHelper.TABLA_CANCION+" WHERE ArchivoAudio = '"+direccion+"'";
@@ -180,11 +410,7 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		baseDatos.close();
 		return confirmacion;
 	}
-	/**
-	 * Función que verifica si ya existe un playlist en la base de datos, en base al nombre del playlist
-	 * @param nombre
-	 * @return
-	 */
+
 	public boolean exsitePlaylist(String nombre){
 		boolean confirmacion = false;
 		SQLiteDatabase baseDatos = this.getReadableDatabase();
@@ -227,6 +453,7 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 	  	baseDatos.close();
 		return items;
 	}
+	
 	
 	/**
 	 * Método que verifica si hay canciones en la base de datos, si no hay se asume que debe recorrer el directorio de música
@@ -277,12 +504,13 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		return temporal;
 	}
 	
+
 	/**
 	 * Usar esta funcion cuando se encuentre una cancion que ya no exista en el sistema de archivos
 	 * @param c
 	 */
 	public void eliminarCancion(Cancion c){
-		SQLiteDatabase baseDatos = this.getReadableDatabase();
+		SQLiteDatabase baseDatos = this.getWritableDatabase();
 		
 		String consulta1 = "DELETE FROM "+BaseDatosHelper.TABLA_PLAYLIST_CANCION+" WHERE idCancion = "+Integer.toString(c.get_id());
 		String consulta = "DELETE FROM "+BaseDatosHelper.TABLA_CANCION+" WHERE _id = "+Integer.toString(c.get_id());
@@ -293,10 +521,7 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		baseDatos.close();
 	}
 
-	public Playlist obtenerLista(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 	public ArrayList<Cancion> obtenerCanciones() {
 		// TODO Auto-generated method stub

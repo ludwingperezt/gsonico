@@ -97,7 +97,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		this.parametros = getIntent().getExtras();
 		if (this.parametros!=null){
 			this.seleccionada = conexionBaseDatos.obtenerCancion(this.parametros.getInt(MainActivity.KEY_CANCION_SELECCIONADA));
-			this.lista = conexionBaseDatos.obtenerLista(this.parametros.getInt(MainActivity.KEY_PLAYLIST_SELECCIONADA));
+			this.lista = conexionBaseDatos.obtenerPlaylistPorID(this.parametros.getInt(MainActivity.KEY_PLAYLIST_SELECCIONADA));
 		}
 		
 		Button pausa = (Button) findViewById(R.id.play_pause);
