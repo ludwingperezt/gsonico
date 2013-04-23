@@ -16,5 +16,7 @@
     <string name="volver_a_reproductor">Volver a Reproductor</string>
     <string name="buscar">Buscar</string>
     <string name="todo">TODO</string>
+    <string name="stringEtiquetaDirectorioMusica">Directorio por defecto</string>
+    <string name="txtDirectorioMusicaDefecto">/mnt/sdcard/music/</string>
 
 </resources>

@@ -54,6 +54,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 	private TextView mostrarLetra;
 	public void inicializarCronometro()
 	{
+		
 		try {
 			cargarLetra();
 		} catch (IOException e) {
@@ -266,12 +267,15 @@ public class Reproductor extends Activity implements OnCompletionListener {
 	}
 	
 	private void cargarLetra() throws IOException{
-		if (actual.getArchivoLetra()!="")
-			if (letraActual!=actual.getArchivoLetra()){
-				letraActual=actual.getArchivoLetra();
-				BufferedReader br = new BufferedReader(new InputStreamReader(openFileInput(letraActual)));
-				mostrarLetra.setText(br.readLine());		
-			}
+		if (actual.getArchivoLetra()!=null){
+			if (actual.getArchivoLetra().equals("")==false)
+				if (letraActual!=actual.getArchivoLetra()){
+					letraActual=actual.getArchivoLetra();
+					BufferedReader br = new BufferedReader(new InputStreamReader(openFileInput(letraActual)));
+					mostrarLetra.setText(br.readLine());		
+				}
+		}
+		
 	}
 	
 	/*

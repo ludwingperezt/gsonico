@@ -42,7 +42,6 @@
                         android:shadowRadius="1.5"
                         android:text="GSonico"
                         android:textSize="75sp" />
-
                     <EditText
                         android:id="@+id/txtRuta"
                         android:layout_width="wrap_content"
@@ -50,7 +49,7 @@
                         android:layout_alignBottom="@+id/btnUpdate"
                         android:layout_alignParentLeft="true"
                         android:ems="10"
-                        android:text="Music"
+                        android:text="@string/txtDirectorioMusicaDefecto"
                         android:textSize="22sp" />
 
                     <Button
@@ -70,6 +69,14 @@
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="63dp" />
+
+                    <Button
+                        android:id="@+id/botonSalir"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/progressBar1"
+                        android:layout_alignParentBottom="true"
+                        android:text="Salir" />
 
                 </RelativeLayout>
 
