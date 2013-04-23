@@ -14,6 +14,7 @@ import modelos.Metadatos;
 import modelos.Playlist;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.media.AudioManager;
@@ -124,12 +125,14 @@ public class Reproductor extends Activity implements OnCompletionListener {
 						
 						elapsed=0;
 						estado = 0;
+						v.setBackgroundResource(getResources().getIdentifier("drawable/play48" ,null, getPackageName()));
 					}
 					else{ 
 						player.pause();
 						estado = 1;
 						tiempo.stop();
 						elapsed=SystemClock.elapsedRealtime()-tiempo.getBase();
+						v.setBackgroundResource(getResources().getIdentifier("drawable/pause48" ,null, getPackageName()));
 					}
 			}
 		});
