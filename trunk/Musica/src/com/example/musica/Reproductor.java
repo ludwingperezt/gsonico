@@ -11,6 +11,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import modelos.BaseDatosHelper;
 import modelos.Cancion;
+import modelos.Letra;
 import modelos.Metadatos;
 import modelos.Playlist;
 import android.annotation.SuppressLint;
@@ -268,13 +269,21 @@ public class Reproductor extends Activity implements OnCompletionListener {
 	}
 	
 	private void cargarLetra() throws IOException{
-		String rutaLetra=seleccionada.getArchivoAudio().replace("mp3", "lrc");
+		if (actual!=null){
+		String rutaLetra=actual.getArchivoAudio().replace("mp3", "lrc");
 		File f = new File(rutaLetra);
 		if (f.exists()){
 			letraActual=rutaLetra;
 			BufferedReader br= new BufferedReader(new FileReader(letraActual));
-			mostrarLetra.setText(br.readLine());
+			String linea=br.readLine();
+			Letra letraRola=new Letra();
+			while ((linea=br.readLine())!=null){
+				letraRola.agregarLineaTexto(linea);
+			}
+			mostrarLetra.setText(letraRola.getTodaLetra());
 		}		
+		}
+		
 	}
 	
 	/*
