@@ -16,7 +16,10 @@ import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,7 +28,7 @@ import android.widget.Toast;
 public class SeleccionCancionesPlaylist extends Activity{
 	
 	private BaseDatosHelper baseDatos;
-	private EditText texto;
+	private static  EditText texto;
 	private ListView lista;
 	private ArrayList<Cancion> cancionesSeleccionadas = new ArrayList<Cancion>();
 	
@@ -34,28 +37,41 @@ public class SeleccionCancionesPlaylist extends Activity{
 		setContentView(R.layout.seleccion_canciones_playlist);
 		
 		crearConexion();
+		listaCanciones();
 		Button btnGuardar = (Button)findViewById(R.id.guardar);
 		lista = (ListView)findViewById(R.id.listaCancionesPlaylist);
+		
+		lista.setAdapter(new ArrayAdapter<Cancion>(this, android.R.layout.simple_list_item_multiple_choice, baseDatos.obtenerCanciones()));
+		lista.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		lista.setItemsCanFocus(false);
+		
+		lista.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+			CheckedTextView ctv = (CheckedTextView)arg1;
+			}
+		});
+		
 		btnGuardar.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				
-				texto = (EditText)findViewById(R.id.txtBusqueda);
+				texto = (EditText) findViewById(R.id.txtNombrePlayList);
 				int tamaño = baseDatos.obtenerTodosPlaylist().size();
 				
 				SparseBooleanArray sparseBooleanArray = lista.getCheckedItemPositions();
-				for (int i=0; i<lista.getCount(); i++){
-					Cancion cancionSelec = (Cancion)lista.getItemAtPosition(i);
-					if (sparseBooleanArray.get(i) == true){
-						if (cancionSelec!=null)
-							cancionesSeleccionadas.add(cancionSelec);
-					}		
-				}
+				if (sparseBooleanArray!=null){
+					for (int i=0; i<lista.getCount(); i++){
+						Cancion cancionSelec = (Cancion)lista.getItemAtPosition(i);
+						if (sparseBooleanArray.get(i) == true){
+							if (cancionSelec!=null)
+								cancionesSeleccionadas.add(cancionSelec);
+						}		
+					}
 				
 				Playlist playlistNueva = new Playlist();
 				playlistNueva.setListaCanciones(cancionesSeleccionadas);
-				if(texto.length()==0){
+				if(texto.getText().length()==0){
 					Toast.makeText(getApplicationContext(), "El nombre de la lista sera: Lista de Reproduccion "+String.valueOf(tamaño), Toast.LENGTH_LONG).show();
 					playlistNueva.setNombre("Lista de Reproduccion "+String.valueOf(tamaño));
 				}					
@@ -69,11 +85,15 @@ public class SeleccionCancionesPlaylist extends Activity{
 					baseDatos.insertarPlaylist(playlistNueva);
 				else
 					Toast.makeText(getApplicationContext(), "No se ha guardado la lista de reproduccion", Toast.LENGTH_LONG).show();
+				}
+				
 			}			
 		});
 		
-		texto = (EditText) findViewById(R.id.txtBusqueda);
+		texto = (EditText) findViewById(R.id.txtNombrePlayList);
 		lista = (ListView) findViewById(R.id.listaCancionesPlaylist);
+		
+		
 		
 		
 		
@@ -89,12 +109,11 @@ public class SeleccionCancionesPlaylist extends Activity{
 		return this;
 	}
 	
-	private void busqueda(){
-		texto = (EditText)findViewById(R.id.txtBusqueda);
+	private void listaCanciones(){
 		crearConexion();
         // Obtenemos la lista de canciones
-        ArrayList<Cancion> canciones = baseDatos.buscarCanciones(texto.getText().toString());				
-        ListView lv = (ListView)findViewById(R.id.lista);		             
+        ArrayList<Cancion> canciones = baseDatos.obtenerCanciones();				
+        ListView lv = (ListView)findViewById(R.id.listaCancionesPlaylist);		             
         ItemCancionAdapter adapter = new ItemCancionAdapter(getActivity(), canciones);		             
         lv.setAdapter(adapter);	
 	}

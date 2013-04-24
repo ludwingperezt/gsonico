@@ -190,8 +190,8 @@ public final class R {
         public static final int tiempo=0x7f08002a;
         public static final int titulo=0x7f080021;
         public static final int txtBusqueda=0x7f08000f;
-        public static final int txtBusqueda2=0x7f080016;
         public static final int txtInfo=0x7f080001;
+        public static final int txtNombrePlayList=0x7f080016;
         public static final int txtRuta=0x7f080002;
         public static final int txtnombreplaylist=0x7f080013;
         public static final int year=0x7f080025;
