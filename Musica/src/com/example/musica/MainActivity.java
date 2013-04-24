@@ -155,7 +155,8 @@ public class MainActivity extends Activity implements OnCompletionListener{
 				Playlist resultado = new Playlist();
 				resultado.setNombre("Playlist");
 				ItemCancionAdapter adaptador = (ItemCancionAdapter)lista.getAdapter();
-				resultado.setListaCanciones(adaptador.getItems());
+				//resultado.setListaCanciones(adaptador.getItems());
+				resultado.setListaCanciones(getSeleccionadas(position));
 				//b.putSerializable(MainActivity.KEY_PLAYLIST_SELECCIONADA, resultado);
 				/////////////////////////////////////////////////////////////////////				
 				b.putInt(MainActivity.KEY_CANCION_SELECCIONADA, seleccionado.get_id());
@@ -250,7 +251,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 				//PASAR EL PLAYLIST AL REPRODUCTOR
 				parametros.putSerializable(MainActivity.KEY_PLAYLIST_SELECCIONADA, mPlaylist);
 				reproductorActivity.putExtras(parametros);
-				//startActivity(reproductorActivity);
+				startActivity(reproductorActivity);
 
 			}
 		});
@@ -258,8 +259,8 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		
 		//MANEJO DE PLAYLIST
 		
-		listarArtistas();
-		
+		//listarArtistas();
+		listarPlayLists();
 		Button btnBusquedaPlaylists = (Button)findViewById(R.id.btnbuscarplaylist);
 		btnBusquedaPlaylists.setOnClickListener(new View.OnClickListener() {
 			
@@ -424,4 +425,14 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		// TODO Auto-generated method stub
 	}
 		
+	private ArrayList<Cancion> getSeleccionadas(int position){
+		ItemCancionAdapter adaptador = (ItemCancionAdapter)lista.getAdapter();
+		ArrayList<Cancion> ls = adaptador.getItems();
+		ArrayList<Cancion> lsc = new ArrayList<Cancion>();
+		for (int i=position; i<ls.size(); i++){
+			lsc.add(ls.get(i));
+		}
+		//ArrayList<Cancion> lsc = (ArrayList<Cancion>)ls.subList(position, ls.size());
+		return lsc;
+	}
 }
