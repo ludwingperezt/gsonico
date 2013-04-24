@@ -3,6 +3,7 @@ package com.example.musica;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -66,7 +67,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		tiempo.setBase(SystemClock.elapsedRealtime());
 	}
 	
-	@SuppressLint("SdCardPath")
+	@SuppressLint({ "SdCardPath", "NewApi" })
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -93,7 +94,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		
 		tabs.setCurrentTab(0);
 		Meta=(TextView)findViewById(R.id.txtInfo);
-		//mostrarLetra=(TextView)findViewById(R.id.letra);
+		mostrarLetra=(TextView)findViewById(R.id.letra);
 		this.parametros = getIntent().getExtras();
 		if (this.parametros!=null){
 			this.seleccionada = conexionBaseDatos.obtenerCancion(this.parametros.getInt(MainActivity.KEY_CANCION_SELECCIONADA));
@@ -267,15 +268,13 @@ public class Reproductor extends Activity implements OnCompletionListener {
 	}
 	
 	private void cargarLetra() throws IOException{
-		if (actual.getArchivoLetra()!=null){
-			if (actual.getArchivoLetra().equals("")==false)
-				if (letraActual!=actual.getArchivoLetra()){
-					letraActual=actual.getArchivoLetra();
-					BufferedReader br = new BufferedReader(new InputStreamReader(openFileInput(letraActual)));
-					mostrarLetra.setText(br.readLine());		
-				}
-		}
-		
+		String rutaLetra=seleccionada.getArchivoAudio().replace("mp3", "lrc");
+		File f = new File(rutaLetra);
+		if (f.exists()){
+			letraActual=rutaLetra;
+			BufferedReader br= new BufferedReader(new FileReader(letraActual));
+			mostrarLetra.setText(br.readLine());
+		}		
 	}
 	
 	/*
