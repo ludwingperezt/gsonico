@@ -14,8 +14,10 @@ import modelos.Cancion;
 import modelos.Letra;
 import modelos.Metadatos;
 import modelos.Playlist;
+import android.R.bool;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityGroup;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -34,11 +36,13 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressWarnings("deprecation")
 @SuppressLint({ "SdCardPath", "ShowToast" })
-public class Reproductor extends Activity implements OnCompletionListener {
+public class Reproductor extends ActivityGroup implements OnCompletionListener {
 	MediaPlayer player;
 	Chronometer tiempo;
 	SeekBar barraCronometro;
+	boolean enStop=false;
 	long elapsed=0;
 	int estado=0;
 	int num_track=0;
@@ -80,7 +84,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		 
 		TabHost tabs=(TabHost)findViewById(android.R.id.tabhost);
 		TabHost.TabSpec spec;
-		tabs.setup();
+		tabs.setup(this.getLocalActivityManager());
 		Intent intent;
 		 
 		spec=tabs.newTabSpec("mitab1");
@@ -156,7 +160,14 @@ public class Reproductor extends Activity implements OnCompletionListener {
 				try{					
 					if (actual!=null){
 						//crearConexionBaseDatos();
-						Cancion tmp = conexionBaseDatos.obtenerCancion(actual.get_id()+1);
+						Cancion tmp;
+						if (enStop==false)
+							tmp = conexionBaseDatos.obtenerCancion(actual.get_id()+1);
+						else{
+							tmp = conexionBaseDatos.obtenerCancion(actual.get_id());
+							enStop=false;
+						}
+							
 						if (tmp!=null){
 							anterior = actual;
 							actual = tmp;
@@ -256,10 +267,15 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		Button sig = (Button) findViewById(R.id.next);
 		//if (num_track==listado.length-1)
 		//this.crearConexionBaseDatos();
-		if (conexionBaseDatos.ultimoId(actual.get_id())==true)
+		if (conexionBaseDatos.ultimoId(actual.get_id())==true){
 			player.stop();
-		else
+			
+		}
+		else{
+			enStop=true;
 			sig.performClick();
+		}
+			
 			
 	}
 	

@@ -259,15 +259,20 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		
 		//MANEJO DE PLAYLIST
 		
+<<<<<<< .mine
+		listarPlayLists();
+		
+=======
 		//listarArtistas();
 		listarPlayLists();
+>>>>>>> .r46
 		Button btnBusquedaPlaylists = (Button)findViewById(R.id.btnbuscarplaylist);
 		btnBusquedaPlaylists.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				busquedaPlayLists();
+				//busquedaPlayLists();
 			}
 		});
 		
@@ -277,7 +282,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			@Override
 			public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
 				// TODO Auto-generated method stub
-				busquedaPlayLists();
+				//busquedaPlayLists();
 				return false;
 			}
 		});
@@ -334,10 +339,10 @@ public class MainActivity extends Activity implements OnCompletionListener{
 	
 	private void listarPlayLists() {
 		// TODO Auto-generated method stub
-		ArrayList<String> playlists = baseDatos.obtenerPor(BaseDatosHelper.TABLA_PLAYLIST);
-		ListView lv = (ListView)findViewById(R.id.listaplaylists);
-		ItemAlbumAdapter adapter = new ItemAlbumAdapter(getActivity(),playlists,this);
-		lv.setAdapter(adapter);
+//		ArrayList<Playlist> playlists = baseDatos.obtenerTodosPlaylist();
+//		ListView lv = (ListView)findViewById(R.id.listaplaylists);
+//		ItemPlayListAdapter adapter = new ItemPlayListAdapter(getActivity(),playlists,this);
+//		lv.setAdapter(adapter);
 	}
 	
 	private void listarAlbums() {
@@ -411,6 +416,16 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		lv.setAdapter(adapter);
 	}
 	
+<<<<<<< .mine
+//	private void busquedaPlayLists(){
+//		texto = (EditText)findViewById(R.id.txtnombreplaylist);				
+//		crearConexionBaseDatos();
+//        ArrayList<Playlist> playlists = baseDatos.busquedaPlaylist(texto.getText().toString());
+//        ListView lv = (ListView)findViewById(R.id.listaplaylists);
+//        ItemArtistaAdapter adapter = new ItemArtistaAdapter(getActivity(), playlists);
+//        lv.setAdapter(adapter);
+//	}
+=======
 	private void busquedaPlayLists(){
 		textoPlaylist = (EditText)findViewById(R.id.txtnombreplaylist);				
 		crearConexionBaseDatos();
@@ -419,6 +434,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
         ItemArtistaAdapter adapter = new ItemArtistaAdapter(getActivity(), playlists);
         lv.setAdapter(adapter);
 	}
+>>>>>>> .r46
 
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
