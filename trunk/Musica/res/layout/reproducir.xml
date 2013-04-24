@@ -1,8 +1,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< .mine
+    android:orientation="vertical"
+    tools:context=".Reproductor" >
+
+=======
     android:orientation="vertical">
 	
+>>>>>>> .r41
     <TabHost
         android:id="@android:id/tabhost"
         android:layout_width="match_parent"
@@ -30,81 +37,94 @@
                     android:orientation="vertical" >
 
                     <SeekBar
-				        android:id="@+id/SBTrayecto"
-				        android:layout_width="match_parent"
-				        android:layout_height="wrap_content"
-				        android:layout_above="@+id/play_pause"
-				        android:layout_centerHorizontal="true"
-				        android:max="100" />
-				
-				    <Chronometer
-				        android:id="@+id/tiempo"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_above="@+id/SBTrayecto"
-				        android:layout_alignParentRight="true"
-				        android:text="@string/chronometer" />
+                        android:id="@+id/SBTrayecto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/play_pause"
+                        android:layout_centerHorizontal="true"
+                        android:max="100" />
 
-				    <Button
-				        android:id="@+id/cerrar"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_alignLeft="@+id/stop"
-				        android:layout_alignParentBottom="true"
-				        android:layout_marginBottom="26dp"
-				        android:text="@string/cerrar" />
+                    <Chronometer
+                        android:id="@+id/tiempo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/SBTrayecto"
+                        android:layout_alignParentRight="true"
+                        android:text="@string/chronometer" />
 
-				    <TextView
-				        android:id="@+id/txtInfo"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_alignParentTop="true"
-				        android:layout_marginTop="56dp"
-				        android:text="TextView"
-				        android:textSize="20sp" />
+                    <Button
+                        android:id="@+id/cerrar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/stop"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="26dp"
+                        android:text="@string/cerrar" />
 
-				    <Button
-				        android:id="@+id/stop"
-				        style="?android:attr/buttonStyleSmall"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_above="@+id/cerrar"
-				        android:layout_centerHorizontal="true"
-				        android:layout_marginBottom="36dp"
-				        android:drawableRight="@drawable/stop32" />
+                    <TextView
+                        android:id="@+id/txtInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="56dp"
+                        android:text="@string/textview"
+                        android:textSize="20sp" />
 
-				    <Button
-				        android:id="@+id/next"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_above="@+id/stop"
-				        android:layout_below="@+id/SBTrayecto"
-				        android:layout_toRightOf="@+id/play_pause"
-				        android:drawableRight="@drawable/skip_forward32" />
+                    <Button
+                        android:id="@+id/stop"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/cerrar"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="36dp"
+                        android:drawableRight="@drawable/stop32" />
 
+<<<<<<< .mine
+                    <Button
+                        android:id="@+id/next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/stop"
+                        android:layout_below="@+id/SBTrayecto"
+                        android:layout_toRightOf="@+id/play_pause"
+                        android:drawableRight="@drawable/skip_forward32" />
+=======
 				    <Button
 				        android:id="@+id/play_pause"
 				        android:layout_width="wrap_content"
 				        android:layout_height="wrap_content"
 				        android:layout_above="@+id/stop"
 				        android:layout_alignLeft="@+id/stop" />
+>>>>>>> .r41
 
+                    <Button
+                        android:id="@+id/play_pause"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/stop"
+                        android:layout_alignLeft="@+id/stop"
+                        android:drawableRight="@drawable/play48" />
                 </RelativeLayout>
 
                 <LinearLayout
                     android:id="@+id/tab2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical" 
-                    
-                    >
+                    android:orientation="vertical" >
 
                     <TextView
                         android:id="@+id/letra"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="TextView" />
+                        android:text="@string/textview" />
+                </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/tab3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>

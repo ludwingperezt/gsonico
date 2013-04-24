@@ -2,6 +2,7 @@ package com.example.musica;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import modelos.BaseDatosHelper;
 import modelos.Cancion;
@@ -44,6 +45,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 	private ListView lista;
 	private ListView listaArtista;
 	private ListView listaAlbum;
+	private ListView listaPlayLists;
 	public static final String KEY_CANCION_SELECCIONADA = "seleccionada";
 	public static final String KEY_PLAYLIST_SELECCIONADA = "playlistseleccionado";
 
@@ -100,7 +102,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		
 		spec=tabs.newTabSpec("mitab5");
 		spec.setContent(R.id.tab5);
-		spec.setIndicator("Listas",
+		spec.setIndicator("Listas de Reproduccion",
 		    res.getDrawable(android.R.drawable.ic_dialog_map));
 		tabs.addTab(spec);
 		
@@ -204,7 +206,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 				//PASAR EL PLAYLIST AL REPRODUCTOR
 				parametros.putSerializable(MainActivity.KEY_PLAYLIST_SELECCIONADA, mPlaylist);
 				reproductorActivity.putExtras(parametros);
-				//startActivity(reproductorActivity);
+				startActivity(reproductorActivity);
 			}
 		});
 		
@@ -255,6 +257,45 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		
 		//MANEJO DE PLAYLIST
 		
+		listarArtistas();
+		
+		Button btnBusquedaPlaylists = (Button)findViewById(R.id.btnbuscarplaylist);
+		btnBusquedaPlaylists.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				busquedaPlayLists();
+			}
+		});
+		
+		texto = (EditText)findViewById(R.id.textAlbum);
+		texto.setOnKeyListener(new View.OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
+				// TODO Auto-generated method stub
+				busquedaPlayLists();
+				return false;
+			}
+		});
+		
+		listaPlayLists = (ListView) findViewById(R.id.listaplaylists);
+		listaPlayLists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				// TODO Auto-generated method stub
+				Playlist mPlaylist = (Playlist)listaPlayLists.getItemAtPosition(position);
+				Intent reproductorActivity = new Intent(arg0.getContext(),Reproductor.class);
+				Bundle parametros = new Bundle();
+				//PASAR EL PLAYLIST AL REPRODUCTOR
+				parametros.putSerializable(MainActivity.KEY_PLAYLIST_SELECCIONADA, mPlaylist);
+				reproductorActivity.putExtras(parametros);
+				//startActivity(reproductorActivity);
+
+			}
+		});
+		
 		//
 		
 		Button botonActualizarDB = (Button)findViewById(R.id.btnUpdate);
@@ -287,6 +328,14 @@ public class MainActivity extends Activity implements OnCompletionListener{
 	
 	private void mostrarTexto(String tx){
 		Toast.makeText(this, tx, Toast.LENGTH_SHORT).show();
+	}
+	
+	private void listarPlayLists() {
+		// TODO Auto-generated method stub
+		ArrayList<String> playlists = baseDatos.obtenerPor(BaseDatosHelper.TABLA_PLAYLIST);
+		ListView lv = (ListView)findViewById(R.id.listaplaylists);
+		ItemAlbumAdapter adapter = new ItemAlbumAdapter(getActivity(),playlists,this);
+		lv.setAdapter(adapter);
 	}
 	
 	private void listarAlbums() {
@@ -358,6 +407,15 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		ListView lv = (ListView)findViewById(R.id.listaAlbum);
 		ItemAlbumAdapter adapter = new ItemAlbumAdapter(getActivity(), albums,this);
 		lv.setAdapter(adapter);
+	}
+	
+	private void busquedaPlayLists(){
+		texto = (EditText)findViewById(R.id.txtnombreplaylist);				
+		crearConexionBaseDatos();
+        ArrayList<String> playlists = baseDatos.buscarPorColumna(BaseDatosHelper.TABLA_PLAYLIST, texto.getText().toString());
+        ListView lv = (ListView)findViewById(R.id.listaplaylists);
+        ItemArtistaAdapter adapter = new ItemArtistaAdapter(getActivity(), playlists);
+        lv.setAdapter(adapter);
 	}
 
 	@Override

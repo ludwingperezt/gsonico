@@ -145,6 +145,15 @@ public final class R {
         public static final int users48=0x7f020079;
     }
     public static final class id {
+<<<<<<< .mine
+        public static final int SBTrayecto=0x7f080027;
+        public static final int action_settings=0x7f08002f;
+        public static final int album=0x7f080022;
+        public static final int albumArtista=0x7f08001b;
+        public static final int albumTitulo=0x7f08001a;
+        public static final int artista=0x7f080021;
+        public static final int artistaNombre=0x7f08001c;
+=======
         public static final int SBTrayecto=0x7f080025;
         public static final int action_settings=0x7f08002c;
         public static final int album=0x7f080020;
@@ -153,30 +162,57 @@ public final class R {
         public static final int albumTitulo=0x7f080017;
         public static final int artista=0x7f08001f;
         public static final int artistaNombre=0x7f080019;
+>>>>>>> .r41
         public static final int botonBusquedaAlbum=0x7f08000c;
         public static final int botonBusquedaArtista=0x7f080008;
         public static final int botonSalir=0x7f080005;
         public static final int btnUpdate=0x7f080003;
+<<<<<<< .mine
+        public static final int btnbuscarplaylist=0x7f080014;
+        public static final int cancionSeleccionada=0x7f08001d;
+        public static final int cerrar=0x7f08002a;
+        public static final int genero=0x7f080023;
+        public static final int guardar=0x7f080017;
+        public static final int icono=0x7f080019;
+        public static final int letra=0x7f08002d;
+=======
         public static final int cancionSeleccionada=0x7f08001a;
         public static final int cerrar=0x7f080028;
         public static final int genero=0x7f080021;
         public static final int icono=0x7f08001d;
         public static final int letra=0x7f08002b;
+>>>>>>> .r41
         public static final int lista=0x7f080011;
-        public static final int lista2=0x7f080015;
+        public static final int lista2=0x7f080018;
         public static final int listaAlbum=0x7f08000d;
         public static final int listaArtistas=0x7f080009;
+<<<<<<< .mine
+        public static final int listaCancionesPlaylist=0x7f08002e;
+        public static final int listaplaylists=0x7f080015;
+        public static final int menuSincronizar=0x7f080030;
+        public static final int next=0x7f08002c;
+        public static final int play_pause=0x7f080028;
+        public static final int playlistBotonEdicion=0x7f080025;
+        public static final int playlistNombre=0x7f080026;
+=======
         public static final int menuSincronizar=0x7f08002d;
         public static final int next=0x7f08002a;
         public static final int play_pause=0x7f080026;
         public static final int playlistBotonEdicion=0x7f080023;
         public static final int playlistNombre=0x7f080024;
+>>>>>>> .r41
         public static final int progressBar1=0x7f080004;
         public static final int regresar=0x7f080010;
+<<<<<<< .mine
+        public static final int seleccionableCancionArtista=0x7f08001f;
+        public static final int seleccionableCancionTitulo=0x7f08001e;
+        public static final int stop=0x7f08002b;
+=======
         public static final int regresar2=0x7f080014;
         public static final int seleccionableCancionArtista=0x7f08001c;
         public static final int seleccionableCancionTitulo=0x7f08001b;
         public static final int stop=0x7f080029;
+>>>>>>> .r41
         public static final int tab1=0x7f080000;
         public static final int tab2=0x7f080006;
         public static final int tab3=0x7f08000a;
@@ -184,13 +220,23 @@ public final class R {
         public static final int tab5=0x7f080012;
         public static final int textAlbum=0x7f08000b;
         public static final int textArtista=0x7f080007;
+<<<<<<< .mine
+        public static final int tiempo=0x7f080029;
+        public static final int titulo=0x7f080020;
+=======
         public static final int tiempo=0x7f080027;
         public static final int titulo=0x7f08001e;
+>>>>>>> .r41
         public static final int txtBusqueda=0x7f08000f;
-        public static final int txtBusqueda2=0x7f080013;
+        public static final int txtBusqueda2=0x7f080016;
         public static final int txtInfo=0x7f080001;
         public static final int txtRuta=0x7f080002;
+<<<<<<< .mine
+        public static final int txtnombreplaylist=0x7f080013;
+        public static final int year=0x7f080024;
+=======
         public static final int year=0x7f080022;
+>>>>>>> .r41
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -201,6 +247,7 @@ public final class R {
         public static final int lista_item=0x7f030005;
         public static final int lista_playlist_item=0x7f030006;
         public static final int reproducir=0x7f030007;
+        public static final int seleccion_canciones_playlist=0x7f030008;
     }
     public static final class menu {
         public static final int main=0x7f070000;
@@ -213,12 +260,14 @@ public final class R {
         public static final int buscar=0x7f05000d;
         public static final int cerrar=0x7f05000b;
         public static final int chronometer=0x7f05000a;
+        public static final int guardar=0x7f050011;
         public static final int hello_world=0x7f050002;
         public static final int next=0x7f050006;
         public static final int play_pause=0x7f050005;
         public static final int reproductor=0x7f050009;
         public static final int stop=0x7f050007;
         public static final int stringEtiquetaDirectorioMusica=0x7f05000f;
+        public static final int textview=0x7f050012;
         public static final int todo=0x7f05000e;
         public static final int txtDirectorioMusicaDefecto=0x7f050010;
         public static final int unused=0x7f050004;
