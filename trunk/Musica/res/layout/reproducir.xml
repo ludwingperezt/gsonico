@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-
+    android:orientation="vertical">
+	
     <TabHost
         android:id="@android:id/tabhost"
         android:layout_width="match_parent"
@@ -87,8 +87,7 @@
 				        android:layout_width="wrap_content"
 				        android:layout_height="wrap_content"
 				        android:layout_above="@+id/stop"
-				        android:layout_alignLeft="@+id/stop"
-				        android:drawableRight="@drawable/play48" />
+				        android:layout_alignLeft="@+id/stop" />
 
                 </RelativeLayout>
 
