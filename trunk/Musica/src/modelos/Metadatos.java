@@ -72,73 +72,156 @@ public class Metadatos {
         ID3V2_3_0Tag etiqueta = (ID3V2_3_0Tag)t;
         
         if (etiqueta.getAlbum()!=null){
-            this.setAlbum(etiqueta.getAlbum());
+            if (etiqueta.getAlbum().equals("                              "))
+            	this.setAlbum("Album desconocido");
+            else
+            	this.setAlbum(etiqueta.getAlbum());
         }
+        else{
+        	this.setAlbum("Album desconocido");
+        }
+        
         if (etiqueta.getArtist()!=null){
-            this.setArtista(etiqueta.getArtist());
+        	if (etiqueta.getArtist().equals("                              "))
+        		this.setArtista("Artista desconocido");
+        	else
+        		this.setArtista(etiqueta.getArtist());
         }
+        else{
+        	this.setArtista("Artista desconocido");
+        }
+        
         if (etiqueta.getComment()!=null){
             this.setComentario(etiqueta.getComment());
         }
-        if (etiqueta.getTitle()!=null){
-            this.setTitulo(etiqueta.getTitle());
+        else{
+        	this.setComentario("");
         }
+        
+        if (etiqueta.getTitle()!=null){
+        	if (etiqueta.getTitle().equals("                              "))
+        		this.tituloPorDefecto();
+        	else
+        		this.setTitulo(etiqueta.getTitle());
+        }
+        else{
+        	this.tituloPorDefecto();
+        }
+        
         if (etiqueta.getGenre()!=null){
-            this.setGenero(etiqueta.getGenre());
+        	if (etiqueta.getGenre().equals("                              "))
+        		this.setGenero("Desconocido");
+        	else
+        		this.setGenero(etiqueta.getGenre());
+        }
+        else{
+        	this.setGenero("Desconocido");
         }
         
         try {
             int tn = etiqueta.getTrackNumber();
             this.setNumeroPista(tn);
         } catch (ID3Exception ex1) {
-                      
+            this.setNumeroPista(0);
         }
         
         try {
             int  yy = etiqueta.getYear();
             this.setYear(Integer.toString(yy));
         } catch (ID3Exception ex) {
-            
-            
+            this.setYear("0");            
         }
+    }
+    
+    private void tituloPorDefecto(){
+    	File f = new File(this.direccion);
+    	String nombre = f.getName();
+    	nombre = nombre.toLowerCase();
+    	nombre = nombre.replaceAll(".mp3", "");
+    	this.setTitulo(nombre);
     }
     
     private void leerEtiquetas_ID3_v1(ID3Tag t){
         ID3V1_0Tag etiqueta = (ID3V1_0Tag)t;
         if (etiqueta.getAlbum()!=null){
-            this.setAlbum(etiqueta.getAlbum());
+        	if (etiqueta.getAlbum().equals("                              "))
+            	this.setAlbum("Album desconocido");
+            else
+            	this.setAlbum(etiqueta.getAlbum());
         }
+        
         if (etiqueta.getArtist()!=null){
-            this.setArtista(etiqueta.getArtist());
+        	if (etiqueta.getArtist().equals("                              "))
+        		this.setArtista("Artista desconocido");
+        	else
+        		this.setArtista(etiqueta.getArtist());
         }
+        else
+        	this.setArtista("Artista desconocido");
+        
         if (etiqueta.getComment()!=null){
             this.setComentario(etiqueta.getComment());
         }
+        else
+        	this.setComentario("");
+        
         if (etiqueta.getTitle()!=null){
-            this.setTitulo(etiqueta.getTitle());
+        	if (etiqueta.getTitle().equals("                              "))
+        		this.tituloPorDefecto();
+        	else
+        		this.setTitulo(etiqueta.getTitle());
         }
+        else
+        	this.tituloPorDefecto();
+        
         if (etiqueta.getYear()!=null){
             this.setYear(etiqueta.getYear());
-        } 
+        }
+        else
+        	this.setYear("0");
     }
     
     private void leerEtiquetas_ID3_v1_1(ID3Tag o) {
         ID3V1_1Tag etiqueta = (ID3V1_1Tag)o;
         if (etiqueta.getAlbum()!=null){
-            this.setAlbum(etiqueta.getAlbum());
+        	if (etiqueta.getAlbum().equals("                              "))
+            	this.setAlbum("Album desconocido");
+            else
+            	this.setAlbum(etiqueta.getAlbum());
         }
+        else
+        	this.setAlbum("Album desconocido");
+        
         if (etiqueta.getArtist()!=null){
-            this.setArtista(etiqueta.getArtist());
+        	if (etiqueta.getArtist().equals("                              "))
+        		this.setArtista("Artista desconocido");
+        	else
+        		this.setArtista(etiqueta.getArtist());
         }
+        else
+        	this.setArtista("Artista desconocido");
+        
         if (etiqueta.getComment()!=null){
             this.setComentario(etiqueta.getComment());
         }
+        else
+        	this.setComentario("");
+        
         if (etiqueta.getTitle()!=null){
-            this.setTitulo(etiqueta.getTitle());
+        	if (etiqueta.getTitle().equals("                              "))
+        		this.tituloPorDefecto();
+        	else
+        		this.setTitulo(etiqueta.getTitle());
         }
+        else
+        	this.tituloPorDefecto();
+        
         if (etiqueta.getYear()!=null){
             this.setYear(etiqueta.getYear());
         }
+        else
+        	this.setYear("0");
+        
         this.setNumeroPista(etiqueta.getAlbumTrack());
     }
     

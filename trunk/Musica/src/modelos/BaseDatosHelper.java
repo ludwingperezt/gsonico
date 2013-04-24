@@ -346,6 +346,27 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		
 	}
 	
+	public ArrayList<String> buscarPlaylist(String nombre){
+		
+		SQLiteDatabase baseDatos = this.getReadableDatabase();
+		ArrayList<String> items = new ArrayList<String>();
+		// Titulo TEXT, Artista TEXT, Album TEXT, Genero TEXT, Year TEXT, NumeroPista TEXT
+		String consulta = "SELECT Nombre FROM "+BaseDatosHelper.TABLA_PLAYLIST+" WHERE Nombre LIKE '%"+nombre+"%'";
+		Cursor c = baseDatos.rawQuery(consulta,null);
+	  	
+	  	c.moveToFirst();
+	  		
+		while (c.isAfterLast()==false){
+			String lista = c.getString(0);			
+			items.add(lista);
+		}
+	  	  
+	  	c.close();
+	  	baseDatos.close();
+		return items;
+		
+	}
+	
 	private ArrayList<Cancion> obtenerListaDeCancionesPlaylist(Playlist lista){
 		SQLiteDatabase baseDatos = this.getReadableDatabase();
 		String consulta2 = "SELECT c.* FROM "+BaseDatosHelper.TABLA_CANCION+" c INNER JOIN "+BaseDatosHelper.TABLA_PLAYLIST_CANCION+" lc ON (lc.idCancion = c._id) WHERE lc.idPlaylist = "+Integer.toString(lista.get_id());
@@ -607,6 +628,7 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		SQLiteDatabase baseDatos = this.getReadableDatabase();
 		ArrayList<String> items = new ArrayList<String>();
 		String consulta = "SELECT "+columna+" FROM "+BaseDatosHelper.TABLA_CANCION+" WHERE "+columna+" like '%"+ parametro +"%' GROUP BY "+columna;
+
 		Cursor c = baseDatos.rawQuery(consulta,null);
 	  	
 	  	c.moveToFirst();

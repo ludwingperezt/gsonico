@@ -42,6 +42,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 	private EditText texto;
 	private EditText textoArtista;
 	private EditText textoAlbum;
+	private EditText textoPlaylist;
 	private ListView lista;
 	private ListView listaArtista;
 	private ListView listaAlbum;
@@ -269,8 +270,8 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			}
 		});
 		
-		texto = (EditText)findViewById(R.id.textAlbum);
-		texto.setOnKeyListener(new View.OnKeyListener() {
+		textoPlaylist = (EditText)findViewById(R.id.txtnombreplaylist);
+		textoPlaylist.setOnKeyListener(new View.OnKeyListener() {
 			
 			@Override
 			public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
@@ -410,9 +411,9 @@ public class MainActivity extends Activity implements OnCompletionListener{
 	}
 	
 	private void busquedaPlayLists(){
-		texto = (EditText)findViewById(R.id.txtnombreplaylist);				
+		textoPlaylist = (EditText)findViewById(R.id.txtnombreplaylist);				
 		crearConexionBaseDatos();
-        ArrayList<String> playlists = baseDatos.buscarPorColumna(BaseDatosHelper.TABLA_PLAYLIST, texto.getText().toString());
+        ArrayList<String> playlists = baseDatos.buscarPlaylist(textoPlaylist.getText().toString());//(BaseDatosHelper.TABLA_PLAYLIST, );
         ListView lv = (ListView)findViewById(R.id.listaplaylists);
         ItemArtistaAdapter adapter = new ItemArtistaAdapter(getActivity(), playlists);
         lv.setAdapter(adapter);
