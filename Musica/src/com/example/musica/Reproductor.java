@@ -106,7 +106,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		Button siguiente = (Button) findViewById(R.id.next);
 		Button detener = (Button) findViewById(R.id.stop);
 		Button cerrar = (Button) findViewById(R.id.cerrar);
-		
+		pausa.setBackgroundResource(getResources().getIdentifier("drawable/play48" ,null, getPackageName()));
 		barraCronometro=(SeekBar)findViewById(R.id.SBTrayecto);
 		
 		
@@ -128,14 +128,14 @@ public class Reproductor extends Activity implements OnCompletionListener {
 						
 						elapsed=0;
 						estado = 0;
-						v.setBackgroundResource(getResources().getIdentifier("drawable/play48" ,null, getPackageName()));
+						v.setBackgroundResource(getResources().getIdentifier("drawable/pause48" ,null, getPackageName()));
 					}
 					else{ 
 						player.pause();
 						estado = 1;
 						tiempo.stop();
 						elapsed=SystemClock.elapsedRealtime()-tiempo.getBase();
-						v.setBackgroundResource(getResources().getIdentifier("drawable/pause48" ,null, getPackageName()));
+						v.setBackgroundResource(getResources().getIdentifier("drawable/play48" ,null, getPackageName()));
 					}
 			}
 		});
@@ -275,7 +275,7 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		if (f.exists()){
 			letraActual=rutaLetra;
 			BufferedReader br= new BufferedReader(new FileReader(letraActual));
-			String linea=br.readLine();
+			String linea;
 			Letra letraRola=new Letra();
 			while ((linea=br.readLine())!=null){
 				letraRola.agregarLineaTexto(linea);
