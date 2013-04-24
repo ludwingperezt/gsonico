@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import modelos.BaseDatosHelper;
 import modelos.Cancion;
@@ -63,4 +65,52 @@ public class ListadoArchivos {
             }
         }
     }
+	
+	public static Bitmap getAlbumArtSmall(String direccionCancion){
+		Bitmap bmp = null;
+		File f = new File(direccionCancion);
+		File directorioPadre = f.getParentFile();
+		String [] archivos = directorioPadre.list(new FilenameFilter() {
+			
+			@Override
+			public boolean accept(File dir, String name) {
+				// TODO Auto-generated method stub
+				String d = name.toLowerCase();
+				//if ((name.contains("AlbumArt"))&&(name.contains("Small")))
+				if (d.contains("albumart"))
+                    return true;
+                else
+                    return false;
+			}
+		});
+		if (archivos!=null){
+			if (archivos.length>0){
+				bmp = BitmapFactory.decodeFile(directorioPadre.getAbsolutePath()+File.separator+archivos[0]);
+			}
+		}
+		return bmp;
+	}
+	
+	public static Bitmap getAlbumArtLarge(String direccion){
+		Bitmap bmp = null;
+		File f = new File(direccion);
+		File directorioPadre = f.getParentFile();
+		String [] archivos = directorioPadre.list(new FilenameFilter() {
+			
+			@Override
+			public boolean accept(File dir, String name) {
+				// TODO Auto-generated method stub
+				if ((name.contains("AlbumArt"))&&(name.contains("Large")))
+                    return true;
+                else
+                    return false;
+			}
+		});
+		if (archivos!=null){
+			if (archivos.length>0){
+				bmp = BitmapFactory.decodeFile(directorioPadre.getAbsolutePath()+File.separator+archivos[0]);
+			}
+		}
+		return bmp;
+	}
 }

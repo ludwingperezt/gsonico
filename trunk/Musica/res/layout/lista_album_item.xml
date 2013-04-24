@@ -4,7 +4,7 @@
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:padding="5dip">
     <ImageView
-        android:id="@+id/icono"
+        android:id="@+id/albumIcono"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_marginRight="5dip"
