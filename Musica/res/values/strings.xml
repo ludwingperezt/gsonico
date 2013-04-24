@@ -18,5 +18,7 @@
     <string name="todo">TODO</string>
     <string name="stringEtiquetaDirectorioMusica">Directorio por defecto</string>
     <string name="txtDirectorioMusicaDefecto">/mnt/sdcard/music/</string>
+    <string name="guardar">Guardar</string>
+    <string name="textview">TextView</string>
 
 </resources>

@@ -75,12 +75,15 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		setContentView(R.layout.reproducir);
 		this.crearConexionBaseDatos();
 		//Control de los TABS
+		
 		Resources res = getResources();
 		 
 		TabHost tabs=(TabHost)findViewById(android.R.id.tabhost);
+		TabHost.TabSpec spec;
 		tabs.setup();
+		Intent intent;
 		 
-		TabHost.TabSpec spec=tabs.newTabSpec("mitab1");
+		spec=tabs.newTabSpec("mitab1");
 		spec.setContent(R.id.tab1);
 		spec.setIndicator("Escuchando...",
 		    res.getDrawable(android.R.drawable.ic_media_play));
@@ -91,7 +94,10 @@ public class Reproductor extends Activity implements OnCompletionListener {
 		spec.setIndicator("Letra",
 		    res.getDrawable(android.R.drawable.ic_menu_info_details));
 		tabs.addTab(spec);
-		 
+		
+		intent = new Intent().setClass(this, SeleccionCancionesPlaylist.class);
+		spec = tabs.newTabSpec("mitab3").setIndicator("Nueva Lista de Reproduccion",res.getDrawable(android.R.drawable.list_selector_background)).setContent(intent);
+		tabs.addTab(spec);
 		
 		tabs.setCurrentTab(0);
 		Meta=(TextView)findViewById(R.id.txtInfo);
