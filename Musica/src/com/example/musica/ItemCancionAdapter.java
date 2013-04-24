@@ -7,10 +7,12 @@ import modelos.Cancion;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ItemCancionAdapter extends BaseAdapter {
@@ -61,6 +63,16 @@ public class ItemCancionAdapter extends BaseAdapter {
 	    /*ImageView image = (ImageView) vi.findViewById(R.id.imagen);
 	    int imageResource = activity.getResources().getIdentifier(item.getRutaImagen(), null, activity.getPackageName());
 	    image.setImageDrawable(activity.getResources().getDrawable(imageResource));*/
+	    
+	    ImageView image = (ImageView) vi.findViewById(R.id.icono);
+	    Bitmap bmp = ListadoArchivos.getAlbumArtSmall(item.getArchivoAudio());
+	    if (bmp!=null)
+	    	image.setImageBitmap(bmp);
+	    else{
+	    	//int recurso = activity.getResources().getIdentifier("drawable/icono", null, activity.getPackageName());
+	    	//image.setImageDrawable(activity.getResources().getDrawable(recurso));
+	    	image.setImageResource(R.drawable.icono);
+	    }
 	         
 	    TextView txtTitulo = (TextView) vi.findViewById(R.id.titulo);
 	    txtTitulo.setText(item.getTitulo());
