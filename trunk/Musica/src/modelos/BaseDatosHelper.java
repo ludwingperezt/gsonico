@@ -346,6 +346,24 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		
 	}
 	
+	public ArrayList<String> listarPlaylists(){
+		SQLiteDatabase baseDatos = this.getReadableDatabase();
+		ArrayList<String> items = new ArrayList<String>();
+		String consulta = "SELECT Nombre FROM "+BaseDatosHelper.TABLA_PLAYLIST;
+		Cursor c = baseDatos.rawQuery(consulta,null);
+	  	
+	  	c.moveToFirst();
+	  		
+		while (c.isAfterLast()==false){
+			String lista = c.getString(0);			
+			items.add(lista);
+		}
+	  	  
+	  	c.close();
+	  	baseDatos.close();
+		return items;
+	}
+	
 	public ArrayList<String> buscarPlaylist(String nombre){
 		
 		SQLiteDatabase baseDatos = this.getReadableDatabase();
@@ -600,21 +618,27 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 	 */
 	public ArrayList<String> obtenerPor(String columna) {
 		// TODO Auto-generated method stub
-		SQLiteDatabase baseDatos = this.getReadableDatabase();
-		ArrayList<String> items = new ArrayList<String>();
-		String consulta = "SELECT "+columna+" FROM "+BaseDatosHelper.TABLA_CANCION+" GROUP BY "+columna;
-		Cursor c = baseDatos.rawQuery(consulta,null);
-	  	
-	  	c.moveToFirst();
-	  	while (c.isAfterLast()==false){
-	  		String tmpArtist = c.getString(0);
-	  		items.add(tmpArtist);
-	  		c.moveToNext();
-	  	}
-	  	  
-	  	c.close();
-	  	baseDatos.close();
-		return items;
+		if (columna.equals(BaseDatosHelper.TABLA_PLAYLIST)){
+			return this.listarPlaylists();
+		}
+		else{
+			SQLiteDatabase baseDatos = this.getReadableDatabase();
+			ArrayList<String> items = new ArrayList<String>();
+			String consulta = "SELECT "+columna+" FROM "+BaseDatosHelper.TABLA_CANCION+" GROUP BY "+columna;
+			Cursor c = baseDatos.rawQuery(consulta,null);
+		  	
+		  	c.moveToFirst();
+		  	while (c.isAfterLast()==false){
+		  		String tmpArtist = c.getString(0);
+		  		items.add(tmpArtist);
+		  		c.moveToNext();
+		  	}
+		  	  
+		  	c.close();
+		  	baseDatos.close();
+			return items;
+		}
+		
 	}
 	
 	/**
