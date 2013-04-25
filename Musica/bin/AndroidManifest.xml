@@ -24,7 +24,7 @@
         </activity>
         <activity android:name=".BusquedaCancionActivity"></activity>
         <activity android:name=".Reproductor"></activity>
-        <activity android:name="SeleccionCancionesPlaylist"></activity>
+        <activity android:name=".SeleccionCancionesPlaylist"></activity>
     </application>
 
 </manifest>

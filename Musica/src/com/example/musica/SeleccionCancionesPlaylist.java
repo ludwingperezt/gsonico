@@ -38,7 +38,7 @@ public class SeleccionCancionesPlaylist extends Activity{
 		
 		crearConexion();
 		listaCanciones();
-		Button btnGuardar = (Button)findViewById(R.id.guardar);
+		Button btnGuardar = (Button)findViewById(R.id.botonGuardarPlaylist);
 		lista = (ListView)findViewById(R.id.listaCancionesPlaylist);
 		
 		lista.setAdapter(new ArrayAdapter<Cancion>(this, android.R.layout.simple_list_item_multiple_choice, baseDatos.obtenerCanciones()));
@@ -81,8 +81,11 @@ public class SeleccionCancionesPlaylist extends Activity{
 				}
 				else
 					playlistNueva.setNombre(texto.getText().toString());
-				if (cancionesSeleccionadas.size()!=0 && playlistNueva.getNombre()!=null)
-					baseDatos.insertarPlaylist(playlistNueva);
+				if (cancionesSeleccionadas.size()!=0 && playlistNueva.getNombre()!=null){
+					int index = baseDatos.insertarPlaylist(playlistNueva);
+					if (index!=-1)
+						Toast.makeText(getApplicationContext(), "Lista insertada con éxito", Toast.LENGTH_LONG).show();
+				}
 				else
 					Toast.makeText(getApplicationContext(), "No se ha guardado la lista de reproduccion", Toast.LENGTH_LONG).show();
 				}

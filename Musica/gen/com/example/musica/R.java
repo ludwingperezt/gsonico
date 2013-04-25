@@ -146,7 +146,7 @@ public final class R {
     }
     public static final class id {
         public static final int SBTrayecto=0x7f080028;
-        public static final int action_settings=0x7f080034;
+        public static final int action_settings=0x7f080035;
         public static final int album=0x7f080023;
         public static final int albumArtista=0x7f08001b;
         public static final int albumIcono=0x7f080019;
@@ -156,6 +156,7 @@ public final class R {
         public static final int atras=0x7f08002c;
         public static final int botonBusquedaAlbum=0x7f08000c;
         public static final int botonBusquedaArtista=0x7f080008;
+        public static final int botonGuardarPlaylist=0x7f080033;
         public static final int botonSalir=0x7f080005;
         public static final int btnUpdate=0x7f080003;
         public static final int btnbuscarplaylist=0x7f080014;
@@ -170,9 +171,9 @@ public final class R {
         public static final int lista2=0x7f080018;
         public static final int listaAlbum=0x7f08000d;
         public static final int listaArtistas=0x7f080009;
-        public static final int listaCancionesPlaylist=0x7f080033;
+        public static final int listaCancionesPlaylist=0x7f080034;
         public static final int listaplaylists=0x7f080015;
-        public static final int menuSincronizar=0x7f080035;
+        public static final int menuSincronizar=0x7f080036;
         public static final int next=0x7f08002b;
         public static final int play_pause=0x7f080029;
         public static final int playlistBotonEdicion=0x7f080026;
