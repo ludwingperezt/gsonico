@@ -146,7 +146,7 @@ public final class R {
     }
     public static final class id {
         public static final int SBTrayecto=0x7f080028;
-        public static final int action_settings=0x7f080033;
+        public static final int action_settings=0x7f080034;
         public static final int album=0x7f080023;
         public static final int albumArtista=0x7f08001b;
         public static final int albumIcono=0x7f080019;
@@ -164,14 +164,15 @@ public final class R {
         public static final int genero=0x7f080024;
         public static final int guardar=0x7f080017;
         public static final int icono=0x7f080020;
-        public static final int letra=0x7f080031;
+        public static final int lblLetra=0x7f080031;
+        public static final int letra=0x7f080032;
         public static final int lista=0x7f080011;
         public static final int lista2=0x7f080018;
         public static final int listaAlbum=0x7f08000d;
         public static final int listaArtistas=0x7f080009;
-        public static final int listaCancionesPlaylist=0x7f080032;
+        public static final int listaCancionesPlaylist=0x7f080033;
         public static final int listaplaylists=0x7f080015;
-        public static final int menuSincronizar=0x7f080034;
+        public static final int menuSincronizar=0x7f080035;
         public static final int next=0x7f08002b;
         public static final int play_pause=0x7f080029;
         public static final int playlistBotonEdicion=0x7f080026;

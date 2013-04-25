@@ -70,6 +70,10 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 	private Bundle parametros;
 	private TextView Meta;
 	private TextView mostrarLetra;
+	//
+	private Random r = new Random();
+	private Letra letraRola;
+	
 	public void inicializarCronometro()
 	{
 		
@@ -127,13 +131,17 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 		}
 		
 		Button pausa = (Button) findViewById(R.id.play_pause);
-		Button siguiente = (Button) findViewById(R.id.next);
+		Button siguiente = (Button) findViewById(R.id.next);		
 		Button detener = (Button) findViewById(R.id.stop);
 		Button cerrar = (Button) findViewById(R.id.cerrar);
 		Button atras= (Button) findViewById(R.id.atras);
 		ToggleButton BtnAleatorio=(ToggleButton)findViewById(R.id.tbtnAleat);
 		ToggleButton BtnRepetir=(ToggleButton)findViewById(R.id.tbtnRepetir);
+		siguiente.setBackgroundResource(getResources().getIdentifier("drawable/skip_forward32",null, getPackageName()));
+		atras.setBackgroundResource(getResources().getIdentifier("drawable/skip_backward32",null, getPackageName()));
+		detener.setBackgroundResource(getResources().getIdentifier("drawable/stop32",null, getPackageName()));
 		pausa.setBackgroundResource(getResources().getIdentifier("drawable/pause48",null, getPackageName()));
+		
 		barraCronometro=(SeekBar)findViewById(R.id.SBTrayecto);
 		
 		
@@ -193,6 +201,8 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 							player.start();
 							Toast.makeText(getApplicationContext(),"Duracion: "+ aMinutos(player.getDuration())+ " Minutos", Toast.LENGTH_LONG).show();
 							Meta.setText(actual.getTitulo()+" - "+ actual.getArtista());
+							Button pausa = (Button) findViewById(R.id.play_pause);
+							pausa.setBackgroundResource(getResources().getIdentifier("drawable/pause48" ,null, getPackageName()));
 							inicializarCronometro();
 							tiempo.start();	
 							//pausa.setBackgroundResource(getResources().getIdentifier("drawable/pause48" ,null, getPackageName()));
@@ -247,6 +257,8 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 					player.start();
 					Toast.makeText(getApplicationContext(),"Duracion: "+ aMinutos(player.getDuration())+ " Minutos", Toast.LENGTH_LONG).show();
 					Meta.setText(actual.getTitulo()+" - "+ actual.getArtista());
+					Button pausa = (Button) findViewById(R.id.play_pause);
+					pausa.setBackgroundResource(getResources().getIdentifier("drawable/pause48" ,null, getPackageName()));
 					inicializarCronometro();
 					tiempo.start();	
 				}
@@ -261,8 +273,10 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				player.stop();
+				Button pausa = (Button) findViewById(R.id.play_pause);
+				pausa.setBackgroundResource(getResources().getIdentifier("drawable/play48" ,null, getPackageName()));
 				inicializarCronometro();
+				player.stop();
 			}
 		});
 		
@@ -326,6 +340,12 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 				float duracion=player.getDuration();
 				float p=(actual/duracion)*100;				
 				barraCronometro.setProgress((int) (p));
+				String prox=letraRola.getProximaLinea(actual);
+				if (prox!=null)
+					if (!prox.isEmpty()){
+						TextView lblLetra=(TextView)findViewById(R.id.lblLetra);
+						lblLetra.setText(prox);
+					}
 			}
 		});
 		
@@ -418,16 +438,18 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 		if (actual!=null){
 		String rutaLetra=actual.getArchivoAudio().replace("mp3", "lrc");
 		File f = new File(rutaLetra);
+		letraRola=new Letra();
 		if (f.exists()){
 			letraActual=rutaLetra;
 			BufferedReader br= new BufferedReader(new FileReader(letraActual));
-			String linea;
-			Letra letraRola=new Letra();
+			String linea;			
 			while ((linea=br.readLine())!=null){
 				letraRola.agregarLineaTexto(linea);
 			}
 			mostrarLetra.setText(letraRola.getTodaLetra());
-		}		
+		}
+		else
+			mostrarLetra.setText("LETRA NO DISPONIBLE");
 		}
 		
 	}
@@ -435,8 +457,7 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 	private Cancion getNext(){
 		Cancion c = null;
 		
-		if (this.aleatorio){
-			Random r = new Random();
+		if (this.aleatorio){			
 			if (this.siguientes!=null){
 				if (this.siguientes.size()>0){
 					int index = r.nextInt(this.siguientes.size());

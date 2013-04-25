@@ -55,15 +55,14 @@
                         android:layout_alignBottom="@+id/atras"
                         android:layout_below="@+id/SBTrayecto"
                         android:layout_toRightOf="@+id/play_pause"
-                        android:drawableRight="@drawable/skip_forward32" />
+                         />
 
                     <Button
                         android:id="@+id/atras"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/SBTrayecto"
-                        android:layout_toLeftOf="@+id/play_pause" 
-                        android:drawableRight="@drawable/skip_backward32"/>
+                        android:layout_toLeftOf="@+id/play_pause" />
 
                     <Button
                         android:id="@+id/play_pause"
@@ -80,8 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_above="@+id/cerrar"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="19dp"
-                        android:drawableRight="@drawable/stop32" />
+                        android:layout_marginBottom="19dp" />
 
                     <ToggleButton
                         android:id="@+id/tbtnAleat"
@@ -92,14 +90,6 @@
                         android:text="Aleat/No"
                         android:textOff="No Aleatorio"
                         android:textOn="Aleatorio" />
-
-                    <Button
-                        android:id="@+id/cerrar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignRight="@+id/txtInfo"
-                        android:text="@string/cerrar" />
 
                     <ToggleButton
                         android:id="@+id/tbtnRepetir"
@@ -113,14 +103,35 @@
                         android:textOn="Repetir" />
 
                     <TextView
+                        android:id="@+id/lblLetra"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/txtInfo"
+                        android:layout_marginTop="38dp"
+                        android:textColor="@android:color/holo_blue_light"
+                        android:textSize="18dp" />
+
+                    <TextView
                         android:id="@+id/txtInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
-                        android:layout_marginTop="28dp"
-                        android:text="@string/textview"
+                        android:shadowColor="@android:color/holo_red_light"
+                        android:shadowDx="1"
+                        android:shadowDy="2"
+                        android:shadowRadius="1.5"
+                        android:text="GSonic - Karaoke"
                         android:textSize="20sp" />
+
+                    <Button
+                        android:id="@+id/cerrar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/cerrar" />
 
                 </RelativeLayout>
 
