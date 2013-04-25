@@ -259,13 +259,11 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		
 		//MANEJO DE PLAYLIST
 		
-<<<<<<< .mine
 		listarPlayLists();
 		
-=======
 		//listarArtistas();
-		listarPlayLists();
->>>>>>> .r46
+		//listarPlayLists();
+
 		Button btnBusquedaPlaylists = (Button)findViewById(R.id.btnbuscarplaylist);
 		btnBusquedaPlaylists.setOnClickListener(new View.OnClickListener() {
 			
@@ -416,7 +414,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 		lv.setAdapter(adapter);
 	}
 	
-<<<<<<< .mine
+
 //	private void busquedaPlayLists(){
 //		texto = (EditText)findViewById(R.id.txtnombreplaylist);				
 //		crearConexionBaseDatos();
@@ -425,7 +423,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 //        ItemArtistaAdapter adapter = new ItemArtistaAdapter(getActivity(), playlists);
 //        lv.setAdapter(adapter);
 //	}
-=======
+
 	private void busquedaPlayLists(){
 		textoPlaylist = (EditText)findViewById(R.id.txtnombreplaylist);				
 		crearConexionBaseDatos();
@@ -434,7 +432,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
         ItemArtistaAdapter adapter = new ItemArtistaAdapter(getActivity(), playlists);
         lv.setAdapter(adapter);
 	}
->>>>>>> .r46
+
 
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
