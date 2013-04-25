@@ -29,7 +29,7 @@ public class Letra {
 		b=Long.parseLong(t.substring(3,4))*1000;
 		c=Long.parseLong(t.substring(6,7))*10;
 		tiempo.add(a+b+c);
-		texto.add(linea.substring(index+1));		
+		texto.add(linea.substring(index+1)+"\n");		
 	}
 	
 	public String getTodaLetra()
