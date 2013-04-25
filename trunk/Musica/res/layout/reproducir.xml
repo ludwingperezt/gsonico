@@ -105,11 +105,14 @@
                     <TextView
                         android:id="@+id/lblLetra"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:lines="3"
                         android:layout_alignParentLeft="true"
                         android:layout_below="@+id/txtInfo"
                         android:layout_marginTop="38dp"
-                        android:textColor="@android:color/holo_blue_light"
                         android:textSize="18dp" />
 
                     <TextView
@@ -118,7 +121,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
-                        android:shadowColor="@android:color/holo_red_light"
                         android:shadowDx="1"
                         android:shadowDy="2"
                         android:shadowRadius="1.5"
