@@ -133,17 +133,22 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 	 * @param mPlaylist: objeto con los datos del playlist
 	 */
 	public int insertarPlaylist(Playlist mPlaylist){
-		if (this.exsitePlaylist(mPlaylist.getNombre())==false){
-			SQLiteDatabase baseDatos = this.getWritableDatabase();
-			
-			ContentValues parametros = new ContentValues();
-			//Nombre TEXT, FechaCreacion DATETIME DEFAULT CURRENT_TIMESTAMP, Aleatoria BOOL, Repetir BOOL
-			parametros.put("Nombre", mPlaylist.getNombre());
-			parametros.put("Aleatoria", mPlaylist.isAleatoria());
-			parametros.put("Repetir", mPlaylist.isRepetir());
-			int param = (int)(baseDatos.insert(BaseDatosHelper.TABLA_PLAYLIST, null, parametros));
-			baseDatos.close();
-			return param;
+		if ((this.exsitePlaylist(mPlaylist.getNombre())==false)&&(mPlaylist.getListaCanciones()!=null)){
+			if (mPlaylist.getListaCanciones().size()>0){
+				SQLiteDatabase baseDatos = this.getWritableDatabase();				
+				ContentValues parametros = new ContentValues();
+				//Nombre TEXT, FechaCreacion DATETIME DEFAULT CURRENT_TIMESTAMP, Aleatoria BOOL, Repetir BOOL
+				parametros.put("Nombre", mPlaylist.getNombre());
+				parametros.put("Aleatoria", mPlaylist.isAleatoria());
+				parametros.put("Repetir", mPlaylist.isRepetir());
+				int param = (int)(baseDatos.insert(BaseDatosHelper.TABLA_PLAYLIST, null, parametros));
+				mPlaylist.set_id(param);
+				this.insertarListaCancionesEnPlaylist(mPlaylist, mPlaylist.getListaCanciones());
+				baseDatos.close();
+				return param;
+			}
+			else
+				return -1;
 		}
 		else
 			return -1;
@@ -162,6 +167,11 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		parametros.put("Aleatoria", mPlaylist.isAleatoria());
 		parametros.put("Repetir", mPlaylist.isRepetir());
 		baseDatos.update(BaseDatosHelper.TABLA_PLAYLIST, parametros, "_id = ?", new String[]{Integer.toString(mPlaylist.get_id())});
+		
+		if (mPlaylist.getListaCanciones()!=null){
+			this.insertarListaCancionesEnPlaylist(mPlaylist, mPlaylist.getListaCanciones());
+		}
+		
 		baseDatos.close();
 	}
 	
@@ -250,6 +260,57 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		  		temporal.setArchivoAudio(c2.getString(7));
 		  		temporal.setArchivoLetra(c2.getString(8)); 
 		  		lstCanciones.add(temporal);
+		  		c2.moveToNext();
+		  	}
+			c2.close();
+			c.close();
+			lista.setListaCanciones(lstCanciones);
+		}
+		
+		baseDatos.close();
+		return lista;
+		
+	}
+	
+	public Playlist obtenerPlaylistPorNombre(String nombre) {
+		// TODO Auto-generated method stub
+		SQLiteDatabase baseDatos = this.getReadableDatabase();
+		Playlist lista = null;
+		String consulta = "SELECT * FROM "+BaseDatosHelper.TABLA_PLAYLIST+" WHERE Nombre = '"+nombre+"'";
+		
+		Cursor c = baseDatos.rawQuery(consulta,null);	
+		if (c.getCount()!=0){
+			c.moveToFirst();
+			lista = new Playlist();
+			lista.set_id(c.getInt(0));
+			lista.setNombre(c.getString(1));
+			lista.setFechaCreacion(c.getString(2));
+			if (c.getInt(3)==1)
+				lista.setAleatoria(true);
+			else
+				lista.setAleatoria(false);
+			if (c.getInt(4)==1)
+				lista.setRepetir(true);
+			else
+				lista.setRepetir(false);
+			//SELECT c.* FROM cancion c INNER JOIN playlistcancion lc ON (lc.idCancion = c._id) WHERE lc.idPlaylist = ?
+			String consulta2 = "SELECT c.* FROM "+BaseDatosHelper.TABLA_CANCION+" c INNER JOIN "+BaseDatosHelper.TABLA_PLAYLIST_CANCION+" lc ON (lc.idCancion = c._id) WHERE lc.idPlaylist = "+Integer.toString(lista.get_id());
+			Cursor c2 = baseDatos.rawQuery(consulta2, null);
+			ArrayList<Cancion> lstCanciones = new ArrayList<Cancion>();
+			c2.moveToFirst();
+		  	while (c2.isAfterLast()==false){
+		  		Cancion temporal = new Cancion();
+				temporal.set_id(c2.getInt(0));
+		  		temporal.setTitulo(c2.getString(1));
+		  		temporal.setArtista(c2.getString(2));
+		  		temporal.setAlbum(c2.getString(3));
+		  		temporal.setGenero(c2.getString(4));
+		  		temporal.setYear(c2.getString(5));
+		  		temporal.setNumeroPista(c2.getString(6));
+		  		temporal.setArchivoAudio(c2.getString(7));
+		  		temporal.setArchivoLetra(c2.getString(8)); 
+		  		lstCanciones.add(temporal);
+		  		c2.moveToNext();
 		  	}
 			c2.close();
 			c.close();
@@ -300,7 +361,27 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		String consulta = "SELECT * FROM "+BaseDatosHelper.TABLA_PLAYLIST;		
 		Cursor c = baseDatos.rawQuery(consulta,null);
 		
-		listas = this.llenarLista(c);
+		//listas = this.llenarLista(c);
+		c.moveToFirst();		
+		while (c.isAfterLast()==false){
+			Playlist lista = new Playlist();
+			lista.set_id(c.getInt(0));
+			lista.setNombre(c.getString(1));
+			lista.setFechaCreacion(c.getString(2));
+			if (c.getInt(3)==1)
+				lista.setAleatoria(true);
+			else
+				lista.setAleatoria(false);
+			if (c.getInt(4)==1)
+				lista.setRepetir(true);
+			else
+				lista.setRepetir(false);
+			//decidir si la siguiente lista se incluye o se llama en el momento de comenzar a reproducir el playlist
+			//lista.setListaCanciones(this.obtenerListaDeCancionesPlaylist(lista));
+			
+			listas.add(lista);
+			c.moveToNext();
+		}
 		
 		baseDatos.close();
 		return listas;
@@ -357,6 +438,7 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		while (c.isAfterLast()==false){
 			String lista = c.getString(0);			
 			items.add(lista);
+			c.moveToNext();
 		}
 	  	  
 	  	c.close();
@@ -377,6 +459,7 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		while (c.isAfterLast()==false){
 			String lista = c.getString(0);			
 			items.add(lista);
+			c.moveToNext();
 		}
 	  	  
 	  	c.close();
@@ -385,7 +468,7 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		
 	}
 	
-	private ArrayList<Cancion> obtenerListaDeCancionesPlaylist(Playlist lista){
+	public ArrayList<Cancion> obtenerListaDeCancionesPlaylist(Playlist lista){
 		SQLiteDatabase baseDatos = this.getReadableDatabase();
 		String consulta2 = "SELECT c.* FROM "+BaseDatosHelper.TABLA_CANCION+" c INNER JOIN "+BaseDatosHelper.TABLA_PLAYLIST_CANCION+" lc ON (lc.idCancion = c._id) WHERE lc.idPlaylist = "+Integer.toString(lista.get_id());
 		Cursor c2 = baseDatos.rawQuery(consulta2, null);
@@ -404,6 +487,7 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 		  	temporal.setArchivoAudio(c2.getString(7));
 		  	temporal.setArchivoLetra(c2.getString(8)); 
 		  	lstCanciones.add(temporal);
+		  	c2.moveToNext();
 		}  	
 		c2.close();
 		return lstCanciones;
@@ -430,6 +514,7 @@ public class BaseDatosHelper extends SQLiteOpenHelper {
 			//lista.setListaCanciones(this.obtenerListaDeCancionesPlaylist(lista));
 			
 			listas.add(lista);
+			c.moveToNext();
 		}
 		return listas;
 	}

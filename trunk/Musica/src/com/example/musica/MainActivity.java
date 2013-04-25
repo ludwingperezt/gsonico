@@ -270,7 +270,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				//busquedaPlayLists();
+				busquedaPlayLists();
 			}
 		});
 		
@@ -280,7 +280,7 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			@Override
 			public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
 				// TODO Auto-generated method stub
-				//busquedaPlayLists();
+				busquedaPlayLists();
 				return false;
 			}
 		});
@@ -290,13 +290,15 @@ public class MainActivity extends Activity implements OnCompletionListener{
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
 				// TODO Auto-generated method stub
-				Playlist mPlaylist = (Playlist)listaPlayLists.getItemAtPosition(position);
+				String nombrePl = (String)listaPlayLists.getItemAtPosition(position);
+				Playlist mPlaylist = baseDatos.obtenerPlaylistPorNombre(nombrePl); //(Playlist)listaPlayLists.getItemAtPosition(position);
+				//mPlaylist.setListaCanciones(baseDatos.obtenerListaDeCancionesPlaylist(mPlaylist));
 				Intent reproductorActivity = new Intent(arg0.getContext(),Reproductor.class);
 				Bundle parametros = new Bundle();
 				//PASAR EL PLAYLIST AL REPRODUCTOR
 				parametros.putSerializable(MainActivity.KEY_PLAYLIST_SELECCIONADA, mPlaylist);
 				reproductorActivity.putExtras(parametros);
-				//startActivity(reproductorActivity);
+				startActivity(reproductorActivity);
 
 			}
 		});
@@ -337,10 +339,15 @@ public class MainActivity extends Activity implements OnCompletionListener{
 	
 	private void listarPlayLists() {
 		// TODO Auto-generated method stub
-//		ArrayList<Playlist> playlists = baseDatos.obtenerTodosPlaylist();
-//		ListView lv = (ListView)findViewById(R.id.listaplaylists);
-//		ItemPlayListAdapter adapter = new ItemPlayListAdapter(getActivity(),playlists,this);
-//		lv.setAdapter(adapter);
+		/*
+		ArrayList<Playlist> playlists = baseDatos.obtenerTodosPlaylist();
+		ListView lv = (ListView)findViewById(R.id.listaplaylists);
+		ItemPlayListAdapter adapter = new ItemPlayListAdapter(getActivity(),playlists);
+		lv.setAdapter(adapter);*/
+        ArrayList<String> playlists = baseDatos.listarPlaylists(); //buscarPlaylist(textoPlaylist.getText().toString());//(BaseDatosHelper.TABLA_PLAYLIST, );
+        ListView lv = (ListView)findViewById(R.id.listaplaylists);
+        ItemArtistaAdapter adapter = new ItemArtistaAdapter(getActivity(), playlists);
+        lv.setAdapter(adapter);
 	}
 	
 	private void listarAlbums() {
