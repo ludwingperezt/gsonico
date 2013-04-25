@@ -35,6 +35,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.Chronometer.OnChronometerTickListener;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -130,8 +131,8 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 		Button detener = (Button) findViewById(R.id.stop);
 		Button cerrar = (Button) findViewById(R.id.cerrar);
 		Button atras= (Button) findViewById(R.id.atras);
-		final ToggleButton BtnAleatorio=(ToggleButton)findViewById(R.id.tbtnAleat);
-		final ToggleButton BtnRepetir=(ToggleButton)findViewById(R.id.tbtnRepetir);
+		ToggleButton BtnAleatorio=(ToggleButton)findViewById(R.id.tbtnAleat);
+		ToggleButton BtnRepetir=(ToggleButton)findViewById(R.id.tbtnRepetir);
 		pausa.setBackgroundResource(getResources().getIdentifier("drawable/pause48",null, getPackageName()));
 		barraCronometro=(SeekBar)findViewById(R.id.SBTrayecto);
 		
@@ -339,22 +340,24 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 			}
 		});
 		
-		BtnRepetir.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				repetir=BtnRepetir.isActivated();
-			}
+		BtnRepetir.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		        if (isChecked) {
+		        	repetir=true;
+		        } else {
+		        	repetir=false;
+		        }
+		    }
 		});
 		
-		BtnAleatorio.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				aleatorio=BtnAleatorio.isActivated();
-			}
+		BtnAleatorio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		        if (isChecked) {
+		        	aleatorio=true;
+		        } else {
+		            aleatorio=false;
+		        }
+		    }
 		});
 	}
 	
