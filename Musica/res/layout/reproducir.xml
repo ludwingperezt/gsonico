@@ -49,22 +49,29 @@
                         android:text="@string/chronometer" />
 
                     <Button
-                        android:id="@+id/cerrar"
+                        android:id="@+id/next"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignLeft="@+id/stop"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="26dp"
-                        android:text="@string/cerrar" />
+                        android:layout_alignBottom="@+id/atras"
+                        android:layout_below="@+id/SBTrayecto"
+                        android:layout_toRightOf="@+id/play_pause"
+                        android:drawableRight="@drawable/skip_forward32" />
 
-                    <TextView
-                        android:id="@+id/txtInfo"
+                    <Button
+                        android:id="@+id/atras"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginTop="56dp"
-                        android:text="@string/textview"
-                        android:textSize="20sp" />
+                        android:layout_below="@+id/SBTrayecto"
+                        android:layout_toLeftOf="@+id/play_pause" 
+                        android:drawableRight="@drawable/skip_backward32"/>
+
+                    <Button
+                        android:id="@+id/play_pause"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/stop"
+                        android:layout_alignLeft="@+id/stop"
+                        android:layout_marginBottom="30dp" />
 
                     <Button
                         android:id="@+id/stop"
@@ -73,25 +80,48 @@
                         android:layout_height="wrap_content"
                         android:layout_above="@+id/cerrar"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="36dp"
+                        android:layout_marginBottom="19dp"
                         android:drawableRight="@drawable/stop32" />
 
-                    <Button
-                        android:id="@+id/next"
+                    <ToggleButton
+                        android:id="@+id/tbtnAleat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_above="@+id/stop"
-                        android:layout_below="@+id/SBTrayecto"
-                        android:layout_toRightOf="@+id/play_pause"
-                        android:drawableRight="@drawable/skip_forward32" />
+                        android:layout_below="@+id/play_pause"
+                        android:layout_toLeftOf="@+id/tiempo"
+                        android:text="Aleat/No"
+                        android:textOff="No Aleatorio"
+                        android:textOn="Aleatorio" />
 
                     <Button
-                        android:id="@+id/play_pause"
+                        android:id="@+id/cerrar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_above="@+id/stop"
-                        android:layout_alignLeft="@+id/stop"
-                        android:drawableRight="@drawable/play48" />
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignRight="@+id/txtInfo"
+                        android:text="@string/cerrar" />
+
+                    <ToggleButton
+                        android:id="@+id/tbtnRepetir"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/tbtnAleat"
+                        android:layout_alignRight="@+id/tbtnAleat"
+                        android:layout_below="@+id/tbtnAleat"
+                        android:text="R/N"
+                        android:textOff="No Repetir"
+                        android:textOn="Repetir" />
+
+                    <TextView
+                        android:id="@+id/txtInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="28dp"
+                        android:text="@string/textview"
+                        android:textSize="20sp" />
+
                 </RelativeLayout>
 
                 <LinearLayout

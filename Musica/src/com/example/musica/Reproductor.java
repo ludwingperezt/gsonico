@@ -39,6 +39,7 @@ import android.widget.SeekBar;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 @SuppressWarnings("deprecation")
 @SuppressLint({ "SdCardPath", "ShowToast" })
@@ -128,7 +129,10 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 		Button siguiente = (Button) findViewById(R.id.next);
 		Button detener = (Button) findViewById(R.id.stop);
 		Button cerrar = (Button) findViewById(R.id.cerrar);
-		pausa.setBackgroundResource(getResources().getIdentifier("drawable/play48" ,null, getPackageName()));
+		Button atras= (Button) findViewById(R.id.atras);
+		final ToggleButton BtnAleatorio=(ToggleButton)findViewById(R.id.tbtnAleat);
+		final ToggleButton BtnRepetir=(ToggleButton)findViewById(R.id.tbtnRepetir);
+		pausa.setBackgroundResource(getResources().getIdentifier("drawable/pause48",null, getPackageName()));
 		barraCronometro=(SeekBar)findViewById(R.id.SBTrayecto);
 		
 		
@@ -190,6 +194,7 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 							Meta.setText(actual.getTitulo()+" - "+ actual.getArtista());
 							inicializarCronometro();
 							tiempo.start();	
+							//pausa.setBackgroundResource(getResources().getIdentifier("drawable/pause48" ,null, getPackageName()));
 						}
 					}
 					/*
@@ -219,6 +224,34 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 					}	*/				
 				}catch(Exception e){	
 				}
+			}
+		});
+		
+		atras.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				player.reset();
+				num_track--;
+				if (num_track<0)
+					num_track=0;
+				else
+					siguientes.add(0, actual);
+				try{
+					if (!anteriores.empty())
+						actual=anteriores.pop();					
+					player.setDataSource(actual.getArchivoAudio());
+					player.prepare();
+					player.start();
+					Toast.makeText(getApplicationContext(),"Duracion: "+ aMinutos(player.getDuration())+ " Minutos", Toast.LENGTH_LONG).show();
+					Meta.setText(actual.getTitulo()+" - "+ actual.getArtista());
+					inicializarCronometro();
+					tiempo.start();	
+				}
+				catch (Exception e) {
+					// TODO: handle exception
+					}
 			}
 		});
 		
@@ -303,6 +336,24 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 				player.stop();
 				inicializarCronometro();
 				finish();
+			}
+		});
+		
+		BtnRepetir.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				repetir=BtnRepetir.isActivated();
+			}
+		});
+		
+		BtnAleatorio.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				aleatorio=BtnAleatorio.isActivated();
 			}
 		});
 	}
