@@ -157,9 +157,9 @@ public class MainActivity extends Activity implements OnCompletionListener{
 				ItemCancionAdapter adaptador = (ItemCancionAdapter)lista.getAdapter();
 				//resultado.setListaCanciones(adaptador.getItems());
 				resultado.setListaCanciones(getSeleccionadas(position));
-				//b.putSerializable(MainActivity.KEY_PLAYLIST_SELECCIONADA, resultado);
+				b.putSerializable(MainActivity.KEY_PLAYLIST_SELECCIONADA, resultado);
 				/////////////////////////////////////////////////////////////////////				
-				b.putInt(MainActivity.KEY_CANCION_SELECCIONADA, seleccionado.get_id());
+				//b.putInt(MainActivity.KEY_CANCION_SELECCIONADA, seleccionado.get_id());
 				nuevaActividad.putExtras(b);
 				startActivity(nuevaActividad);
 			}

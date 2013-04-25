@@ -6,6 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.Random;
+import java.util.Stack;
 
 import javax.xml.transform.stream.StreamResult;
 
@@ -48,12 +52,18 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 	int num_track=0;
 	public static final String directorioMusica = "/mnt/sdcard/music/";
 	//final String[] listado = ListadoArchivos.devolverListadoArchivosDirectorios(Reproductor.directorioMusica);
-	private Cancion seleccionada;
-	private Cancion anterior;
+	//private Cancion seleccionada;
+	//private Cancion anterior;
 	private Cancion actual;
-	private Cancion siguiente;
+	//private Cancion siguiente;
 	private String letraActual;
 	private Playlist lista;
+	//control de reproduccion
+	private Stack<Cancion> anteriores = new Stack<Cancion>();
+	private ArrayList<Cancion> siguientes;
+	private boolean repetir=false;
+	private boolean aleatorio=false;
+	//
 	private BaseDatosHelper conexionBaseDatos;
 	private Bundle parametros;
 	private TextView Meta;
@@ -108,8 +118,10 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 		mostrarLetra=(TextView)findViewById(R.id.letra);
 		this.parametros = getIntent().getExtras();
 		if (this.parametros!=null){
-			this.seleccionada = conexionBaseDatos.obtenerCancion(this.parametros.getInt(MainActivity.KEY_CANCION_SELECCIONADA));
-			this.lista = conexionBaseDatos.obtenerPlaylistPorID(this.parametros.getInt(MainActivity.KEY_PLAYLIST_SELECCIONADA));
+			//this.seleccionada = conexionBaseDatos.obtenerCancion(this.parametros.getInt(MainActivity.KEY_CANCION_SELECCIONADA));
+			//this.lista = conexionBaseDatos.obtenerPlaylistPorID(this.parametros.getInt(MainActivity.KEY_PLAYLIST_SELECCIONADA));
+			this.lista = (Playlist)this.parametros.getSerializable(MainActivity.KEY_PLAYLIST_SELECCIONADA);
+			this.siguientes = this.lista.getListaCanciones();
 		}
 		
 		Button pausa = (Button) findViewById(R.id.play_pause);
@@ -131,7 +143,7 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-					if (estado == 1) {
+					if (estado == 1) {				
 						player.start();
 						tiempo.setBase(SystemClock.elapsedRealtime()-elapsed);
 						tiempo.start();
@@ -157,7 +169,30 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 				// TODO Auto-generated method stub
 				player.reset();
 				num_track=num_track+1;
-				try{					
+				try{	
+					if (actual!=null){
+						Cancion tmp;
+						if (enStop==false){
+							tmp = getNext();
+						}
+						else{
+							tmp = actual; //???????????? no se si esta linea está correcta, no se que hace
+							enStop = false;
+						}
+						
+						if (tmp!=null){
+							anteriores.push(actual);
+							actual = tmp;
+							player.setDataSource(actual.getArchivoAudio());
+							player.prepare();
+							player.start();
+							Toast.makeText(getApplicationContext(),"Duracion: "+ aMinutos(player.getDuration())+ " Minutos", Toast.LENGTH_LONG).show();
+							Meta.setText(actual.getTitulo()+" - "+ actual.getArtista());
+							inicializarCronometro();
+							tiempo.start();	
+						}
+					}
+					/*
 					if (actual!=null){
 						//crearConexionBaseDatos();
 						Cancion tmp;
@@ -181,7 +216,7 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 							inicializarCronometro();
 							tiempo.start();	
 						}
-					}					
+					}	*/				
 				}catch(Exception e){	
 				}
 			}
@@ -213,6 +248,23 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 		player = new MediaPlayer();
 		
 		try{
+			if (this.siguientes!=null){
+				this.actual = this.getNext();
+				if (actual!=null){
+					File f = new File(actual.getArchivoAudio());
+					if (f.exists()){
+						player.setDataSource(actual.getArchivoAudio());
+						player.prepare();
+						inicializarCronometro();
+						player.start();
+						tiempo.start();
+						Toast.makeText(getApplicationContext(),"Duracion: "+ aMinutos(player.getDuration())+ " Minutos", Toast.LENGTH_LONG).show();
+						Meta.setText(actual.getTitulo()+" - "+ actual.getArtista());
+						player.setOnCompletionListener(this);
+					}
+				}
+			}
+			/*
 			if (this.seleccionada!=null){
 				File f = new File(this.seleccionada.getArchivoAudio());
 				if (f.exists()){
@@ -227,7 +279,7 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 					Meta.setText(actual.getTitulo()+" - "+ actual.getArtista());
 					player.setOnCompletionListener(this);
 				}				
-			}			
+			}*/			
 		}catch(Exception e){	
 		}
 		
@@ -262,11 +314,13 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 		return true;
 		
 	}
+	
 
 	public void onCompletion(MediaPlayer arg0) {
 		Button sig = (Button) findViewById(R.id.next);
 		//if (num_track==listado.length-1)
 		//this.crearConexionBaseDatos();
+		/*
 		if (conexionBaseDatos.ultimoId(actual.get_id())==true){
 			player.stop();
 			
@@ -274,9 +328,25 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 		else{
 			enStop=true;
 			sig.performClick();
-		}
-			
-			
+		}*/
+		if (siguientes==null)
+			player.stop();
+		else{
+			if (this.siguientes.size()==0){
+				if (this.repetir){
+					this.siguientes.addAll(this.anteriores);
+					this.anteriores.clear();
+					enStop=true;
+					sig.performClick();
+				}
+				else
+					player.stop();
+			}
+			else{
+				enStop=true;
+				sig.performClick();
+			}
+		}			
 	}
 	
 	private void crearConexionBaseDatos(){
@@ -308,6 +378,54 @@ public class Reproductor extends ActivityGroup implements OnCompletionListener {
 		
 	}
 	
+	private Cancion getNext(){
+		Cancion c = null;
+		
+		if (this.aleatorio){
+			Random r = new Random();
+			if (this.siguientes!=null){
+				if (this.siguientes.size()>0){
+					int index = r.nextInt(this.siguientes.size());
+					c = this.siguientes.remove(index);
+				}
+			}
+			
+		}
+		else{
+			if (this.siguientes!=null){
+				if (this.siguientes.size()>0){
+					c = this.siguientes.remove(0);
+				}
+			}
+		}
+		
+		return c;
+	}
+	/*
+	private void reproducir(){
+		try{
+			if (this.siguientes!=null){
+				this.actual = this.getNext();
+				if (actual!=null){
+					File f = new File(actual.getArchivoAudio());
+					if (f.exists()){
+						player.setDataSource(actual.getArchivoAudio());
+						player.prepare();
+						inicializarCronometro();
+						player.start();
+						tiempo.start();
+						Toast.makeText(getApplicationContext(),"Duracion: "+ aMinutos(player.getDuration())+ " Minutos", Toast.LENGTH_LONG).show();
+						Meta.setText(actual.getTitulo()+" - "+ actual.getArtista());
+						player.setOnCompletionListener(this);
+					}
+				}
+			}
+		}
+		catch (Exception ex){
+			
+		}
+		
+	}*/
 	/*
 	public void llenarBaseDatos(String directorio){
 		File f = new File(directorio);
